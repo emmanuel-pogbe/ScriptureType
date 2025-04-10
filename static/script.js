@@ -172,7 +172,7 @@ function makeStrictAutocomplete(input,list) {
       e.preventDefault();
       focusPrev("book","verse");
     }
-    else {
+    else if (e.key != "Tab"){
       e.preventDefault();
     }
   });
