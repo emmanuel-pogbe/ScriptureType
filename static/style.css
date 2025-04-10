@@ -1,0 +1,190 @@
+* {
+    background-color: #161821;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #C6C8D1;
+    overflow: hidden;
+
+}
+#app {
+    display: grid;
+    grid-template-rows: [top-start] auto [content-start] 1fr [content-end] auto [top-end];
+    min-height: 100vh;
+    width: 85%;
+    margin: 10px auto;
+}
+header {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+#logo {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 100;
+}
+svg {
+    width: 40px;
+    height: 100%;
+}
+main {
+    justify-content: center;
+    align-items: center;
+}
+#options {
+    border: none;
+    border-radius: 7px;
+    height: 30px;
+    width: 35%;
+    margin: auto;
+    background-color: #232531;
+    display: flex;
+    justify-content: space-between;
+}
+
+.scriptureButton {
+    border: none;
+    padding-left: 6%;
+    padding-right: 6%;
+    font-size: 10px;
+    color: #595E76;
+    font-weight: 900;
+    background-color: #232531;
+    cursor: pointer;
+}
+.scriptureButton:hover{
+    color: #A7A9B3;
+}
+.active {
+    color: #84A0C6;
+}
+.pop-in {
+    opacity: 0;
+    animation: popInAnimation 0.6s ease forwards;
+}
+@keyframes popInAnimation {
+    to {
+        opacity: 1;
+    }   
+}
+.scripture-to-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    margin: 30px;
+    
+}
+.scripture-search {
+    color: white;
+    max-width: 70%;
+    margin: 0px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input-class {
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #013FBF;
+    text-transform: capitalize;
+    text-align: center;
+    font-size: x-large;
+    max-width: 30%;
+}
+.input-class:focus {
+    outline: none;
+    /* background-color: #013FBF; */
+}
+.input-class-number {
+    width: max-content;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+.popup {
+    position: fixed;
+    border: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    z-index: 1000;
+    background: transparent;
+}
+.popup-cover {
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #161821;
+    border: 2px solid #C6C8D1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+.popup-title {
+    font-size: xx-large;
+}
+.numberInput {
+    border: 2px solid #C6C8D1;
+    border-radius: 8px;
+    height: 10%;
+    width: 100%;
+    text-align: left;
+    font-size: large;
+    margin: 10px;
+}
+.numberInput:focus {
+    background-color: #161821;
+    border: 2px solid #C6C8D1;
+    outline: none;
+}
+#okBtn {
+    color: white;
+    border: none;
+    background-color: #595E76;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%;
+    padding: 8px 16px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+#okBtn:hover {
+    color: black;
+    background-color: #C6C8D1;
+}
+.hidden {
+    display: none;
+}
+#average-result-text {
+    color:#595E76;
+    font-size: x-large;
+}
+#average {
+    color: #84A0C6;
+    font-size: xx-large;
+}
+#test-type-text {
+    color: #595E76;
+}
+#custom-test-type {
+    color: #84A0C6;
+}

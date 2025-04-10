@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Worship Trainer</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='/style.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='/assets/EWT.png')}}">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <a href="/" id="logo">
+                <div class="icon">    
+                    <img src="{{url_for('static',filename='/assets/easy worship.png')}}" alt="Easy Worship logo" width="55px" height="100%" >              
+                </div>
+                <h1>Easy Worship Trainer</h1>
+            </a>     
+        </header>
+        <main id="main">
+            <div id="options">
+                <button class="scriptureButton active">10 Scriptures</button>
+                <button class="scriptureButton">20 Scriptures</button>
+                <button class="scriptureButton" id="custom">Custom</button>
+            </div>
+            <div id="main-app" class="pop-in">
+                <div id="scripture" class="scripture-to-search"></div>
+                <div class="scripture-search">
+                    <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()">
+                    <datalist id="books"> <!--Maybe-->
+                    </datalist>
+                    <input type="number" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
+                    <input type="number" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
+                    <button style="display: none;" onclick="checkReference()"></button>
+                </div>
+            </div>
+            <div id="popup" class="popup hidden">
+                <div class="popup-cover"></div>
+                <div class="popup-content">
+                        <label for="customInput" class="popup-title">Custom scripture amount</label>
+                        <input type="number" value="5" class="numberInput" id="customInput" min="1">
+                        <button id="okBtn">Ok</button>
+                </div>
+            </div>
+        </main>
+        <div id="result" class="result hidden">
+            <div>
+                <div id="average-result-text">Average Time</div>
+                <div id="average">0.000</div>
+            </div>
+            <div>
+                <div id="test-type-text">Test type</div>
+                <div id="custom-test-type">Scriptures 10</div>
+            </div>
+        </div>
+    </div>
+    <script id="scripture-data" type="application/json">
+        {{ scripture_data | tojson }}
+    </script> 
+    <script id="bible-books" type="application/json">
+        {{ bible_books | tojson }}
+    </script>
+    <script src="{{url_for('static',filename='/script.js')}}"></script>
+</body>
+</html>
