@@ -126,6 +126,24 @@ function makeStrictAutocomplete(input,list) {
           typed = typed.slice(0, -1);
         }
       }
+      if (typed.length==1 && /^[a-zA-Z]$/.test(e.key) && startsWithNumber(typed[0])) {
+        e.preventDefault();
+        typed += " ";
+        typed += key;
+        e.preventDefault();
+        typed += key;
+        const match = list.find(item =>
+          item.toLowerCase().startsWith(typed.toLowerCase())
+        );
+        if (match) {
+          defaultValue = match;
+          input.value = match;
+          input.setSelectionRange(typed.length, match.length);
+        } else {
+          // ignore this keystroke
+          typed = typed.slice(0, -1);
+        }
+      }
     }
     else if (key === "Backspace") {
       e.preventDefault();
@@ -143,15 +161,6 @@ function makeStrictAutocomplete(input,list) {
             input.setSelectionRange(typed.length, match.length);
           }
         }
-      }
-    }
-    else if (e.key === " ") {
-      if (typed.length>1 || !startsWithNumber(typed[0])) {
-        e.preventDefault();
-        focusNext("book","chapter");
-      }
-      else {
-        typed+=key;
       }
     }
     else if (e.key === "ArrowRight") {
