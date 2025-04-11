@@ -131,7 +131,6 @@ function makeStrictAutocomplete(input,list) {
         typed += " ";
         typed += key;
         e.preventDefault();
-        typed += key;
         const match = list.find(item =>
           item.toLowerCase().startsWith(typed.toLowerCase())
         );
