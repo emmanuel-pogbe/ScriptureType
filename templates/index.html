@@ -29,8 +29,8 @@
                     <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()">
                     <datalist id="books"> <!--Maybe-->
                     </datalist>
-                    <input type="number" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
-                    <input type="number" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
+                    <input type="text" inputmode="numeric" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
+                    <input type="text" inputmode="numeric" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
                     <button style="display: none;" onclick="checkReference()"></button>
                 </div>
             </div>

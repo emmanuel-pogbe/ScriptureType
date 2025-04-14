@@ -180,33 +180,71 @@ function makeStrictAutocomplete(input,list) {
 }
 makeStrictAutocomplete(book,bibleBooks);
 chapter.addEventListener("keydown", function(e) {
-    if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
-      e.preventDefault()
-    }
-    // Right arrow or space (without shift) moves to "verse"
-    if (e.key === "ArrowRight" || (e.key === " " && !e.shiftKey)) {
+  if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) {
+    e.preventDefault();
+  }
+  const isDigit = /^[0-9]$/.test(e.key);
+  const start = chapter.selectionStart;
+  const end = chapter.selectionEnd;
+  let cur = chapter.value;
+  let proposed;
+  if (isDigit) {
+    proposed = cur.slice(0, start) + e.key + cur.slice(end);
+  }
+  const num = Number(proposed);
+  const books = book.value;
+  const chapters = scriptureData[books]
+  const max = chapters.length;
+  console.log("Chaptermax "+max);
+  if (num > max) {
+    e.preventDefault();
+  }
+  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
+    e.preventDefault()
+  }
+  // Right arrow or space (without shift) moves to "verse"
+  if (e.key === "ArrowRight" || (e.key === " " && !e.shiftKey)) {
+    e.preventDefault();
+    focusNext("chapter", "verse");
+  }
+  // Left arrow moves back to "book"
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    focusPrev("chapter", "book");
+  }
+  if (e.key === "Backspace") {
+    if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
       e.preventDefault();
-      focusNext("chapter", "verse");
+      return;
     }
-    // Left arrow moves back to "book"
-    if (e.key === "ArrowLeft") {
+    if (chapter.value.length === 1) {
       e.preventDefault();
-      focusPrev("chapter", "book");
+      chapter.select();
+      return;
     }
-    if (e.key === "Backspace") {
-      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
-        e.preventDefault();
-        return;
-      }
-      if (chapter.value.length === 1) {
-        e.preventDefault();
-        chapter.select();
-        return;
-      }
    }
 });
 verse.addEventListener("keydown", function(e) {
-  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
+  if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) {
+    e.preventDefault();
+  }
+  const isDigit = /^[0-9]$/.test(e.key);
+  const start = verse.selectionStart;
+  const end = verse.selectionEnd;
+  let cur = verse.value;
+  let proposed;
+  if (isDigit) {
+    proposed = cur.slice(0, start) + e.key + cur.slice(end);
+  }
+  const num = Number(proposed);
+  const books = book.value;
+  const chapters = Number(chapter.value);
+  const max = (scriptureData[books])[chapters - 1];
+  console.log("Versemax "+max);
+  if (num > max) {
+    e.preventDefault();
+  }
+  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"||e.key===","){
     e.preventDefault()
   }
   if (e.key === "ArrowLeft") {
@@ -232,7 +270,6 @@ verse.addEventListener("keydown", function(e) {
     }
  }
 });
-
 let started = 0;
 let times = [];
 function calculateAverageTime() {
