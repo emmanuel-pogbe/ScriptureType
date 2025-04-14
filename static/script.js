@@ -152,13 +152,7 @@ function makeStrictAutocomplete(input,list) {
           input.value = defaultValue;
           input.select();
         } else {
-          const match = list.find(item =>
-            item.toLowerCase().startsWith(typed.toLowerCase())
-          );
-          if (match) {
-            input.value = match;
-            input.setSelectionRange(typed.length, match.length);
-          }
+            input.setSelectionRange(typed.length, defaultValue.length);
         }
       }
     }
@@ -294,7 +288,7 @@ function applyInputFeatures(input) {
         }
         if (scriptureCount==totalScriptures) {
           averageTime = calculateAverageTime();
-          averageResult.textContent = averageTime;
+          averageResult.textContent = averageTime + " seconds";
           testType.textContent = "Scriptures " + totalScriptures; 
           document.getElementById("main").classList.add("hidden");
           document.getElementById("result").classList.remove("hidden");
