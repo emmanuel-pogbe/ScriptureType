@@ -165,7 +165,7 @@ function makeStrictAutocomplete(input,list) {
       e.preventDefault();
       focusPrev("book","verse");
     }
-    else if (e.key != "Tab"){
+    else if (e.key != "Tab" && !e.ctrlKey){
       e.preventDefault();
     }
   });
