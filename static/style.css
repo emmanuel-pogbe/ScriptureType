@@ -3,7 +3,6 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #C6C8D1;
     overflow: hidden;
-
 }
 #app {
     display: grid;
@@ -171,6 +170,14 @@ input[type=number]::-webkit-outer-spin-button {
     color: black;
     background-color: #C6C8D1;
 }
+.result {
+    display: flex;
+    height: 80%;
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .hidden {
     display: none;
 }
@@ -181,6 +188,7 @@ input[type=number]::-webkit-outer-spin-button {
 #average {
     color: #84A0C6;
     font-size: xx-large;
+    margin-bottom: 12%;
 }
 #test-type-text {
     color: #595E76;
