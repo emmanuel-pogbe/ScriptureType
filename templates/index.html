@@ -26,9 +26,9 @@
             <div id="main-app" class="pop-in">
                 <div id="scripture" class="scripture-to-search"></div>
                 <div class="scripture-search">
-                    <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()">
-                    <input type="text" inputmode="numeric" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
-                    <input type="text" inputmode="numeric" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()">
+                    <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()" autocomplete="off">
+                    <input type="text" inputmode="numeric" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
+                    <input type="text" inputmode="numeric" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
                     <button style="display: none;" onclick="checkReference()"></button>
                 </div>
             </div>
