@@ -61,7 +61,7 @@ main {
 }
 .pop-in {
     opacity: 0;
-    animation: popInAnimation 0.6s ease forwards;
+    animation: popInAnimation 2s ease forwards;
 }
 @keyframes popInAnimation {
     to {
@@ -74,7 +74,6 @@ main {
     align-items: center;
     font-size: xx-large;
     margin: 30px;
-    
 }
 .scripture-search {
     color: white;

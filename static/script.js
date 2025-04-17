@@ -9,6 +9,8 @@ const scripture = document.getElementById("scripture");
 const scriptureData = JSON.parse(document.getElementById("scripture-data").textContent);
 const bibleBooks = JSON.parse(document.getElementById("bible-books").textContent);
 
+let started = 0;
+let times = [];
 let previousTime = null
 let scriptureCount = 0;
 let totalScriptures = 0;
@@ -26,6 +28,23 @@ function startTimer() {
     previousTime = Date.now()
   }
 }
+document.getElementById("logo").addEventListener("click",function(event){
+  event.preventDefault();
+  fetchScripture();
+  const mainApp = document.getElementById("main-app");
+  const resultPage = document.getElementById("result");
+  document.getElementById("options").style.visibility = "visible";
+  resultPage.classList.add("hidden");
+  document.getElementById("main").classList.remove("hidden");
+  mainApp.classList.remove("pop-in");
+  void mainApp.offsetWidth;
+  mainApp.classList.add("pop-in");
+  started = 0;
+  times = [];
+  scriptureCount = 0;
+  previousTime = null;
+  totalScriptures = 0;
+});
 scriptureButton.forEach(button=>{ 
   button.addEventListener("click",function(){ //At any given time, only one button settings should be active
     scriptureButton.forEach(btn=>btn.classList.remove("active"));
@@ -270,8 +289,6 @@ verse.addEventListener("keydown", function(e) {
     }
  }
 });
-let started = 0;
-let times = [];
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
   let average = sum / times.length;
