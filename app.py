@@ -4,6 +4,7 @@ from flask import make_response
 from flask import jsonify
 import json
 import modules.bible as bible
+import os
 scripture_data = bible.__bibleverses
 bible_books = bible.__biblebooks
 app = Flask(__name__,template_folder="templates",static_folder="static")
@@ -14,4 +15,5 @@ def index():
 def get_scripture():
     return jsonify(message=bible.getScripture())
 if __name__=="__main__":
-    app.run("0.0.0.0",port=5000,debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run("0.0.0.0",port=port,debug=True)
