@@ -4,15 +4,15 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Worship Trainer</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='/style.css')}}">
-    <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='/assets/EWT.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='assets/EWT.png')}}">
 </head>
 <body>
     <div id="app">
         <header>
             <a href="#" id="logo">
                 <div class="icon">    
-                    <img src="{{url_for('static',filename='/assets/easy worship.png')}}" alt="Easy Worship logo" width="55px" height="100%" >              
+                    <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo" width="55px" height="100%" >              
                 </div>
                 <h1>Easy Worship Trainer</h1>
             </a>     
@@ -58,6 +58,6 @@
     <script id="bible-books" type="application/json">
         {{ bible_books | tojson }}
     </script>
-    <script src="{{url_for('static',filename='/script.js')}}"></script>
+    <script src="{{url_for('static',filename='script.js')}}"></script>
 </body>
 </html>

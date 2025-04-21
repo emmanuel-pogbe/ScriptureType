@@ -30,7 +30,7 @@ function startTimer() {
 }
 document.getElementById("logo").addEventListener("click",function(event){
   event.preventDefault();
-  fetchScripture();
+  fetchScripture(); //Get a new scripture when page logo is clicked
   const mainApp = document.getElementById("main-app");
   const resultPage = document.getElementById("result");
   document.getElementById("options").style.visibility = "visible";
@@ -39,6 +39,7 @@ document.getElementById("logo").addEventListener("click",function(event){
   mainApp.classList.remove("pop-in");
   void mainApp.offsetWidth;
   mainApp.classList.add("pop-in");
+  //reset variables
   started = 0;
   times = [];
   scriptureCount = 0;
@@ -69,7 +70,7 @@ okBtn.addEventListener("click",()=>{
     //should add a tip popup later
     console.log("Can't be less than 1")
   }
-})
+});
 document.getElementById("customInput").addEventListener("keydown",(e)=>{ //Only allows positive integers 
   const customInput = document.getElementById("customInput");
   if (customInput.value.length > 1 && e.key!="Backspace" && e.key!="Tab") {
