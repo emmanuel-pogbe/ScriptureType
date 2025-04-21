@@ -17,10 +17,24 @@ let totalScriptures = 0;
 let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
 
-async function fetchScripture() { //Get random scripture function
-  let response = await fetch('/get_scripture');
-  let data = await response.json();
-  document.getElementById("scripture").innerText = data.message;
+function fetchBook() {
+  const books = Object.keys(scriptureData);
+  return books[Math.floor(Math.random() * books.length)];
+}
+function fetchChapter(book) {
+  const chapters = scriptureData[book];
+  return Math.floor(Math.random() * chapters.length) + 1;
+}
+function fetchVerse(book, chapter) {
+  const verseCount = scriptureData[book][chapter - 1];
+  return Math.floor(Math.random() * verseCount) + 1;
+}
+function fetchScripture() {
+  const book_f    = fetchBook();
+  const chapter_f = fetchChapter(book_f);
+  const verse_f   = fetchVerse(book_f, chapter_f);
+  finalscripture = `${book_f} ${chapter_f}:${verse_f}`;
+  document.getElementById("scripture").innerText = finalscripture;
 }
 fetchScripture(); //On page load, get random scripture
 function startTimer() {
