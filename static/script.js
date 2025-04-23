@@ -37,7 +37,7 @@ function fetchScripture() {
   document.getElementById("scripture").innerText = finalscripture;
 }
 fetchScripture(); //On page load, get random scripture
-function startTimer() {
+function startTimer() { 
   if (previousTime===null) {
     previousTime = Date.now()
   }
@@ -73,7 +73,7 @@ customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
 okBtn.addEventListener("click",()=>{
   const popup = document.getElementById("popup");
   const customInput = document.getElementById("customInput").value;
-  if (customInput>0 && customInput<100) {
+  if (customInput>0 && customInput<100) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
   }
   else if (customInput>100){
@@ -119,11 +119,11 @@ function makeStrictAutocomplete(input,list) {
   let typed = "";
   input.addEventListener("focus",()=>{
     typed="";
-  })
+  }) //reset typed variable when input is clicked
   input.addEventListener("keydown", e => {
     const key = e.key;
     if (/^[a-zA-Z0-9 ]$/.test(key) && !e.ctrlKey) {
-      if (e.key === " ") {
+      if (e.key === " ") { //space bar switches to chapter field
         if (typed.length>1 || !startsWithNumber(typed[0])) {
           e.preventDefault();
           focusNext("book","chapter");
@@ -133,7 +133,7 @@ function makeStrictAutocomplete(input,list) {
           typed+=key;
           const match = list.find(item =>
             item.toLowerCase().startsWith(typed.toLowerCase())
-          );
+          ); //check list of bible verses for input
           if (match) {
             defaultValue = match;
             input.value = match;
@@ -161,6 +161,7 @@ function makeStrictAutocomplete(input,list) {
         }
       }
       if (typed.length==1 && /^[a-zA-Z]$/.test(e.key) && startsWithNumber(typed[0])) {
+        //This area accounts for books starting with numbers e.g 1 Samuel
         e.preventDefault();
         typed += " ";
         typed += key;
@@ -190,12 +191,11 @@ function makeStrictAutocomplete(input,list) {
         }
       }
     }
-    else if (e.key === "ArrowRight") {
-      // Move focus to chapter input
+    else if (e.key === "ArrowRight") { // Move focus to chapter input
       e.preventDefault();
       focusNext("book", "chapter");
     }
-    else if (e.key === "ArrowLeft") {
+    else if (e.key === "ArrowLeft") { //Move focus to verse input
       e.preventDefault();
       focusPrev("book","verse");
     }
@@ -206,7 +206,7 @@ function makeStrictAutocomplete(input,list) {
   input.addEventListener("paste", e => {
     e.preventDefault();
   });
-  input.addEventListener("blur", () => {
+  input.addEventListener("blur", () => { //When you leave focus, reset typed variable
     typed = "";
     input.value = defaultValue;
     input.setSelectionRange(0, defaultValue.length);
@@ -214,7 +214,7 @@ function makeStrictAutocomplete(input,list) {
 }
 makeStrictAutocomplete(book,bibleBooks);
 chapter.addEventListener("keydown", function(e) {
-  if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) {
+  if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) { //Only allow numbers
     e.preventDefault();
   }
   const isDigit = /^[0-9]$/.test(e.key);
@@ -228,35 +228,38 @@ chapter.addEventListener("keydown", function(e) {
   const num = Number(proposed);
   const books = book.value;
   const chapters = scriptureData[books]
-  const max = chapters.length;
+  const max = chapters.length; //get the maximum number of chapters for the corresponding book
   console.log("Chaptermax "+max);
-  if (num > max) {
+  if (num > max) { 
+    //don't allow input if it's greater than the max number of chapters in the book
     e.preventDefault();
   }
-  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
-    e.preventDefault()
-  }
-  // Right arrow or space (without shift) moves to "verse"
-  if (e.key === "ArrowRight" || (e.key === " " && !e.shiftKey)) {
-    e.preventDefault();
-    focusNext("chapter", "verse");
-  }
-  // Left arrow moves back to "book"
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    focusPrev("chapter", "book");
-  }
-  if (e.key === "Backspace") {
-    if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
+  if (!/^[0-9]$/.test(e.key)) {
+      // Right arrow or space (without shift) moves to "verse"
+    if (e.key === "ArrowRight" || (e.key === " " && !e.shiftKey)) {
       e.preventDefault();
-      return;
+      focusNext("chapter", "verse");
     }
-    if (chapter.value.length === 1) {
+    // Left arrow moves back to "book"
+    else if (e.key === "ArrowLeft") {
       e.preventDefault();
-      chapter.select();
-      return;
+      focusPrev("chapter", "book");
     }
-   }
+    else if (e.key === "Backspace") {
+      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
+        e.preventDefault();
+        return;
+      }
+      if (chapter.value.length === 1) {
+        e.preventDefault();
+        chapter.select();
+        return;
+      }
+    }
+    else if (e.key != "Tab" && !e.ctrlKey)  {
+      e.preventDefault();
+    }
+  }
 });
 verse.addEventListener("keydown", function(e) {
   if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) {
@@ -273,36 +276,38 @@ verse.addEventListener("keydown", function(e) {
   const num = Number(proposed);
   const books = book.value;
   const chapters = Number(chapter.value);
-  const max = (scriptureData[books])[chapters - 1];
+  const max = (scriptureData[books])[chapters - 1]; //get the maximum number of verses for the corresponding book and chapter
   console.log("Versemax "+max);
   if (num > max) {
     e.preventDefault();
   }
-  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"||e.key===","){
-    e.preventDefault()
-  }
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    focusPrev("verse", "chapter");
-  }
-  if (e.key === "ArrowRight") {
-    e.preventDefault();
-    focusNext("verse","book");
-  }
-  if (e.key ===" "){
-    e.preventDefault();
-  }
-  if (e.key === "Backspace") {
-    if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) {
+  if (!/^[0-9]$/.test(e.key)) {
+    if (e.key === "ArrowLeft") {
       e.preventDefault();
-      return;
+      focusPrev("verse", "chapter");
     }
-    if (verse.value.length === 1) {
+    else if (e.key === "ArrowRight") {
       e.preventDefault();
-      verse.select();
-      return;
+      focusNext("verse","book");
     }
- }
+    else if (e.key ===" "){
+      e.preventDefault();
+    }
+    else if (e.key === "Backspace") {
+      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) {
+        e.preventDefault();
+        return;
+      }
+      if (verse.value.length === 1) {
+        e.preventDefault();
+        verse.select();
+        return;
+      }
+   }
+   else if (e.key != "Tab" && !e.ctrlKey) {
+    e.preventDefault();
+   }
+  }
 });
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
@@ -315,18 +320,18 @@ function applyInputFeatures(input) {
     e.preventDefault();
     input.focus();
   });
-  input.addEventListener("focus", function() {
+  input.addEventListener("focus", function() { //on focus, select all
     setTimeout(() => {
      input.select();
     }, 0);
   });
   // Prevent backspace if the entire text is selected or deletion would result in an empty input.
   input.addEventListener("keydown", function(e) {
-    if (started==0) {
-      document.getElementById("options").style.visibility = "hidden";
+    if (started==0) { // Starting the test
+      document.getElementById("options").style.visibility = "hidden"; //Hide the options pane
       started = 1;
       previousTime = Date.now();
-      currentSetting = document.querySelector(".active").textContent;
+      currentSetting = document.querySelector(".active").textContent; //Get the total number of scriptures to type
       if (currentSetting=="10 Scriptures"){
         totalScriptures = 10;
       }
@@ -366,4 +371,4 @@ function applyInputFeatures(input) {
     }
  });
 }
-scriptureInputs.forEach(scriptureInput=>applyInputFeatures(scriptureInput));
+scriptureInputs.forEach(scriptureInput=>applyInputFeatures(scriptureInput)); //Add input features to all input boxes

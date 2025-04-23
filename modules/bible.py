@@ -1,4 +1,3 @@
-import random
 __bibleverses = {
     'Genesis':[31,25,24,26,32,22,24,22,29,32,32,20,18,24,21,16,27,33,38,18,34,24,20,67,34,35,46,22,35,43,54,33,20,31,29,43,36,30,23, 23,57,38,34,34,28,34,31,22,33,26],
     'Exodus':[22,25,22,31,23,30,29,28,35,29,10,51,22,31,27,36,16,27,25,26,37,30,33,18,40,37,21,43,46,38,18,35,23,35,35,38,29,31,43,38],
@@ -68,26 +67,3 @@ __bibleverses = {
     'Revelation':[20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21],
 }
 __biblebooks = list(__bibleverses.keys())
-def get_bible_list():
-    bibleverses=[]
-    for i in __bibleverses.keys():
-        bibleverses.append(i)
-    return bibleverses
-def getBook():
-    return random.choice(list(__bibleverses.keys()))
-def getChapter(book):
-    no_of_chapters = __bibleverses[book]
-    return random.randint(1,len(no_of_chapters))
-def getVerse(book,chapter):
-    no_of_chapters = __bibleverses[book]
-    verse_size = no_of_chapters[chapter-1]
-    return random.randint(1,verse_size)
-def getScripture():
-    book = getBook()
-    chapter = getChapter(book)
-    verse = getVerse(book,chapter)
-    return book+" "+str(chapter)+":"+str(verse)
-if __name__ == "__main__":
-    for i in range(5): #It works !!!
-        print(getScripture())
-    print(__biblebooks)
