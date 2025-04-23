@@ -32,6 +32,7 @@ svg {
     height: 100%;
 }
 .help-button {
+    overflow: hidden;
     cursor: pointer;
     border-radius: 30px;
     border: none;
@@ -136,6 +137,7 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: 0.7;
 }
 .popup-content {
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     background-color: #161821;
@@ -190,29 +192,48 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center;
 }
 .help {
+    overflow: hidden;
     display: flex;
-    height: 90%;
-    width: 90%;
-    margin: 0 auto;
-    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto auto;
     align-items: center;
     justify-content: center;
-
+    background: transparent;
 }
 .help-content {
     overflow-y: scroll;
-    height: 90%;
-    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
     background-color: #161821;
     border: 2px solid #C6C8D1;
     padding: 10px 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 100%;
     justify-content: center;
     align-items: center;
     z-index: 10000;
+    line-height: 1.6;
 }
+.help-content h2 {
+    text-align: center;
+    font-size: 1.75rem;
+}
+.help-content ol {
+    counter-reset: item;
+}
+.help-image {
+    text-align: center;
+    margin: 12px 0;
+}
+.help-image img {
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
 .help-content::-webkit-scrollbar, body::-webkit-scrollbar {
     width: 10px; 
 }
