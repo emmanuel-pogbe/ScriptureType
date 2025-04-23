@@ -20,6 +20,13 @@ let totalScriptures = 0;
 let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
 
+function resetVariables() {
+  started = 0;
+  times = [];
+  scriptureCount = 0;
+  previousTime = null;
+  totalScriptures = 0;
+}
 function fetchBook() {
   const books = Object.keys(scriptureData);
   return books[Math.floor(Math.random() * books.length)];
@@ -46,6 +53,8 @@ function startTimer() {
   }
 }
 function displayHelp() {
+  document.getElementById("options").style.visibility = "visible";
+  document.getElementById("result").classList.add("hidden");
   main.classList.add("hidden");
   help.classList.remove("hidden");
 }
@@ -61,11 +70,7 @@ document.getElementById("logo").addEventListener("click",function(event){
   void mainApp.offsetWidth;
   mainApp.classList.add("pop-in");
   //reset variables
-  started = 0;
-  times = [];
-  scriptureCount = 0;
-  previousTime = null;
-  totalScriptures = 0;
+  resetVariables();
 });
 scriptureButton.forEach(button=>{ 
   button.addEventListener("click",function(){ //At any given time, only one button settings should be active
@@ -80,12 +85,14 @@ customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
 confirmHelp.addEventListener("click",()=>{
   main.classList.remove("hidden");
   help.classList.add("hidden");
+  fetchScripture();
+  resetVariables();
 });
 okBtn.addEventListener("click",()=>{
   const popup = document.getElementById("popup");
   const customInput = document.getElementById("customInput").value;
   if (customInput>0 && customInput<100) {
-    popup.classList.add("hidden");
+    popup.classList.add("hidden");  
   }
   else if (customInput>100){
     //should add a tip popup later
