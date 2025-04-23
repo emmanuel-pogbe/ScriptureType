@@ -8,6 +8,9 @@ const scriptureInputs = document.querySelectorAll(".input-class");
 const scripture = document.getElementById("scripture");
 const scriptureData = JSON.parse(document.getElementById("scripture-data").textContent);
 const bibleBooks = JSON.parse(document.getElementById("bible-books").textContent);
+const help = document.getElementById("help");
+const main = document.getElementById("main");
+const confirmHelp = document.getElementById("confirm-help");
 
 let started = 0;
 let times = [];
@@ -42,6 +45,10 @@ function startTimer() {
     previousTime = Date.now()
   }
 }
+function displayHelp() {
+  main.classList.add("hidden");
+  help.classList.remove("hidden");
+}
 document.getElementById("logo").addEventListener("click",function(event){
   event.preventDefault();
   fetchScripture(); //Get a new scripture when page logo is clicked
@@ -69,6 +76,10 @@ scriptureButton.forEach(button=>{
 customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
   popup.classList.remove("hidden");
   document.getElementById("customInput").focus();
+});
+confirmHelp.addEventListener("click",()=>{
+  main.classList.remove("hidden");
+  help.classList.add("hidden");
 });
 okBtn.addEventListener("click",()=>{
   const popup = document.getElementById("popup");
