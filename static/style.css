@@ -2,7 +2,7 @@
     background-color: #161821;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #C6C8D1;
-    overflow: hidden;
+    overflow: auto;
 }
 #app {
     display: grid;
@@ -13,8 +13,8 @@
 }
 header {
     display: flex;
-    align-items: left;
-    justify-content: left;
+    justify-content: space-between;
+    align-items: center;
 }
 #logo {
     cursor: pointer;
@@ -24,9 +24,20 @@ header {
     font-size: 11px;
     font-weight: 100;
 }
+.icon {
+    overflow: hidden;
+}
 svg {
     width: 40px;
     height: 100%;
+}
+.help-button {
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 30px;
+    border: none;
+    padding: 10px;
+    font-size: 23px;
 }
 main {
     justify-content: center;
@@ -109,21 +120,24 @@ input[type=number]::-webkit-outer-spin-button {
     border: none;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center; 
-    z-index: 1000;
+    z-index: 5;
     background: transparent;
 }
 .popup-cover {
     position:fixed;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     opacity: 0.7;
 }
 .popup-content {
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     background-color: #161821;
@@ -154,7 +168,7 @@ input[type=number]::-webkit-outer-spin-button {
     border: 2px solid #C6C8D1;
     outline: none;
 }
-#okBtn {
+.okBtn {
     color: white;
     border: none;
     background-color: #595E76;
@@ -165,7 +179,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 10px 0;
     font-weight: bold;
 }
-#okBtn:hover {
+.okBtn:hover {
     color: black;
     background-color: #C6C8D1;
 }
@@ -176,6 +190,60 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.help {
+    overflow: hidden;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto auto;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+.help-content {
+    overflow-y: scroll;
+    max-width: 800px;
+    max-height: 80vh;
+    background-color: #161821;
+    border: 2px solid #C6C8D1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    line-height: 1.6;
+}
+.help-content h2 {
+    text-align: center;
+    font-size: 1.75rem;
+}
+.help-content ol {
+    counter-reset: item;
+}
+.help-image {
+    text-align: center;
+    margin: 12px 0;
+}
+.help-image img {
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+.help-content::-webkit-scrollbar, body::-webkit-scrollbar {
+    width: 10px; 
+}
+.help-content::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+    background: #333; 
+    border-radius: 5px; 
+}
+.help-content::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
+    cursor: default;
+    background: #555; 
 }
 .hidden {
     display: none;

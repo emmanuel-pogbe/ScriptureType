@@ -6,6 +6,7 @@
     <title>Easy Worship Trainer</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
     <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='assets/EWT.png')}}">
+    <script src="https://kit.fontawesome.com/288289805d.js" crossorigin="anonymous"></script>
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYGFMBMLY"></script>
@@ -24,7 +25,8 @@
                     <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo" width="55px" height="100%" >              
                 </div>
                 <h1>Easy Worship Trainer</h1>
-            </a>     
+            </a>
+            <button id="help-button" onclick="displayHelp()" class="help-button"><i class="fa-solid fa-circle-question"></i></button>
         </header>
         <main id="main">
             <div id="options">
@@ -46,7 +48,7 @@
                 <div class="popup-content">
                         <label for="customInput" class="popup-title">Custom scripture amount</label>
                         <input type="number" value="5" class="numberInput" id="customInput" min="1">
-                        <button id="okBtn">Ok</button>
+                        <button id="okBtn" class="okBtn">Ok</button>
                 </div>
             </div>
         </main>
@@ -58,6 +60,47 @@
             <div>
                 <div id="test-type-text">Test type</div>
                 <div id="custom-test-type">Scriptures 10</div>
+            </div>
+        </div>
+        <div id="help" class="help hidden pop-in">
+            <div class="popup-cover"></div>
+            <div class="help-content">
+                <h2>How to Use Easy Worship Trainer</h2>
+                <ol>
+                    <li>
+                        <strong>Select number of scriptures:</strong><br/>
+                        Use the selection pane to choose how many verses you’ll attempt.
+                        <div class="help-image">
+                            <img src="{{url_for('static',filename='assets/scripture select pane.png')}}"
+                            width="606"
+                            height="68"
+                            alt="Selection pane pic"
+                            />
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Focus an input box:</strong><br/>
+                        Click on Book, Chapter, or Verse field. When you press any key, the timer starts and you begin typing the displayed scripture.
+                    </li>
+                    <li>
+                        <strong>Navigate between fields:</strong><br/>
+                        You can move focus using the same keys as EasyWorship:
+                        <code>Arrow&nbsp;Keys</code>, <code>Space&nbsp;Bar</code>, <code>Tab</code>, etc.
+                    </li>
+                    <li>
+                        <strong>Submit each verse:</strong><br/>
+                        Press <code>Enter</code> when you’ve typed the verse exactly as shown. A new scripture will then appear.
+                    </li>
+                    <li>
+                        <strong>Finish & see results:</strong><br/>
+                        After you've completed the count you selected, your average time per verse will display.
+                    </li>
+                    <li>
+                        <strong>Restart anytime:</strong><br/>
+                        Click the Easy Worship logo at top‑left or press the Restart button.
+                    </li>
+                </ol>
+                    <button id="confirm-help" class="okBtn">Ok</button>
             </div>
         </div>
     </div>
