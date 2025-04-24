@@ -57,6 +57,7 @@ function displayHelp() {
   document.getElementById("result").classList.add("hidden");
   main.classList.add("hidden");
   help.classList.remove("hidden");
+  document.querySelector("#help .help-content").scrollTop = 0;
 }
 document.getElementById("logo").addEventListener("click",function(event){
   event.preventDefault();
@@ -219,6 +220,9 @@ function makeStrictAutocomplete(input,list) {
     else if (e.key === "ArrowLeft") { //Move focus to verse input
       e.preventDefault();
       focusPrev("book","verse");
+    }
+    else if (e.ctrlKey && e.key === "a") {
+      typed = ""; // reset typed variable if user selects all
     }
     else if (e.key != "Tab" && !e.ctrlKey){
       e.preventDefault();
