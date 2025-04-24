@@ -93,6 +93,7 @@ okBtn.addEventListener("click",()=>{
   const customInput = document.getElementById("customInput").value;
   if (customInput>0 && customInput<100) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
+  }
   if (customInput>0 && customInput<100) {
     popup.classList.add("hidden");  
   }
