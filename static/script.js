@@ -393,6 +393,13 @@ function applyInputFeatures(input) {
           document.getElementById("result").classList.remove("hidden");
         }
       }
+      else {
+        const inputFields = document.querySelectorAll(".input-class");
+        inputFields.forEach(inputField=>inputField.style.borderColor = "red");
+        setTimeout(() => {
+          inputFields.forEach(inputField=>inputField.style.borderColor = "#013FBF");
+         }, 500);
+      }
     }
  });
 }
