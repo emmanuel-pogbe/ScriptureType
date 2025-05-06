@@ -213,7 +213,7 @@ function makeStrictAutocomplete(input,list) {
         }
       }
     }
-    else if (e.key === "ArrowRight") { // Move focus to chapter input
+    else if (["'",";","ArrowRight",".",",","=","-"," "].includes(e.key)) { // Move focus to chapter input
       e.preventDefault();
       focusNext("book", "chapter");
     }
@@ -261,7 +261,7 @@ chapter.addEventListener("keydown", function(e) {
   }
   if (!/^[0-9]$/.test(e.key)) {
       // Right arrow or space (without shift) moves to "verse"
-    if (e.key === "ArrowRight" || (e.key === " " && !e.shiftKey)) {
+    if (["'",";","ArrowRight",".",",","=","-"," "].includes(e.key)) {
       e.preventDefault();
       focusNext("chapter", "verse");
     }
