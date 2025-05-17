@@ -86,6 +86,16 @@ main {
         opacity: 1;
     }   
 }
+.timer {
+    display: flex;
+    max-width: 70%;
+    margin: 0px auto;
+}
+.timer-text {
+    margin: 0;
+    font-size: x-large;
+    color: #84A0C6; 
+}
 .scripture-to-search {
     display: flex;
     justify-content: center;

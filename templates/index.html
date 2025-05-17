@@ -33,11 +33,14 @@
                 <button class="scripturebutton-option">Time</button>
                 <button class="scripturebutton-option active2">Scripture count</button>
                 <div class="separator">|</div>
-                <button class="scriptureButton active">10 Scriptures</button>
-                <button class="scriptureButton">20 Scriptures</button>
+                <button class="scriptureButton active" id="opt1">10 Scriptures</button>
+                <button class="scriptureButton" id="opt2">20 Scriptures</button>
                 <button class="scriptureButton" id="custom">Custom</button>
             </div>
             <div id="main-app" class="pop-in">
+                <div id="timeblock" class="timer hidden">
+                    <h1 id="timerText" class="timer-text"></h1>
+                </div>
                 <div id="scripture" class="scripture-to-search"></div>
                 <div class="scripture-search">
                     <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()" autocomplete="off">

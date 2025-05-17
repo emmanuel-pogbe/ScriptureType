@@ -1,4 +1,5 @@
 const scriptureButton = document.querySelectorAll(".scriptureButton");
+const scriptureOption = document.querySelectorAll(".scripturebutton-option");
 const customBtn = document.getElementById("custom");
 const okBtn = document.getElementById("okBtn");
 const book = document.getElementById("book");
@@ -11,14 +12,19 @@ const bibleBooks = JSON.parse(document.getElementById("bible-books").textContent
 const help = document.getElementById("help");
 const main = document.getElementById("main");
 const confirmHelp = document.getElementById("confirm-help");
+const timeblock = document.getElementById("timeblock");
 
+let resultText = document.getElementById("average-result-text");
 let started = 0;
 let times = [];
 let previousTime = null
 let scriptureCount = 0;
 let totalScriptures = 0;
+let totalTime = 30;
+let timeLeft = 30;
 let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
+let timerText = document.getElementById("timerText");
 
 function resetVariables() {
   started = 0;
@@ -56,6 +62,7 @@ function displayHelp() {
   document.getElementById("options").style.visibility = "visible";
   document.getElementById("result").classList.add("hidden");
   main.classList.add("hidden");
+  timeblock.classList.add("hidden");
   help.classList.remove("hidden");
   document.querySelector("#help .help-content").scrollTop = 0;
 }
@@ -65,6 +72,7 @@ document.getElementById("logo").addEventListener("click",function(event){
   const mainApp = document.getElementById("main-app");
   const resultPage = document.getElementById("result");
   document.getElementById("options").style.visibility = "visible";
+  timeblock.classList.add("hidden");
   resultPage.classList.add("hidden");
   document.getElementById("main").classList.remove("hidden");
   mainApp.classList.remove("pop-in");
@@ -77,6 +85,23 @@ scriptureButton.forEach(button=>{
   button.addEventListener("click",function(){ //At any given time, only one button settings should be active
     scriptureButton.forEach(btn=>btn.classList.remove("active"));
     this.classList.add("active");
+  });
+});
+scriptureOption.forEach(button=>{ 
+  button.addEventListener("click",function(){ //At any given time, only one button settings should be active
+    scriptureOption.forEach(btn=>btn.classList.remove("active2"));
+    let selected = this.textContent;
+    const option1 = document.getElementById("opt1");
+    const option2 = document.getElementById("opt2");
+    if (selected == "Time") {
+      option1.textContent = "30 Seconds";
+      option2.textContent = "60 Seconds";
+    }
+    else {
+      option1.textContent = "10 Scriptures";
+      option2.textContent = "20 Scriptures";
+    }
+    this.classList.add("active2");
   });
 });
 customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
@@ -254,7 +279,6 @@ chapter.addEventListener("keydown", function(e) {
   const books = book.value;
   const chapters = scriptureData[books]
   const max = chapters.length; //get the maximum number of chapters for the corresponding book
-  console.log("Chaptermax "+max);
   if (num > max) { 
     //don't allow input if it's greater than the max number of chapters in the book
     e.preventDefault();
@@ -302,7 +326,6 @@ verse.addEventListener("keydown", function(e) {
   const books = book.value;
   const chapters = Number(chapter.value);
   const max = (scriptureData[books])[chapters - 1]; //get the maximum number of verses for the corresponding book and chapter
-  console.log("Versemax "+max);
   if (num > max) {
     e.preventDefault();
   }
@@ -339,6 +362,31 @@ function calculateAverageTime() {
   let average = sum / times.length;
   return average.toFixed(3);
 }
+function updateTimerDisplay() {
+  const minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+  seconds = seconds < 10 && minutes!=0 ? '0' + seconds : seconds;
+  if (minutes==0) {
+    timerText.textContent = `${seconds}`;
+  }
+  else {
+    timerText.textContent = `${minutes}:${seconds}`;
+  }
+}
+function countdown() {
+  updateTimerDisplay();
+  if (timeLeft === 0) {
+    started = 0;
+    resultText.textContent = "Number of Scriptures typed";
+    averageResult.textContent = scriptureCount + " scriptures";
+    testType.textContent = "Time " + totalTime;
+    document.getElementById("main").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    return;
+  }
+  timeLeft--;
+  setTimeout(countdown,1000);
+}
 function applyInputFeatures(input) {
   // Prevent mousedown from altering selection.
   input.addEventListener("mousedown", function(e) {
@@ -356,6 +404,7 @@ function applyInputFeatures(input) {
       document.getElementById("options").style.visibility = "hidden"; //Hide the options pane
       started = 1;
       previousTime = Date.now();
+      currentOption = document.querySelector(".active2").textContent;
       currentSetting = document.querySelector(".active").textContent; //Get the total number of scriptures to type
       if (currentSetting=="10 Scriptures"){
         totalScriptures = 10;
@@ -363,8 +412,24 @@ function applyInputFeatures(input) {
       else if (currentSetting=="20 Scriptures") {
         totalScriptures = 20;
       }
-      else {
+      else if (currentSetting == "Custom" && currentOption == "Scripture count"){
         totalScriptures = document.getElementById("customInput").value;
+      }
+      //These are for time
+      else if (currentSetting == "30 Seconds"){
+        totalTime = 30;
+      }
+      else if (currentSetting == "60 Seconds"){
+        totalTime = 60;
+      }
+      else if (currentSetting == "Custom" && currentOption == "Time") {
+        totalTime = document.getElementById("customInput").value;
+      }
+      timeLeft = totalTime;
+      if (currentOption == "Time") {
+        updateTimerDisplay();
+        timeblock.classList.remove("hidden");
+        countdown();
       }
     }
     if (e.key === "Enter") {
@@ -374,23 +439,30 @@ function applyInputFeatures(input) {
       chapterInput = chapter.value
       verseInput = verse.value
       finalInput = bookInput+" "+chapterInput+":"+verseInput;
+
       if (finalInput==scripture.textContent) {
         scriptureCount++;
-        if ((scriptureCount!=totalScriptures)) {
+        if (currentOption == "Scripture count") {
+          if ((scriptureCount!=totalScriptures)) {
+            fetchScripture();
+          }
+          if (scriptureCount<=totalScriptures) {
+            let finalTime = Date.now();
+            let timeTaken = (finalTime-previousTime)/1000;
+            times.push(timeTaken);
+            previousTime = Date.now();
+          }
+          if (scriptureCount==totalScriptures) {
+            averageTime = calculateAverageTime();
+            resultText.textContent = "Average Time";
+            averageResult.textContent = averageTime + " seconds";
+            testType.textContent = "Scriptures " + totalScriptures; 
+            document.getElementById("main").classList.add("hidden");
+            document.getElementById("result").classList.remove("hidden");
+          }
+        }
+        else {
           fetchScripture();
-        }
-        if (scriptureCount<=totalScriptures) {
-          let finalTime = Date.now();
-          let timeTaken = (finalTime-previousTime)/1000;
-          times.push(timeTaken);
-          previousTime = Date.now();
-        }
-        if (scriptureCount==totalScriptures) {
-          averageTime = calculateAverageTime();
-          averageResult.textContent = averageTime + " seconds";
-          testType.textContent = "Scriptures " + totalScriptures; 
-          document.getElementById("main").classList.add("hidden");
-          document.getElementById("result").classList.remove("hidden");
         }
       }
       else {
