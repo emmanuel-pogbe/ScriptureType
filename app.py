@@ -1,8 +1,5 @@
 from flask import Flask
 from flask import render_template
-from flask import make_response
-from flask import jsonify
-import json
 import modules.bible as bible
 import os
 scripture_data = bible.__bibleverses
@@ -14,3 +11,6 @@ def index():
 if __name__=="__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run("0.0.0.0",port=port,debug=True)
+
+
+     
