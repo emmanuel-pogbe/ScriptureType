@@ -99,11 +99,14 @@ scriptureOption.forEach(button=>{
     let selected = this.textContent;
     const option1 = document.getElementById("opt1");
     const option2 = document.getElementById("opt2");
+    const customPaneTitle = document.querySelector("#popup .popup-content .popup-title");
     if (selected == "Time") {
+      customPaneTitle.textContent = "Custom test duration"
       option1.textContent = "30 Seconds";
       option2.textContent = "60 Seconds";
     }
     else {
+      customPaneTitle.textContent = "Custom scripture amount";
       option1.textContent = "10 Scriptures";
       option2.textContent = "20 Scriptures";
     }
@@ -125,9 +128,6 @@ okBtn.addEventListener("click",()=>{
   const customInput = document.getElementById("customInput").value;
   if (customInput>0 && customInput<100) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
-  }
-  if (customInput>0 && customInput<100) {
-    popup.classList.add("hidden");  
   }
   else if (customInput>100){
     //should add a tip popup later
