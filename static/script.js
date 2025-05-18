@@ -301,14 +301,18 @@ chapter.addEventListener("keydown", function(e) {
       focusPrev("chapter", "book");
     }
     else if (e.key === "Backspace") {
-      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
-        e.preventDefault();
+      e.preventDefault();
+      // If nothing is selected, start by selecting the last digit
+      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) { //when all selected
+        //should move to the chapter input field, and cursor should be on last character
         return;
       }
-      if (chapter.value.length === 1) {
-        e.preventDefault();
-        chapter.select();
-        return;
+      if (chapter.selectionStart === chapter.selectionEnd) {
+          chapter.setSelectionRange(chapter.value.length - 1, chapter.value.length);
+      } 
+      // If something is already selected, expand the selection by one digit
+      else {
+          chapter.setSelectionRange(chapter.selectionStart - 1, chapter.selectionEnd);
       }
     }
     else if (e.key != "Tab" && !e.ctrlKey)  {
@@ -348,14 +352,16 @@ verse.addEventListener("keydown", function(e) {
       e.preventDefault();
     }
     else if (e.key === "Backspace") {
-      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) {
-        e.preventDefault();
+      e.preventDefault();
+      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) { //when all selected
+        //should move to the chapter input field, and cursor should be on last character
         return;
       }
-      if (verse.value.length === 1) {
-        e.preventDefault();
-        verse.select();
-        return;
+      if (verse.selectionStart === verse.selectionEnd) {
+          verse.setSelectionRange(verse.value.length - 1, verse.value.length);
+      }
+      else {
+          verse.setSelectionRange(verse.selectionStart - 1, verse.selectionEnd);
       }
    }
    else if (e.key != "Tab" && !e.ctrlKey) {
