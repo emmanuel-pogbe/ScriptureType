@@ -90,6 +90,8 @@ scriptureButton.forEach(button=>{
 scriptureOption.forEach(button=>{ 
   button.addEventListener("click",function(){ //At any given time, only one button settings should be active
     scriptureOption.forEach(btn=>btn.classList.remove("active2"));
+    scriptureButton.forEach(btn=>btn.classList.remove("active"));
+    document.querySelector(".scriptureButton").classList.add("active");
     let selected = this.textContent;
     const option1 = document.getElementById("opt1");
     const option2 = document.getElementById("opt2");
