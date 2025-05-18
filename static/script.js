@@ -22,6 +22,8 @@ let scriptureCount = 0;
 let totalScriptures = 0;
 let totalTime = 30;
 let timeLeft = 30;
+let timerActive = false;
+let timeoutId = null;
 let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
 let timerText = document.getElementById("timerText");
@@ -32,6 +34,7 @@ function resetVariables() {
   scriptureCount = 0;
   previousTime = null;
   totalScriptures = 0;
+  stopCountdown();
 }
 function fetchBook() {
   const books = Object.keys(scriptureData);
@@ -64,6 +67,7 @@ function displayHelp() {
   main.classList.add("hidden");
   timeblock.classList.add("hidden");
   help.classList.remove("hidden");
+  stopCountdown();
   document.querySelector("#help .help-content").scrollTop = 0;
 }
 document.getElementById("logo").addEventListener("click",function(event){
@@ -364,6 +368,16 @@ function calculateAverageTime() {
   let average = sum / times.length;
   return average.toFixed(3);
 }
+function startCountdown() {
+  if (!timerActive) {
+    timerActive = true;
+    countdown();
+  }
+}
+function stopCountdown() {
+  clearTimeout(timeoutId)
+  timerActive = false
+}
 function updateTimerDisplay() {
   const minutes = Math.floor(timeLeft / 60);
   let seconds = timeLeft % 60;
@@ -384,10 +398,11 @@ function countdown() {
     testType.textContent = "Time " + totalTime;
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
+    stopTimer();
     return;
   }
   timeLeft--;
-  setTimeout(countdown,1000);
+  timeoutId = setTimeout(countdown,1000);
 }
 function applyInputFeatures(input) {
   // Prevent mousedown from altering selection.
@@ -427,11 +442,11 @@ function applyInputFeatures(input) {
       else if (currentSetting == "Custom" && currentOption == "Time") {
         totalTime = document.getElementById("customInput").value;
       }
-      timeLeft = totalTime;
       if (currentOption == "Time") {
+        timeLeft = totalTime;
         updateTimerDisplay();
         timeblock.classList.remove("hidden");
-        countdown();
+        startCountdown();
       }
     }
     if (e.key === "Enter") {
@@ -441,7 +456,6 @@ function applyInputFeatures(input) {
       chapterInput = chapter.value
       verseInput = verse.value
       finalInput = bookInput+" "+chapterInput+":"+verseInput;
-
       if (finalInput==scripture.textContent) {
         scriptureCount++;
         if (currentOption == "Scripture count") {
