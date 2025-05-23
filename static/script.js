@@ -13,6 +13,7 @@ const help = document.getElementById("help");
 const main = document.getElementById("main");
 const confirmHelp = document.getElementById("confirm-help");
 const timeblock = document.getElementById("timeblock");
+const custInput = document.getElementById("customInput");
 
 let resultText = document.getElementById("average-result-text");
 let started = 0;
@@ -115,7 +116,7 @@ scriptureOption.forEach(button=>{
 });
 customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
   popup.classList.remove("hidden");
-  document.getElementById("customInput").focus();
+  custInput.focus();
 });
 confirmHelp.addEventListener("click",()=>{
   main.classList.remove("hidden");
@@ -125,35 +126,38 @@ confirmHelp.addEventListener("click",()=>{
 });
 okBtn.addEventListener("click",()=>{
   const popup = document.getElementById("popup");
-  const customInput = document.getElementById("customInput").value;
-  if (customInput>0 && customInput<100) { //valid custom input, proceed to main app
+  let customInput = custInput.value;
+  let currentSelected = document.querySelector(".active2").textContent;
+  let min = (currentSelected == "Scripture amount")?5:10;
+  let max = (currentSelected == "Scripture amount")?100:1000;
+  if (customInput>=min && customInput<=max) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
   }
-  else if (customInput>100){
-    //should add a tip popup later
-    console.log("Can't be greater than 100");
+  else if (customInput>max){
+    console.log("Can't be greater than "+max);
   }
   else {
-    //should add a tip popup later
-    console.log("Can't be less than 1")
+    console.log("Can't be less than "+min);
   }
 });
-document.getElementById("customInput").addEventListener("keydown",(e)=>{ //Only allows positive integers 
-  const customInput = document.getElementById("customInput");
-  if (customInput.value.length > 1 && e.key!="Backspace" && e.key!="Tab") {
+custInput.addEventListener("keydown",(e)=>{ //Only allows positive integers 
+  let customInput = custInput;
+  let currentSelected = document.querySelector(".active2").textContent;
+  maxLength = (currentSelected=="Scripture count")?1:2;
+  if (customInput.value.length > maxLength && e.key!="Backspace" && e.key!="Tab") {
     e.preventDefault();
   }
   if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
     e.preventDefault()
   }
-  if (e.key==="Enter") { //press enter to close pane
+  if (e.key==="Enter" || e.key === "Escape") { //press enter to close pane
     e.preventDefault()
     okBtn.click();
   }
 })
-document.getElementById("customInput").addEventListener("focus", function() { 
+custInput.addEventListener("focus", function() { 
   setTimeout(() => {   //when pane opens, highlight the input box
-   document.getElementById("customInput").select();
+   custInput.select();
   }, 0);
 });
 //Helper functions for changing focus to another input field
@@ -440,7 +444,7 @@ function applyInputFeatures(input) {
         totalScriptures = 20;
       }
       else if (currentSetting == "Custom" && currentOption == "Scripture count"){
-        totalScriptures = document.getElementById("customInput").value;
+        totalScriptures = custInput.value;
       }
       //These are for time
       else if (currentSetting == "30 Seconds"){
@@ -450,7 +454,7 @@ function applyInputFeatures(input) {
         totalTime = 60;
       }
       else if (currentSetting == "Custom" && currentOption == "Time") {
-        totalTime = document.getElementById("customInput").value;
+        totalTime = custInput.value;
       }
       if (currentOption == "Time") {
         timeLeft = totalTime;
