@@ -374,7 +374,10 @@ function calculateAverageTime() {
   let average = sum / times.length;
   return average.toFixed(3);
 }
+let endTime = null;
 function startCountdown() {
+  const now = Date.now();
+  endTime = now + totalTime * 1000;
   if (!timerActive) {
     timerActive = true;
     countdown();
@@ -397,18 +400,19 @@ function updateTimerDisplay() {
 }
 function countdown() {
   updateTimerDisplay();
-  if (timeLeft === 0) {
+  let msLeft = endTime - Date.now();
+  timeLeft = Math.ceil(msLeft/1000);
+  if (timeLeft <= 0) {
     started = 0;
     resultText.textContent = "Number of Scriptures typed";
     averageResult.textContent = scriptureCount + " scriptures";
     testType.textContent = "Time " + totalTime;
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
-    stopTimer();
+    stopCountdown();
     return;
   }
-  timeLeft--;
-  timeoutId = setTimeout(countdown,1000);
+  timeoutId = setTimeout(countdown,200);
 }
 function applyInputFeatures(input) {
   // Prevent mousedown from altering selection.
