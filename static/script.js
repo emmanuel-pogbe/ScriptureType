@@ -247,6 +247,13 @@ function makeStrictAutocomplete(input,list) {
             input.setSelectionRange(typed.length, defaultValue.length);
         }
       }
+      else if (input.selectionStart == input.selectionEnd) {
+        if (input.selectionStart==input.value.length && typed.length == 0) {
+          typed = input.value.slice(0,-1);
+          input.setSelectionRange(typed.length,defaultValue.length);
+        }
+
+      }
     }
     else if (["'",";","ArrowRight",".",",","=","-"," "].includes(e.key)) { // Move focus to chapter input
       e.preventDefault();
@@ -306,9 +313,11 @@ chapter.addEventListener("keydown", function(e) {
     }
     else if (e.key === "Backspace") {
       e.preventDefault();
-      // If nothing is selected, start by selecting the last digit
-      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) { //when all selected
-        //should move to the chapter input field, and cursor should be on last character
+      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) { 
+        focusPrev("chapter","book");
+        setTimeout(()=>{
+          book.setSelectionRange(book.value.length,book.value.length);
+        },0);
         return;
       }
       if (chapter.selectionStart === chapter.selectionEnd) {
@@ -357,8 +366,11 @@ verse.addEventListener("keydown", function(e) {
     }
     else if (e.key === "Backspace") {
       e.preventDefault();
-      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) { //when all selected
-        //should move to the chapter input field, and cursor should be on last character
+      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) { 
+        focusPrev("verse","chapter");
+        setTimeout(()=>{
+          chapter.setSelectionRange(chapter.value.length,chapter.value.length);
+        },0);
         return;
       }
       if (verse.selectionStart === verse.selectionEnd) {
