@@ -54,6 +54,7 @@
                 <div class="popup-content">
                         <label for="customInput" class="popup-title">Custom scripture amount</label>
                         <input type="number" value="5" class="numberInput" id="customInput" min="1">
+                        <p class="customparam">Min: 5<br>Max: 99</p>
                         <button id="okBtn" class="okBtn">Ok</button>
                 </div>
             </div>
@@ -74,8 +75,8 @@
                 <h2>How to Use Easy Worship Trainer</h2>
                 <ol>
                     <li>
-                        <strong>Select number of scriptures:</strong><br/>
-                        Use the selection pane to choose how many verses you’ll attempt.
+                        <strong>Select number of scriptures or time:</strong><br/>
+                        Use the selection pane to choose how many verses you’ll attempt or seconds to count down from.
                         <div class="help-image">
                             <img src="{{url_for('static',filename='assets/scripture_select_pane.png')}}"
                             width="606"
@@ -99,11 +100,11 @@
                     </li>
                     <li>
                         <strong>Finish & see results:</strong><br/>
-                        After you've completed the count you selected, your average time per verse will display.
+                        After completing your selected count or when the countdown ends, your results will be displayed.
                     </li>
                     <li>
                         <strong>Restart anytime:</strong><br/>
-                        Click the Easy Worship logo at top‑left or press the Restart button.
+                        Click the Easy Worship logo at the top‑left or press the Restart button.
                     </li>
                 </ol>
                     <button id="confirm-help" class="okBtn">Ok</button>

@@ -14,6 +14,7 @@ const main = document.getElementById("main");
 const confirmHelp = document.getElementById("confirm-help");
 const timeblock = document.getElementById("timeblock");
 const custInput = document.getElementById("customInput");
+const customParam = document.querySelector(".customparam");
 
 let resultText = document.getElementById("average-result-text");
 let started = 0;
@@ -103,11 +104,13 @@ scriptureOption.forEach(button=>{
     const customPaneTitle = document.querySelector("#popup .popup-content .popup-title");
     if (selected == "Time") {
       customPaneTitle.textContent = "Custom test duration"
+      customParam.innerHTML = "Min: 10s<br>Max: 999s";
       option1.textContent = "30 Seconds";
       option2.textContent = "60 Seconds";
     }
     else {
       customPaneTitle.textContent = "Custom scripture amount";
+      customParam.innerHTML = "Min: 5<br>Max: 99";
       option1.textContent = "10 Scriptures";
       option2.textContent = "20 Scriptures";
     }
@@ -128,8 +131,8 @@ okBtn.addEventListener("click",()=>{
   const popup = document.getElementById("popup");
   let customInput = custInput.value;
   let currentSelected = document.querySelector(".active2").textContent;
-  let min = (currentSelected == "Scripture amount")?5:10;
-  let max = (currentSelected == "Scripture amount")?100:1000;
+  let min = (currentSelected == "Scripture count")?5:10;
+  let max = (currentSelected == "Scripture count")?99:999;
   if (customInput>=min && customInput<=max) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
   }

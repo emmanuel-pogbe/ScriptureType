@@ -185,6 +185,10 @@ input[type=number]::-webkit-outer-spin-button {
     border: 2px solid #C6C8D1;
     outline: none;
 }
+.customparam {
+    margin: 0;
+    padding: 0;
+}
 .okBtn {
     color: white;
     border: none;
