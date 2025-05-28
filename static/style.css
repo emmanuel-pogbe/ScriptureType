@@ -39,6 +39,9 @@ svg {
     padding: 10px;
     font-size: 23px;
 }
+.help-button .fa-circle-question {
+    overflow: hidden;
+}
 main {
     justify-content: center;
     align-items: center;
@@ -131,6 +134,23 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;
     margin: 0;
+}
+.restart-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.restart-btn {
+    border: none;
+}
+.restart-btn:hover {
+    cursor: pointer;
+}
+.restart-button .fa-arrow-rotate-right{
+    color: #84A0C6;
+    overflow: hidden;
+    font-size: larger;
+    padding: 20px;
 }
 .popup {
     position: fixed;

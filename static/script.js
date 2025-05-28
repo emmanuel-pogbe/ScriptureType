@@ -72,20 +72,23 @@ function displayHelp() {
   stopCountdown();
   document.querySelector("#help .help-content").scrollTop = 0;
 }
-document.getElementById("logo").addEventListener("click",function(event){
-  event.preventDefault();
-  fetchScripture(); //Get a new scripture when page logo is clicked
-  const mainApp = document.getElementById("main-app");
-  const resultPage = document.getElementById("result");
-  document.getElementById("options").style.visibility = "visible";
-  timeblock.classList.add("hidden");
-  resultPage.classList.add("hidden");
-  document.getElementById("main").classList.remove("hidden");
-  mainApp.classList.remove("pop-in");
-  void mainApp.offsetWidth;
-  mainApp.classList.add("pop-in");
-  //reset variables
-  resetVariables();
+const restartButtons = [document.getElementById("logo"),document.getElementById("restartButton")];
+restartButtons.forEach(button=>{
+  button.addEventListener("click",function(event){
+    event.preventDefault();
+    fetchScripture(); //Get a new scripture when page logo is clicked
+    const mainApp = document.getElementById("main-app");
+    const resultPage = document.getElementById("result");
+    document.getElementById("options").style.visibility = "visible";
+    timeblock.classList.add("hidden");
+    resultPage.classList.add("hidden");
+    document.getElementById("main").classList.remove("hidden");
+    mainApp.classList.remove("pop-in");
+    void mainApp.offsetWidth;
+    mainApp.classList.add("pop-in");
+    //reset variables
+    resetVariables();
+  });
 });
 scriptureButton.forEach(button=>{ 
   button.addEventListener("click",function(){ //At any given time, only one button settings should be active
