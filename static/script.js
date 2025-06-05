@@ -72,7 +72,7 @@ function displayHelp() {
   stopCountdown();
   document.querySelector("#help .help-content").scrollTop = 0;
 }
-const restartButtons = [document.getElementById("logo"),document.getElementById("restartButton")];
+const restartButtons = [document.getElementById("logo"),document.getElementById("restartButton"),document.getElementById("restartButton2")];
 restartButtons.forEach(button=>{
   button.addEventListener("click",function(event){
     event.preventDefault();
