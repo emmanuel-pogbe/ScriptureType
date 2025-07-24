@@ -177,6 +177,10 @@ function focusPrev(currentId, prevId) {
 function startsWithNumber(str) {
   return /^\d/.test(str);
 }
+function findMaxChapter() {
+  const chapters = scriptureData[book.value];
+  return chapters.length;
+}
 function makeStrictAutocomplete(input,list) {
   let defaultValue = list[0]; //Genesis
   let typed = "";
@@ -209,18 +213,33 @@ function makeStrictAutocomplete(input,list) {
         }
       }
       else {
-        e.preventDefault();
-        typed += key;
-        const match = list.find(item =>
-          item.toLowerCase().startsWith(typed.toLowerCase())
-        );
-        if (match) {
-          defaultValue = match;
-          input.value = match;
-          input.setSelectionRange(typed.length, match.length);
-        } else {
-          // ignore this keystroke
-          typed = typed.slice(0, -1);
+        if (/^[0-9]$/.test(e.key) && typed.length>=1) {
+          const maxChap = findMaxChapter();
+          e.preventDefault();
+          const inputtedNumber = Number(e.key);
+          if (inputtedNumber<=maxChap && inputtedNumber != 0) {
+            focusNext("book","chapter");
+            chapter.value = Number(e.key);
+            setTimeout(()=>{
+              chapter.setSelectionRange(chapter.value.length,chapter.value.length);
+            },0); 
+          }
+
+        }
+        else {
+          e.preventDefault();
+          typed += key;
+          const match = list.find(item =>
+            item.toLowerCase().startsWith(typed.toLowerCase())
+          );
+          if (match) {
+            defaultValue = match;
+            input.value = match;
+            input.setSelectionRange(typed.length, match.length);
+          } else {
+            // ignore this keystroke
+            typed = typed.slice(0, -1);
+          }
         }
       }
       if (typed.length==1 && /^[a-zA-Z]$/.test(e.key) && startsWithNumber(typed[0])) {
@@ -299,9 +318,9 @@ chapter.addEventListener("keydown", function(e) {
     proposed = cur.slice(0, start) + e.key + cur.slice(end);
   }
   const num = Number(proposed);
-  const books = book.value;
-  const chapters = scriptureData[books]
-  const max = chapters.length; //get the maximum number of chapters for the corresponding book
+  // const books = book.value;
+  // const chapters = scriptureData[books]
+  const max = findMaxChapter(); //get the maximum number of chapters for the corresponding book
   if (num > max) { 
     //don't allow input if it's greater than the max number of chapters in the book
     e.preventDefault();
