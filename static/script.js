@@ -321,7 +321,7 @@ chapter.addEventListener("keydown", function(e) {
   // const books = book.value;
   // const chapters = scriptureData[books]
   const max = findMaxChapter(); //get the maximum number of chapters for the corresponding book
-  if (num > max) { 
+  if (num > max || num == 0) { 
     //don't allow input if it's greater than the max number of chapters in the book
     e.preventDefault();
   }
@@ -374,7 +374,7 @@ verse.addEventListener("keydown", function(e) {
   const books = book.value;
   const chapters = Number(chapter.value);
   const max = (scriptureData[books])[chapters - 1]; //get the maximum number of verses for the corresponding book and chapter
-  if (num > max) {
+  if (num > max || num == 0) {
     e.preventDefault();
   }
   if (!/^[0-9]$/.test(e.key)) {
