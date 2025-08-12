@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">  
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Worship Trainer</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
@@ -11,24 +12,40 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYGFMBMLY"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-FKYGFMBMLY');
+    gtag('config', 'G-FKYGFMBMLY');
 </script>
+
 <body>
     <div id="app">
         <header>
             <a href="#" id="logo">
-                <div class="icon">    
-                    <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo" width="55px" height="100%" >              
+                <div class="icon">
+                    <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
+                        width="55px" height="100%">
                 </div>
                 <h1>Easy Worship Trainer</h1>
             </a>
-            <button id="help-button" onclick="displayHelp()" class="help-button"><i class="fa-solid fa-circle-question"></i></button>
+            <button id="help-button" onclick="displayHelp()" class="help-button"><i
+                    class="fa-solid fa-circle-question"></i></button>
         </header>
-        <main id="main">
+        <div id="selection" class="result">
+            <form>
+                <label for="software" class="start-label">Select church presentation software</label>
+                <br>
+                <select name="software" id="software" required>
+                    <option value="EasyWorship">EasyWorship</option>
+                    <option value="VideoPsalm">VideoPsalm</option>
+                    <option value="BibleShow">BibleShow</option>
+                </select>
+                <br>
+                <input type="submit" value="Start" id="start">
+            </form>
+        </div>
+        <main id="main" class="hidden">
             <div id="options">
                 <button class="scripturebutton-option">Time</button>
                 <button class="scripturebutton-option active2">Scripture count</button>
@@ -41,24 +58,32 @@
                 <div id="timeblock" class="timer hidden">
                     <h1 id="timerText" class="timer-text"></h1>
                 </div>
-                <div id="scripture" class="scripture-to-search"></div>
+                <div id="scripture" class="scripture-to-search"></div> <!--Scripture pops up here-->
                 <div class="scripture-search">
-                    <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()" autocomplete="off">
-                    <input type="text" inputmode="numeric" id="chapter" value="1" min="1" class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
-                    <input type="text" inputmode="numeric" id="verse" value="1" min="1" class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
+                    <!--This will change based on the software selected [Easy Worship, VideoPsalm, BibleShow]-->
+                    <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()"
+                        autocomplete="off">
+                    <input type="text" inputmode="numeric" id="chapter" value="1" min="1"
+                        class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
+                    <input type="text" inputmode="numeric" id="verse" value="1" min="1"
+                        class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
                     <button style="display: none;" onclick="checkReference()"></button>
                 </div>
                 <div id="restart" class="restart-button">
-                    <button id="restartButton" class="restart-btn"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                    <button id="restartButton" class="restart-btn"><i
+                            class="fa-solid fa-arrow-rotate-right"></i></button>
+                    <button id="homeButton" class="restart-btn">
+                        <i class="fa-solid fa-house" style="color: #84A0C6;"></i>
+                    </button>
                 </div>
             </div>
             <div id="popup" class="popup hidden">
                 <div class="popup-cover"></div>
                 <div class="popup-content">
-                        <label for="customInput" class="popup-title">Custom scripture amount</label>
-                        <input type="number" value="5" class="numberInput" id="customInput" min="1">
-                        <p class="customparam">Min: 5<br>Max: 99</p>
-                        <button id="okBtn" class="okBtn">Ok</button>
+                    <label for="customInput" class="popup-title">Custom scripture amount</label>
+                    <input type="number" value="5" class="numberInput" id="customInput" min="1">
+                    <p class="customparam">Min: 5<br>Max: 99</p>
+                    <button id="okBtn" class="okBtn">Ok</button>
                 </div>
             </div>
         </main>
@@ -67,12 +92,19 @@
                 <div id="average-result-text">Average Time</div>
                 <div id="average">0.000</div>
             </div>
-            <div>
-                <div id="test-type-text">Test type</div>
-                <div id="custom-test-type">Scriptures 10</div>
+            <div class="extra-information">
+                <div style="padding-bottom: 5px;">
+                    <div id="test-type-text">Test type</div>
+                    <div id="custom-test-type">Scriptures 10</div>
+                </div>
+                <div>
+                    <div id="test-type-text">Software</div>
+                    <div id="software-type">EasyWorship</div>
+                </div>
             </div>
             <div id="restart2" class="restart-button">
                 <button id="restartButton2" class="restart-btn"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                <button id="homeButton2" class="restart-btn"><i class="fa-solid fa-house" style="color: #84A0C6;"></i></button>
             </div>
         </div>
         <div id="help" class="help hidden pop-in">
@@ -81,48 +113,48 @@
                 <h2>How to Use Easy Worship Trainer</h2>
                 <ol>
                     <li>
-                        <strong>Select number of scriptures or time:</strong><br/>
+                        <strong>Select number of scriptures or time:</strong><br />
                         Use the selection pane to choose how many verses you’ll attempt or seconds to count down from.
                         <div class="help-image">
-                            <img src="{{url_for('static',filename='assets/scripture_select_pane.png')}}"
-                            width="606"
-                            height="68"
-                            alt="Selection pane pic"
-                            />
+                            <img src="{{url_for('static',filename='assets/scripture_select_pane.png')}}" width="606"
+                                height="68" alt="Selection pane pic" />
                         </div>
                     </li>
                     <li>
-                        <strong>Focus an input box:</strong><br/>
-                        Click on Book, Chapter, or Verse field. When you press any key, the timer starts and you begin typing the displayed scripture.
+                        <strong>Focus an input box:</strong><br />
+                        Click on Book, Chapter, or Verse field. When you press any key, the timer starts and you begin
+                        typing the displayed scripture.
                     </li>
                     <li>
-                        <strong>Navigate between fields:</strong><br/>
+                        <strong>Navigate between fields:</strong><br />
                         You can move focus using the same keys as EasyWorship:
                         <code>Arrow&nbsp;Keys</code>, <code>Space&nbsp;Bar</code>, <code>Tab</code>, etc.
                     </li>
                     <li>
-                        <strong>Submit each verse:</strong><br/>
-                        Press <code>Enter</code> when you’ve typed the verse exactly as shown. A new scripture will then appear.
+                        <strong>Submit each verse:</strong><br />
+                        Press <code>Enter</code> when you’ve typed the verse exactly as shown. A new scripture will then
+                        appear.
                     </li>
                     <li>
-                        <strong>Finish & see results:</strong><br/>
+                        <strong>Finish & see results:</strong><br />
                         After completing your selected count or when the countdown ends, your results will be displayed.
                     </li>
                     <li>
-                        <strong>Restart anytime:</strong><br/>
+                        <strong>Restart anytime:</strong><br />
                         Click the Easy Worship logo at the top‑left or press the Restart button.
                     </li>
                 </ol>
-                    <button id="confirm-help" class="okBtn">Ok</button>
+                <button id="confirm-help" class="okBtn">Ok</button>
             </div>
         </div>
     </div>
     <script id="scripture-data" type="application/json">
         {{ scripture_data | tojson }}
-    </script> 
+    </script>
     <script id="bible-books" type="application/json">
         {{ bible_books | tojson }}
     </script>
     <script src="{{url_for('static',filename='script.js')}}"></script>
 </body>
+
 </html>

@@ -1,10 +1,10 @@
+const selection = document.getElementById("selection");
+const startBtn = document.getElementById("start");
+const software = document.getElementById("software");
 const scriptureButton = document.querySelectorAll(".scriptureButton");
 const scriptureOption = document.querySelectorAll(".scripturebutton-option");
 const customBtn = document.getElementById("custom");
 const okBtn = document.getElementById("okBtn");
-const book = document.getElementById("book");
-const chapter = document.getElementById("chapter");
-const verse = document.getElementById("verse");
 const scriptureInputs = document.querySelectorAll(".input-class");
 const scripture = document.getElementById("scripture");
 const scriptureData = JSON.parse(document.getElementById("scripture-data").textContent);
@@ -15,7 +15,12 @@ const confirmHelp = document.getElementById("confirm-help");
 const timeblock = document.getElementById("timeblock");
 const custInput = document.getElementById("customInput");
 const customParam = document.querySelector(".customparam");
+const book = document.getElementById("book");
+const chapter = document.getElementById("chapter");
+const verse = document.getElementById("verse");
+const resultPage = document.getElementById("result");
 
+let selected = "";
 let resultText = document.getElementById("average-result-text");
 let started = 0;
 let times = [];
@@ -28,8 +33,27 @@ let timerActive = false;
 let timeoutId = null;
 let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
+let softwareType = document.getElementById("software-type");
 let timerText = document.getElementById("timerText");
 
+startBtn.addEventListener("click",function(e) {
+  e.preventDefault();
+  selected = software.value;
+  if (selected == "EasyWorship") {
+    //code
+  }
+  else if (selected == "VideoPsalm") {
+    //code
+  }
+  else {
+    //code
+  }
+  selection.classList.add("hidden");
+  main.classList.remove("hidden");
+  document.getElementById("options").style.visibility = "visible";
+  timeblock.classList.add("hidden");
+  fetchScripture();
+});
 function resetVariables() {
   started = 0;
   times = [];
@@ -73,12 +97,13 @@ function displayHelp() {
   document.querySelector("#help .help-content").scrollTop = 0;
 }
 const restartButtons = [document.getElementById("logo"),document.getElementById("restartButton"),document.getElementById("restartButton2")];
+const homeButtons = [document.getElementById("homeButton"),document.getElementById("homeButton2")];
+
 restartButtons.forEach(button=>{
   button.addEventListener("click",function(event){
     event.preventDefault();
     fetchScripture(); //Get a new scripture when page logo is clicked
     const mainApp = document.getElementById("main-app");
-    const resultPage = document.getElementById("result");
     document.getElementById("options").style.visibility = "visible";
     timeblock.classList.add("hidden");
     resultPage.classList.add("hidden");
@@ -87,6 +112,16 @@ restartButtons.forEach(button=>{
     void mainApp.offsetWidth;
     mainApp.classList.add("pop-in");
     //reset variables
+    resetVariables();
+  });
+});
+
+homeButtons.forEach(button=> {
+  button.addEventListener("click",function(event) {
+    event.preventDefault();
+    main.classList.add("hidden");
+    resultPage.classList.add("hidden");
+    selection.classList.remove("hidden");
     resetVariables();
   });
 });
@@ -125,7 +160,9 @@ customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
   custInput.focus();
 });
 confirmHelp.addEventListener("click",()=>{
-  main.classList.remove("hidden");
+  if (selection.classList.contains("hidden")) {
+    main.classList.remove("hidden");
+  }
   help.classList.add("hidden");
   fetchScripture();
   resetVariables();
@@ -448,6 +485,7 @@ function countdown() {
     resultText.textContent = "Number of Scriptures typed";
     averageResult.textContent = scriptureCount + " scriptures";
     testType.textContent = "Time " + totalTime;
+    document.getElementById("software-type").textContent = selected;
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
     stopCountdown();
@@ -524,6 +562,7 @@ function applyInputFeatures(input) {
             resultText.textContent = "Average Time";
             averageResult.textContent = averageTime + " seconds";
             testType.textContent = "Scriptures " + totalScriptures; 
+            document.getElementById("software-type").textContent = selected+"";
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
           }

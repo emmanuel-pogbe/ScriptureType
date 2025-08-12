@@ -42,6 +42,23 @@ svg {
 .help-button .fa-circle-question {
     overflow: hidden;
 }
+.start-label {
+    font-size: xx-large;
+}
+#software {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: large;
+}
+#software:focus {
+    outline: none;
+}
+#start {
+    font-size: large;
+}
 main {
     justify-content: center;
     align-items: center;
@@ -146,7 +163,7 @@ input[type=number]::-webkit-outer-spin-button {
 .restart-btn:hover {
     cursor: pointer;
 }
-.restart-button .fa-arrow-rotate-right{
+.restart-button .fa-arrow-rotate-right, .restart-button .fa-house {
     color: #84A0C6;
     overflow: hidden;
     font-size: larger;
@@ -209,7 +226,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
     padding: 0;
 }
-.okBtn {
+.okBtn, #start {
     color: white;
     border: none;
     background-color: #595E76;
@@ -220,7 +237,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 10px 0;
     font-weight: bold;
 }
-.okBtn:hover {
+.okBtn:hover , #start:hover {
     color: black;
     background-color: #C6C8D1;
 }
@@ -301,6 +318,6 @@ input[type=number]::-webkit-outer-spin-button {
 #test-type-text {
     color: #595E76;
 }
-#custom-test-type {
+#custom-test-type, #software-type {
     color: #84A0C6;
 }
