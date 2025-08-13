@@ -67,3 +67,48 @@ __bibleverses = {
     'Revelation':[20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21],
 }
 __biblebooks = list(__bibleverses.keys())
+text = ""
+final_book = ""
+chapter = ""
+verse = ""
+if __name__ == "__main__": #VideoPsalm test
+    while True:
+        correct = 0
+        options = []
+        data = input("Enter data: ")
+        if data in "123":
+            data += " "
+        text += data
+        for book in __biblebooks:
+            if book.lower().startswith(text):
+                correct+=1
+                options.append(book)
+        if correct == 1:
+            final_book = options[0]+" "
+            break
+        elif correct == 0:
+            #don't allow input
+            print("Input not allowed")
+            text = text[:(len(text)-len(data))]
+            print(text)
+    while True:
+        num = input("Enter chapter: ")
+        if num.isnumeric() and int(chapter+num) < 10000 and int(chapter+num) > 0:
+            chapter += num
+        elif num in ".: " and int(chapter)>0:
+            #code
+            chapter+=num
+            break
+        else:
+            print("Input not allowed")
+    while True:
+        num = input("Enter verse: ")
+        if num.isnumeric() and int(verse+num) < 10000 and int(verse+num) > 0:
+            verse += num
+        elif num in "~" and int(verse)>0: # ~ represents Enter key 
+            #code
+            print(verse)
+            break
+        else:
+            print("Input not allowed")
+    print(final_book+chapter+verse)
