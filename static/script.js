@@ -6,7 +6,7 @@ const scriptureButton = document.querySelectorAll(".scriptureButton");
 const scriptureOption = document.querySelectorAll(".scripturebutton-option");
 const customBtn = document.getElementById("custom");
 const okBtn = document.getElementById("okBtn");
-const scriptureInputs = document.querySelectorAll(".input-class");
+const scriptureInputsEasyWorship = document.querySelectorAll(".input-class");
 const scripture = document.getElementById("scripture");
 const scriptureData = JSON.parse(document.getElementById("scripture-data").textContent);
 const bibleBooks = JSON.parse(document.getElementById("bible-books").textContent);
@@ -19,6 +19,8 @@ const customParam = document.querySelector(".customparam");
 const book = document.getElementById("book");
 const chapter = document.getElementById("chapter");
 const verse = document.getElementById("verse");
+const videoPsalmInput = document.getElementById("videopsalm-input");
+const bibleShowInput = document.getElementById("bibleshow-input");
 const resultPage = document.getElementById("result");
 
 let selected = "";
@@ -65,6 +67,8 @@ function resetVariables() {
   previousTime = null;
   totalScriptures = 0;
   stopCountdown();
+  videoPsalmInput.value = "";
+  bibleShowInput.value = "";
 }
 function fetchBook() {
   const books = Object.keys(scriptureData);
@@ -497,17 +501,38 @@ function countdown() {
   }
   timeoutId = setTimeout(countdown,200);
 }
-function applyInputFeatures(input) {
-  // Prevent mousedown from altering selection.
-  input.addEventListener("mousedown", function(e) {
-    e.preventDefault();
-    input.focus();
-  });
+function preventMouseDown(input) {   // Prevent mousedown from altering selection.
+    input.addEventListener("mousedown", function(e) {
+      e.preventDefault();
+      input.focus();
+    });
+}
+function selectAllOnFocus(input) {
   input.addEventListener("focus", function() { //on focus, select all
     setTimeout(() => {
      input.select();
     }, 0);
   });
+}
+function modifyFinalInput() {
+  if (selected == "EasyWorship") {
+      book.focus();
+      bookInput = book.value
+      chapterInput = chapter.value
+      verseInput = verse.value
+      finalInput = bookInput+" "+chapterInput+":"+verseInput;
+      return finalInput;
+  }
+  else if (selected == "VideoPsalm") {
+    return videoPsalmInput.value;
+  }
+  else {
+    return bibleShowInput.value;
+  }
+}
+function applyInputFeatures(input) {
+  preventMouseDown(input);
+  selectAllOnFocus(input);
   // Prevent backspace if the entire text is selected or deletion would result in an empty input.
   input.addEventListener("keydown", function(e) {
     if (started==0) { // Starting the test
@@ -544,11 +569,7 @@ function applyInputFeatures(input) {
     }
     if (e.key === "Enter") {
       e.preventDefault();
-      book.focus();
-      bookInput = book.value
-      chapterInput = chapter.value
-      verseInput = verse.value
-      finalInput = bookInput+" "+chapterInput+":"+verseInput;
+      finalInput = modifyFinalInput(); // function to work on input based on software selected
       if (finalInput==scripture.textContent) {
         scriptureCount++;
         if (currentOption == "Scripture count") {
@@ -576,13 +597,23 @@ function applyInputFeatures(input) {
         }
       }
       else {
-        const inputFields = document.querySelectorAll(".input-class");
-        inputFields.forEach(inputField=>inputField.style.borderColor = "red");
-        setTimeout(() => {
-          inputFields.forEach(inputField=>inputField.style.borderColor = "#013FBF");
-         }, 500);
+        if (selected == "EasyWorship") {
+          const inputFields = document.querySelectorAll(".input-class");
+          inputFields.forEach(inputField=>inputField.style.borderColor = "red");
+          setTimeout(() => {
+            inputFields.forEach(inputField=>inputField.style.borderColor = "#013FBF");
+          }, 500);
+        }
+        else {
+          const inputBox = document.getElementById(selected.toLowerCase()+"-input");
+          inputBox.style.borderColor = "red";
+          setTimeout(()=> {
+            inputBox.style.borderColor = "grey";
+          }, 500);
+        }
       }
     }
  });
-}
-scriptureInputs.forEach(scriptureInput=>applyInputFeatures(scriptureInput)); //Add input features to all input boxes
+} 
+const inputBoxes = [...scriptureInputsEasyWorship,videoPsalmInput,bibleShowInput];
+inputBoxes.forEach(scriptureInput=>applyInputFeatures(scriptureInput)); //Add input features to all of EasyWorship's input boxes
