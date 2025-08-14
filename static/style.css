@@ -123,13 +123,35 @@ main {
     font-size: xx-large;
     margin: 30px;
 }
-.scripture-search-easyworship {
+.scripture-search {
     color: white;
     max-width: 70%;
     margin: 0px auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
+}
+.videopsalm,.bibleshow{
+    max-width: 60%;
+}
+
+.videopsalm input, .bibleshow input {
+    border: 1px solid grey;
+    width: 100%;
+    margin: 0px auto;
+    font-size: x-large;
+    padding: 5px;
+}
+.videopsalm input:focus, .bibleshow input:focus {
+    outline: none;
+}
+.videopsalm input:focus::placeholder, .bibleshow input:focus::placeholder {
+  color: transparent;
+}
+
+div.scripture-search.bibleshow {
+    width: 100%;
 }
 .input-class {
     margin-top: 10px;
@@ -156,9 +178,12 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 3%;
+    margin: 10px 0;
 }
 .restart-btn {
     border: none;
+    overflow: hidden;
 }
 .restart-btn:hover {
     cursor: pointer;
@@ -167,7 +192,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #84A0C6;
     overflow: hidden;
     font-size: larger;
-    padding: 40px;
+    padding: 30px;
 }
 .popup {
     position: fixed;

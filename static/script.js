@@ -1,6 +1,7 @@
 const selection = document.getElementById("selection");
 const startBtn = document.getElementById("start");
 const software = document.getElementById("software");
+const scriptureSearchBoxes = document.querySelectorAll(".scripture-search");
 const scriptureButton = document.querySelectorAll(".scriptureButton");
 const scriptureOption = document.querySelectorAll(".scripturebutton-option");
 const customBtn = document.getElementById("custom");
@@ -39,14 +40,17 @@ let timerText = document.getElementById("timerText");
 startBtn.addEventListener("click",function(e) {
   e.preventDefault();
   selected = software.value;
+  scriptureSearchBoxes.forEach(input=>{
+    input.classList.add("hidden")
+  });
   if (selected == "EasyWorship") {
-    //code
+    document.getElementById("easyworship-box").classList.remove("hidden");
   }
   else if (selected == "VideoPsalm") {
-    //code
+    document.getElementById("videopsalm-box").classList.remove("hidden");
   }
   else {
-    //code
+    document.getElementById("bibleshow-box").classList.remove("hidden");
   }
   selection.classList.add("hidden");
   main.classList.remove("hidden");

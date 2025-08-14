@@ -32,7 +32,7 @@
             <button id="help-button" onclick="displayHelp()" class="help-button"><i
                     class="fa-solid fa-circle-question"></i></button>
         </header>
-        <div id="selection" class="result">
+        <div id="selection" class="result pop-in">
             <form>
                 <label for="software" class="start-label">Select church presentation software</label>
                 <br>
@@ -59,7 +59,7 @@
                     <h1 id="timerText" class="timer-text"></h1>
                 </div>
                 <div id="scripture" class="scripture-to-search"></div> <!--Scripture pops up here-->
-                <div class="scripture-search-easyworship">
+                <div class="scripture-search easyworship hidden" id="easyworship-box">
                     <!--This will change based on the software selected [Easy Worship, VideoPsalm, BibleShow]-->
                     <input type="text" id="book" list="books" value="Genesis" class="input-class" oninput="startTimer()"
                         autocomplete="off">
@@ -68,6 +68,12 @@
                     <input type="text" inputmode="numeric" id="verse" value="1" min="1"
                         class="input-class input-class-number" oninput="startTimer()" autocomplete="off">
                     <button style="display: none;" onclick="checkReference()"></button>
+                </div>
+                <div class="scripture-search videopsalm hidden" id="videopsalm-box">
+                    <input type="text" id="videopsalm-input" class="videopsalm-input" placeholder="Reference to select, e.g.: Romans 3:23" >
+                </div>
+                <div class="scripture-search bibleshow" id="bibleshow-box">
+                    <input type="text" id="bibleshow-input" class="bibleshow-input" placeholder="Reference">
                 </div>
                 <div id="restart" class="restart-button">
                     <button id="restartButton" class="restart-btn"><i
