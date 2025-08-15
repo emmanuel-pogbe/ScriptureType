@@ -24,6 +24,9 @@ const bibleShowInput = document.getElementById("bibleshow-input");
 const resultPage = document.getElementById("result");
 
 let selected = "";
+let vPText = ""; // VideoPsalmText
+let vPSuggestion = ""; //VideoPsalmSuggestion
+let vPFinalBook = null; //VideoPsalmFinalBook
 let resultText = document.getElementById("average-result-text");
 let started = 0;
 let times = [];
@@ -60,6 +63,22 @@ startBtn.addEventListener("click",function(e) {
   timeblock.classList.add("hidden");
   fetchScripture();
 });
+const DEFAULT_VP = {
+  mode: "book",        // "book" | "chapter"
+  text: "",            // typed book text
+  suggestion: "",      // autofill suffix
+  bookDisplay: "",     // accepted canonical book + trailing space
+  chapVerse: "",       // typed chapter/verse text (with separator while typing)
+  separator: null      // '.', ':', or ' '
+};
+
+function cloneDefaultVp() {
+  if (typeof structuredClone === "function") {
+    return structuredClone(DEFAULT_VP);
+  }
+  // fallback for older browsers:
+  return JSON.parse(JSON.stringify(DEFAULT_VP));
+}
 function resetVariables() {
   started = 0;
   times = [];
@@ -68,6 +87,7 @@ function resetVariables() {
   totalScriptures = 0;
   stopCountdown();
   videoPsalmInput.value = "";
+  videoPsalmInput._vp = cloneDefaultVp();
   bibleShowInput.value = "";
 }
 function fetchBook() {
@@ -226,7 +246,7 @@ function findMaxChapter() {
   const chapters = scriptureData[book.value];
   return chapters.length;
 }
-function makeStrictAutocomplete(input,list) {
+function makeStrictAutocomplete(input,list) { //For EasyWorship
   let defaultValue = list[0]; //Genesis
   let typed = "";
   input.addEventListener("focus",()=>{
@@ -455,6 +475,212 @@ verse.addEventListener("keydown", function(e) {
    }
   }
 });
+
+function ensureVp(el) {
+  if (!el) return null;
+  if (!el._vp) {
+    el._vp = cloneDefaultVp();
+  }
+  return el._vp;
+}
+videoPsalmInput.addEventListener("keydown", function(e){
+  const input = e.target;
+  // --- persistent state attached to the input element ---
+  function resetInputs() {
+      S.text = "";
+      S.suggestion = "";
+      S.bookDisplay = "";
+      S.chapVerse = "";
+      S.separator = null;
+  }
+  const S = ensureVp(input);
+  function render() {
+    if (S.mode === "book") {
+      input.value = S.text + S.suggestion;
+      // input.setSelectionRange(S.text.length, S.text.length);
+    } else {
+      input.value = S.bookDisplay + S.chapVerse;
+      // input.setSelectionRange(input.value.length, input.value.length); //hmm
+    }
+  }
+  function optionsFor(prefix) {
+    return bibleBooks.filter(b => b.startsWith(prefix));
+  }
+  function computeSuggestion() {
+    S.suggestion = "";
+    S.bookDisplay = "";
+    if (!S.text) return;
+    const opts = optionsFor(S.text);
+    if (opts.length === 1) {
+      S.bookDisplay = opts[0] + " ";
+      S.suggestion  = opts[0].slice(S.text.length)+" "; //remaining characters
+    }
+  }
+  function acceptBookIfSingle() {
+    const opts = optionsFor(S.text);
+    if (opts.length === 1) {
+      S.mode        = "chapter";
+      S.text        = opts[0];         // lock in canonical casing
+      S.bookDisplay = opts[0] + " ";
+      S.suggestion  = "";
+      S.chapVerse   = "";
+      S.separator   = null;
+      render();
+      return true;
+    }
+    return false;
+  }
+  function validNum(s) {
+    if (!/^\d+$/.test(s)) return false;
+    const n = parseInt(s, 10);
+    return n >= 1 && n < 10000; // strictly below 10000, strictly above 0
+  }
+  if ("Aa".includes(e.key) && e.ctrlKey) {
+    input.setSelectionRange(0,input.value.length);
+    setTimeout(()=> {
+      S.mode = "book";
+    },0);
+  }
+  // BOOK MODE
+  if (S.mode === "book") {
+    e.preventDefault();
+    let data = e.key;
+    if (e.key === "Backspace") {
+      if (input.selectionStart === 0 && input.selectionEnd === input.value.length) {
+        resetInputs();
+        input.value = "";
+        S.mode = "book";
+      }
+      else if (S.text.length>0) {
+        S.text = S.text.slice(0,-1);
+        computeSuggestion();
+        render();
+      }
+    }
+    if (e.key === "Enter") {
+      return;
+    }
+    if (input.selectionStart ===0 && input.selectionEnd === input.value.length) {
+      resetInputs();
+    }
+    if (S.bookDisplay.length>2 && validNum(data) && !(input.selectionStart === 0 && input.selectionEnd === input.value.length)) {
+      S.mode = "chapter";
+      S.chapVerse = data;
+      render();
+    }
+    if ("123".includes(data)) {
+      data += " ";
+    }
+    if ((S.text.startsWith("P") || S.text.startsWith("p")) && "Hh".includes(data)) {
+      data += "il"; // "ph" -> "phil"
+    } 
+    else if ((S.text.startsWith("J") || S.text.startsWith("j")) && "Uu".includes(data)) {
+      data += "d";  // "ju" -> "jud"
+    }
+    if (S.text.length === 0) {
+      S.text += data.toUpperCase();
+    }
+    else if (S.text.length === 2 && S.text[S.text.length - 1] === " ") {
+      S.text += data.toUpperCase();
+    }
+    else {
+      S.text += data.toLowerCase();
+    }
+    const opts = optionsFor(S.text);
+    if (opts.length === 1) { //still book mode
+      S.bookDisplay = opts[0] + " ";
+      S.suggestion  = opts[0].slice(S.text.length)+" ";
+      render();
+      S.mode = "chapter"
+      return;
+    } 
+    else if (opts.length === 0) {
+      // revert this keystroke
+      S.text = S.text.slice(0, -data.length);
+      computeSuggestion();
+      render();
+      return;
+    } else {
+      // multiple matches gives no suggestion
+      S.bookDisplay = "";
+      S.suggestion  = "";
+      render();
+      return;
+    }
+  }
+  //CHAPTER/VERSE MODE
+  if (S.mode === "chapter") {
+    const isDigit = /\d/.test(e.key);
+    const isSep   = (e.key === "." || e.key === ":" || e.key === " ");
+    if (!(isDigit || isSep)) {
+      // ignore letters in chapter mode
+      e.preventDefault();
+      if (e.key === "Backspace") {
+        if (input.selectionStart === 0 && input.selectionEnd === input.value.length) {
+          resetInputs();
+          input.value = "";
+          S.mode = "book";
+        }
+        else {
+          if (S.chapVerse.length>0) {
+            const last = S.chapVerse.slice(-1);
+            S.chapVerse = S.chapVerse.slice(0,-1);
+            if (S.chapVerse.length === 0) {
+              S.mode = "book";
+            }
+            if (last === S.separator) S.separator = null;
+            render();
+          }
+          else if (S.chapVerse.length === 0 ){
+            S.mode = "book";
+            if (S.text.length > 0) {
+              S.text = S.text.slice(0,-1);
+              computeSuggestion();
+              render();
+            }
+          }
+        }
+      }
+      return;
+    }
+    e.preventDefault();
+    if (isDigit) {
+      if (S.separator === null) {
+        // building chapter
+        const candidate = (S.chapVerse || "") + e.key;
+        if (validNum(candidate)) {
+          S.chapVerse = candidate;
+          render();
+        }
+        // else: ignore
+      } else {
+        // building verse
+        const parts = S.chapVerse.split(S.separator);
+        const vChapter = parts[0] || "";
+        const verse   = (parts[1] || "") + e.key;
+        if (validNum(verse)) {
+          S.chapVerse = vChapter + S.separator + verse;
+          render();
+        }
+        // else: ignore
+      }
+      return;
+    }
+    // separator handling: only if we have a valid chapter and no separator yet
+    if (isSep) {
+      if (S.separator !== null) return;  // already have one
+      if (!/^\d+$/.test(S.chapVerse)) return; // need numeric chapter first
+      if (!validNum(S.chapVerse)) return; // chapter must be 1..9999
+      S.separator = e.key; // can be ".", ":", or " "
+      S.chapVerse += e.key;
+      render();
+      return;
+    }
+  }
+});
+bibleShowInput.addEventListener("keydown",function(e){
+  //code for bibleshow
+});
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
   let average = sum / times.length;
@@ -514,6 +740,32 @@ function selectAllOnFocus(input) {
     }, 0);
   });
 }
+function replaceSecondSeparator(str) {
+  str = str.trim(); // Trim input for consistency
+  let bk = null;
+  let ref = null;
+  // Find the matching book name
+  for (let b of bibleBooks) {
+    // Check if the string starts with the book name followed by a space or end of string
+    if (str === b || str.startsWith(b + ' ')) {
+      bk = b;
+      ref = str.slice(b.length).trim(); // Get the remaining reference part
+      break;
+    }
+  }
+  // If no valid book match, return unchanged
+  if (!bk) {
+    return str;
+  }
+  // Parse the reference part (chapter [sep] verse)
+  const match = ref.match(/^(\d+)([ .:])?(\d+)?$/);
+  if (!match) {
+    return str; // Return unchanged if reference format is invalid
+  }
+  const [, chapt, , ver] = match;
+  // If verse exists, use colon; else append :1
+  return ver ? `${bk} ${chapt}:${ver}` : `${bk} ${chapt}:1`;
+}
 function modifyFinalInput() {
   if (selected == "EasyWorship") {
       book.focus();
@@ -524,7 +776,7 @@ function modifyFinalInput() {
       return finalInput;
   }
   else if (selected == "VideoPsalm") {
-    return videoPsalmInput.value;
+    return replaceSecondSeparator(videoPsalmInput.value);
   }
   else {
     return bibleShowInput.value;
