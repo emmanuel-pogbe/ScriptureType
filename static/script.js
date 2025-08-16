@@ -249,7 +249,8 @@ function findMaxChapter() {
   const chapters = scriptureData[book.value];
   return chapters.length;
 }
-function makeStrictAutocomplete(input,list) { //For EasyWorship
+//EasyWorship
+function makeStrictAutocomplete(input,list) { 
   let defaultValue = list[0]; //Genesis
   let typed = "";
   input.addEventListener("focus",()=>{
@@ -486,6 +487,7 @@ function ensureVp(el) {
   }
   return el._vp;
 }
+//VideoPsalm
 videoPsalmInput.addEventListener("keydown", function(e){
   const input = e.target;
   // --- persistent state attached to the input element ---
@@ -519,7 +521,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
       S.suggestion  = opts[0].slice(S.text.length)+" "; //remaining characters
     }
   }
-  function acceptBookIfSingle() {
+  function acceptBookIfSingle() { //Ended up not using this function
     const opts = optionsFor(S.text);
     if (opts.length === 1) {
       S.mode        = "chapter";
@@ -538,11 +540,16 @@ videoPsalmInput.addEventListener("keydown", function(e){
     const n = parseInt(s, 10);
     return n >= 1 && n < 10000; // strictly below 10000, strictly above 0
   }
+  function checkBibleBook(letter) {
+    letter = letter.toUpperCase();
+    return bibleBooks.some(bk=>bk.startsWith(letter));
+  }
   if ("Aa".includes(e.key) && e.ctrlKey) {
     input.setSelectionRange(0,input.value.length);
     setTimeout(()=> {
       S.mode = "book";
     },0);
+    .
   }
   // BOOK MODE
   if (S.mode === "book") {
@@ -563,7 +570,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
     if (e.key === "Enter") {
       return;
     }
-    if (input.selectionStart ===0 && input.selectionEnd === input.value.length) {
+    if (input.selectionStart ===0 && input.selectionEnd === input.value.length && checkBibleBook(e.key)) {
       resetInputs();
     }
     if (S.bookDisplay.length>2 && validNum(data) && !(input.selectionStart === 0 && input.selectionEnd === input.value.length)) {
@@ -787,7 +794,10 @@ function modifyFinalInput() {
 }
 function applyInputFeatures(input) {
   preventMouseDown(input);
-  selectAllOnFocus(input);
+  if (input.classList.contains("input-class")) {
+    selectAllOnFocus(input);
+  }
+
   // Prevent backspace if the entire text is selected or deletion would result in an empty input.
   input.addEventListener("keydown", function(e) {
     if (started==0) { // Starting the test
