@@ -562,9 +562,14 @@ videoPsalmInput.addEventListener("keydown", function(e){
         S.mode = "book";
       }
       else if (S.text.length>0) {
-        S.text = S.text.slice(0,-1);
-        computeSuggestion();
-        render();
+        if (S.text.length === 2 && "123".includes(S.text[0])) {
+          S.text = S.text.slice(0,-2);
+        }
+        else {
+          S.text = S.text.slice(0,-1);
+          computeSuggestion();
+          render();
+        }
       }
     }
     if (e.key === "Enter") {
@@ -644,7 +649,12 @@ videoPsalmInput.addEventListener("keydown", function(e){
           else if (S.chapVerse.length === 0 ){
             S.mode = "book";
             if (S.text.length > 0) {
-              S.text = S.text.slice(0,-1);
+              if (S.text[0]==="3") {
+                S.text = S.text.slice(0,-2);
+              }
+              else {
+                S.text = S.text.slice(0,-1);
+              }
               computeSuggestion();
               render();
             }
