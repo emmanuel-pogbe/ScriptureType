@@ -549,7 +549,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
     setTimeout(()=> {
       S.mode = "book";
     },0);
-    .
+    return;
   }
   // BOOK MODE
   if (S.mode === "book") {
