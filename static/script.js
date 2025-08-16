@@ -79,6 +79,10 @@ function cloneDefaultVp() {
   // fallback for older browsers:
   return JSON.parse(JSON.stringify(DEFAULT_VP));
 }
+function resetVideoPsalmInput() {
+  videoPsalmInput.value = "";
+  videoPsalmInput._vp = cloneDefaultVp();
+}
 function resetVariables() {
   started = 0;
   times = [];
@@ -86,8 +90,7 @@ function resetVariables() {
   previousTime = null;
   totalScriptures = 0;
   stopCountdown();
-  videoPsalmInput.value = "";
-  videoPsalmInput._vp = cloneDefaultVp();
+  resetVideoPsalmInput();
   bibleShowInput.value = "";
 }
 function fetchBook() {
@@ -824,6 +827,9 @@ function applyInputFeatures(input) {
       finalInput = modifyFinalInput(); // function to work on input based on software selected
       if (finalInput==scripture.textContent) {
         scriptureCount++;
+        if (selected == "VideoPsalm") {
+          resetVideoPsalmInput();
+        }
         if (currentOption == "Scripture count") {
           if ((scriptureCount!=totalScriptures)) {
             fetchScripture();
