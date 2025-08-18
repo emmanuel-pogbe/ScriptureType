@@ -67,6 +67,15 @@ __bibleverses = {
     'Revelation':[20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21],
 }
 __biblebooks = list(__bibleverses.keys())
+#BibleShow Test
+
+
+
+
+
+
+
+
 # import random
 # def get_bible_list():
 #     bibleverses=[]
@@ -87,95 +96,3 @@ __biblebooks = list(__bibleverses.keys())
 #     chapter = getChapter(book)
 #     verse = getVerse(book,chapter)
 #     return book+" "+str(chapter)+":"+str(verse)
-# text = ""
-# final_book = ""
-# chapter = ""
-# chap_verse = ""
-# verse = ""
-# def longest_common_prefix(strlist):
-#     if not strlist:
-#         return ""
-#     s1,s2 = min(strlist),max(strlist)
-#     for i,char in enumerate(s1):
-#         if char!=s2[i]:
-#             return s1[:i]
-#     return s1
-# if __name__ == "__main__": #VideoPsalm test
-#     scrip = getScripture() #get random scripture
-#     print(scrip) #print scripture
-#     while True: #For bible book
-#         correct = 0
-#         options = []
-#         data = input("Enter data: ")
-#         if data in "123": #handle bible books starting with numbers
-#             data += " "
-#         if text.startswith(("P","p")) and data in "Hh": #Handle Phil
-#             data+="il"
-#         elif text.startswith(("J","j")) and data in "Uu": #Handle Jud
-#             data+="d"
-#         if len(text)==0:
-#             text += data.upper()
-#         elif len(text)==2 and text[-1]==" ":
-#             text +=data.upper()
-#         else:
-#             text += data.lower()
-#         for book in __biblebooks:
-#             if book.startswith(text):
-#                 correct+=1
-#                 options.append(book)
-#         if correct == 1:
-#             final_book = options[0]+" "
-#             break
-#         elif correct == 0:
-#             print("Input not allowed") #Input would be prevented
-#             text = text[:(len(text)-len(data))] #Remove input
-#             print(text)
-#     while True: #For chapter and verse
-#         num = input("Enter numbers: ")
-#         if num.isnumeric() and not any(x in chap_verse for x in ".: ") and int(chap_verse+num)<10000 and int(chap_verse+num)>0:
-#             chap_verse+=num
-#         elif num in ".: " and chap_verse.isnumeric() and int(chap_verse)>0:
-#             chap_verse+=num 
-#             separator = num
-#             verse = chap_verse.split(separator)[1]
-#         elif num.isnumeric() and any(x in chap_verse for x in ".: "):
-#             if int(verse+num)<10000 and int(verse+num)>0:
-#                 verse += num
-#             else:
-#                 print("Input not allowed")
-#         elif num == "~": # '~' represents Enter on web app
-#             chap_verse += verse
-#             modified_chap_verse = chap_verse.replace(separator,":")
-#             break
-#         else:
-#             print("Input not allowed")
-#     final_reference = final_book+chap_verse 
-#     sent_reference = final_book+modified_chap_verse
-#     user_typed = text + chap_verse
-#     print(final_reference) #What will show on the textbox on the webapp
-#     print(user_typed) #Input that the user typed
-#     if sent_reference == scrip:
-#         print("Correct!")
-#     else:
-#         print("Wrong!")
-
-    # while True:
-    #     num = input("Enter chapter: ")
-    #     if num.isnumeric() and int(chapter+num) < 10000 and int(chapter+num) > 0:
-    #         chapter += num
-    #     elif num in ".: " and int(chapter)>0:
-    #         #code
-    #         chapter+=":"
-    #         break
-    #     else:
-    #         print("Input not allowed")
-    # while True:
-    #     num = input("Enter verse: ")
-    #     if num.isnumeric() and int(verse+num) < 10000 and int(verse+num) > 0:
-    #         verse += num
-    #     elif num in "~" and int(verse)>0: # ~ represents Enter key 
-    #         #code
-    #         # print(verse)
-    #         break
-    #     else:
-    #         print("Input not allowed")
