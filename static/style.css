@@ -149,6 +149,10 @@ main {
 .videopsalm input:focus::placeholder, .bibleshow input:focus::placeholder {
   color: transparent;
 }
+.bibleshow-input {
+    background-color: white;    
+    color: black;
+}
 
 div.scripture-search.bibleshow {
     width: 100%;
