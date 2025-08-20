@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easy Worship Trainer</title>
+    <title>ScriptureType</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
     <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='assets/EWT.png')}}">
     <script src="https://kit.fontawesome.com/288289805d.js" crossorigin="anonymous"></script>
@@ -27,7 +27,7 @@
                     <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
                         width="55px" height="100%">
                 </div>
-                <h1>Easy Worship Trainer</h1>
+                <h1>ScriptureType</h1>
             </a>
             <button id="help-button" onclick="displayHelp()" class="help-button"><i
                     class="fa-solid fa-circle-question"></i></button>
@@ -113,13 +113,17 @@
                 <button id="homeButton2" class="restart-btn"><i class="fa-solid fa-house" style="color: #84A0C6;"></i></button>
             </div>
         </div>
-        <div id="help" class="help hidden pop-in">
+        <div id="help" class="help hidden fast-pop-in">
             <div class="popup-cover"></div>
             <div class="help-content">
-                <h2>How to Use Easy Worship Trainer</h2>
+                <h2>How to Use ScriptureType</h2>
                 <ol>
                     <li>
-                        <strong>Select number of scriptures or time:</strong><br />
+                        <strong>Choose software</strong><br />
+                        Use the Select church presentation software dropdown to pick EasyWorship, VideoPsalm, or BibleShow. The input rules change depending on your choice.
+                    </li>
+                    <li>
+                        <strong>Choose a drill</strong><br />
                         Use the selection pane to choose how many verses you’ll attempt or seconds to count down from.
                         <div class="help-image">
                             <img src="{{url_for('static',filename='assets/scripture_select_pane.png')}}" width="606"
@@ -127,14 +131,8 @@
                         </div>
                     </li>
                     <li>
-                        <strong>Focus an input box:</strong><br />
-                        Click on Book, Chapter, or Verse field. When you press any key, the timer starts and you begin
-                        typing the displayed scripture.
-                    </li>
-                    <li>
-                        <strong>Navigate between fields:</strong><br />
-                        You can move focus using the same keys as EasyWorship:
-                        <code>Arrow&nbsp;Keys</code>, <code>Space&nbsp;Bar</code>, <code>Tab</code>, etc.
+                        <strong>Start typing</strong><br />
+                        Click on the displayed input and press any key to start the test
                     </li>
                     <li>
                         <strong>Submit each verse:</strong><br />
@@ -146,8 +144,8 @@
                         After completing your selected count or when the countdown ends, your results will be displayed.
                     </li>
                     <li>
-                        <strong>Restart anytime:</strong><br />
-                        Click the Easy Worship logo at the top‑left or press the Restart button.
+                        <strong>Home/Restart</strong><br />
+                        Click the ScriptureType logo (top-left) or press the Home button to return to the start screen or press the restart button to reset the current test.
                     </li>
                 </ol>
                 <button id="confirm-help" class="okBtn">Ok</button>

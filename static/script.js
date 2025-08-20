@@ -129,8 +129,8 @@ function displayHelp() {
   stopCountdown();
   document.querySelector("#help .help-content").scrollTop = 0;
 }
-const restartButtons = [document.getElementById("logo"),document.getElementById("restartButton"),document.getElementById("restartButton2")];
-const homeButtons = [document.getElementById("homeButton"),document.getElementById("homeButton2")];
+const restartButtons = [document.getElementById("restartButton"),document.getElementById("restartButton2")];
+const homeButtons = [document.getElementById("homeButton"),document.getElementById("homeButton2"),document.getElementById("logo")];
 
 restartButtons.forEach(button=>{
   button.addEventListener("click",function(event){
@@ -1021,6 +1021,9 @@ function applyInputFeatures(input) {
         if (selected == "VideoPsalm") {
           resetVideoPsalmInput();
         }
+        else if (selected == "BibleShow") {
+          bibleShowInput.value = "";
+        }
         if (currentOption == "Scripture count") {
           if ((scriptureCount!=totalScriptures)) {
             fetchScripture();
@@ -1055,9 +1058,14 @@ function applyInputFeatures(input) {
         }
         else {
           const inputBox = document.getElementById(selected.toLowerCase()+"-input");
-          inputBox.style.borderColor = "red";
+          if (selected === "BibleShow") {
+            inputBox.style.border = "2px solid red"
+          }
+          else {
+            inputBox.style.borderColor = "red";
+          }
           setTimeout(()=> {
-            inputBox.style.borderColor = "grey";
+            inputBox.style.border = "1px solid grey";
           }, 500);
         }
       }

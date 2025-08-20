@@ -27,6 +27,9 @@ header {
 .icon {
     overflow: hidden;
 }
+#logo h1 {
+    margin: auto 0;
+}
 svg {
     width: 40px;
     height: 100%;
@@ -51,12 +54,26 @@ svg {
     margin-top: 10px;
     width: 100%;
     text-align: center;
-    font-size: large;
+    margin-bottom: 3.8rem;
+}
+#software, #software option {
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+option:hover {
+    background-color: #595E76;
+}
+select {
+  /* appearance: none; */
+  border: 1px solid #ccc;
+  padding: 4px 0px;
+  cursor: pointer;
 }
 #software:focus {
     outline: none;
 }
 #start {
+    margin: 0 !important;
     font-size: large;
 }
 main {
@@ -106,6 +123,24 @@ main {
         opacity: 1;
     }   
 }
+.fast-pop-in {
+    opacity: 0;
+    animation: fastpopInAnimation 1s ease forwards;
+}
+@keyframes fastpopInAnimation {
+    to {
+        opacity: 1;
+    }   
+}
+.pop-in {
+    opacity: 0;
+    animation: popInAnimation 2s ease forwards;
+}
+@keyframes popInAnimation {
+    to {
+        opacity: 1;
+    }   
+}
 .timer {
     display: flex;
     max-width: 70%;
@@ -130,7 +165,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 1G0px;
 }
 .videopsalm,.bibleshow{
     max-width: 60%;
@@ -293,6 +328,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .help-content {
     overflow-y: scroll;
+    overflow-x: hidden;
     max-width: 800px;
     max-height: 80vh;
     background-color: #161821;
