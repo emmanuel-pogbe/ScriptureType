@@ -150,7 +150,7 @@ main {
   color: transparent;
 }
 .bibleshow-input {
-    background-color: white;    
+    background-color: white; /*#f29f9f- light red, #CD5C5C - dark red*/    
     color: black;
 }
 

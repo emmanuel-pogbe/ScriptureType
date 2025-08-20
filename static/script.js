@@ -45,8 +45,6 @@ let softwareType = document.getElementById("software-type");
 let timerText = document.getElementById("timerText");
 
 startBtn.addEventListener("click",function(e) {
-  console.log(prefixMap);
-  console.log(aliasMap);
   e.preventDefault();
   selected = software.value;
   scriptureSearchBoxes.forEach(input=>{
@@ -702,7 +700,138 @@ videoPsalmInput.addEventListener("keydown", function(e){
     }
   }
 });
-//bibleshow functions
+//BIBLESHOW FUNCTIONS
+function isAlpha(ch) {
+  return /^[A-Za-z]$/.test(ch);
+}
+function isDigit(ch) {
+  return /^[0-9]$/.test(ch);
+}
+function isAlnum(ch) {
+  return /^[A-Za-z0-9]$/.test(ch);
+}
+function capitalizeFirstLetter(str) {
+    if (str == null) {
+        return '';
+    }
+    str = String(str);
+    return str.replace(/[a-zA-Z]/, char => char.toUpperCase());
+}
+function getMaxChapter(bk) { //get's the maximum chapter of the book passed as argument
+  if (bk in scriptureData) {
+    return scriptureData[bk].length;
+  }
+}
+function isValidBibleBook(str) { //check if string contains a valid book
+  let text = "";
+  let foundBook = false;
+  let bookGotten = null;
+  let firstAlpha = false; //checker for when we encounter first alphabet
+  let endBookIndex = null;
+  let lenText = 0; 
+  for (let i = 0;i<str.length;i++) {
+    const ch = str[i];
+    if (isAlnum(ch)) {
+      if (isAlpha(ch) && firstAlpha == false) {
+        firstAlpha = true;
+      }
+      if (isDigit(ch) && firstAlpha == true) {
+        //idk, do nothing i guess?
+      }
+      else { //else blocks, handles books that starts with numbers
+        text += ch;
+        endBookIndex = i;
+      }
+    }
+    if (!isAlpha(ch)) {
+      if (foundBook) { //break out when we've found a book already 
+        break;
+      }
+    }
+    if (text.length>0 && text.length>lenText) {
+      lenText = text.length; 
+      text = text.toLowerCase();
+      const capital_form = capitalizeFirstLetter(text);
+      if (capital_form in aliasMap) { //check the alias map
+        bookGotten = aliasMap[capital_form];
+      }
+      else if (text in prefixMap) { //check the prefix map
+        bookGotten = prefixMap[text];
+      }
+    }
+    if (bookGotten) {
+      foundBook = true; //yay we've found the book
+    }
+  }
+  return [bookGotten,endBookIndex];
+}
+function isValidChapter(str,bk,endBookIndex) {
+  let foundNum = "";
+  let firstChapNum = false;
+  let valid = false;
+  let endChapIndex = null;
+  for (let i = endBookIndex+1;i<str.length;i++) { //start at where we stopped on isValidBook
+    const ch = str[i];
+    if (isDigit(ch)) { 
+      if (firstChapNum === false) { //if this is our first number:
+        foundNum += ch;
+        firstChapNum = true; 
+        endChapIndex = i;
+      }
+      else { //if it's not our first number:
+        if (!isAlnum(str[i-1])) { //and previous char is not alphanumeric:
+          break;
+        }
+        else { //if previous char is alphanumeric:
+          foundNum += ch;
+          endChapIndex = i
+        }
+      }
+    }
+    else if (!isAlnum(ch) && firstChapNum) {
+      break;
+    }
+  }
+  let maxChap = getMaxChapter(bk); //get the maximum chapter of the passed book
+  if (foundNum.length>0) {
+    const parsed = parseInt(foundNum,10);
+    if (parsed>0 && parsed<=maxChap) { //if parsed number is positive and less than max Chapter:
+      valid = true; //then chapter is valid
+    }
+  }
+  if (foundNum.length===0) {
+    return [valid,null,endChapIndex];
+  }
+  return [valid,parseInt(foundNum,10),endChapIndex];
+}
+function isValidVerse(bk,chap,str,chap_index) {
+  foundNum = "";
+  firstVerseNum = false;
+  for (let i = chap_index+1;i<str.length;i++) {// start from where we stopped at isValidChapter
+    const ch = str[i];
+    if (isDigit(ch)) {
+      if (firstVerseNum===false) { //if this is our first number
+        firstVerseNum = true;
+        foundNum+=ch;
+      }
+      else { //if it's not our first number
+        if (!isAlnum(str[i-1])) { //and previous isn't alphanumeric
+          break;
+        }
+        else {
+          foundNum+=ch;
+        }
+      }
+    }
+    else if (!isAlnum(ch) && firstVerseNum) {
+      break;
+    }
+  }
+  if (foundNum.length === 0) {
+    return null;
+  }
+  return parseInt(foundNum,10); //actual verse
+}
 bibleShowInput.addEventListener("keydown",function(e){
   //code for bibleshow
 });
@@ -793,8 +922,9 @@ function replaceSecondSeparator(str) {
 }
 function modifyFinalInput() {
   if (selected == "EasyWorship") {
-      book.focus();
-      bookInput = book.value
+      book.focus(); //Goes back to book input
+      //get input values
+      bookInput = book.value 
       chapterInput = chapter.value
       verseInput = verse.value
       finalInput = bookInput+" "+chapterInput+":"+verseInput;
@@ -803,8 +933,21 @@ function modifyFinalInput() {
   else if (selected == "VideoPsalm") {
     return replaceSecondSeparator(videoPsalmInput.value);
   }
-  else {
-    return bibleShowInput.value;
+  else { //Bibleshow logic
+    input_text = bibleShowInput.value;
+    let bk_info = isValidBibleBook(input_text); //return format [str: book, int: endBookIndex]
+    let bk = bk_info[0]; // actual bible book stored in bk
+    let chap = null;
+    let ver = null
+    if (bk) {
+      chap_info = isValidChapter(input_text,bk,bk_info[1]); //return format [Boolean: valid, int: chapter, int: endChapIndex]
+      chap = chap_info[1]; //actual chapter stored in chap
+      if (chap) {
+        ver = isValidVerse(bk,chap,input_text,chap_info[2]); //gotten verse number
+      }
+    }
+    let finalEntry = bk+" "+chap+":"+ver; 
+    return finalEntry;
   }
 }
 function applyInputFeatures(input) {

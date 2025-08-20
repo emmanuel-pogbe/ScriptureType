@@ -91,7 +91,7 @@ def is_valid_biblebook(str):
     end_book_index = None
     len_text = 0
     for i in range(len(str)):
-        if str[i]in "123" or str[i].isalpha():
+        if str[i].isalnum():
             if str[i].isalpha() and first_alpha == False:
                 first_alpha = True
             if str[i].isdigit() and first_alpha == True:
