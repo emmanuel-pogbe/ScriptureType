@@ -10,6 +10,8 @@ const scriptureInputsEasyWorship = document.querySelectorAll(".input-class");
 const scripture = document.getElementById("scripture");
 const scriptureData = JSON.parse(document.getElementById("scripture-data").textContent);
 const bibleBooks = JSON.parse(document.getElementById("bible-books").textContent);
+const prefixMap = JSON.parse(document.getElementById("prefix-map").textContent);
+const aliasMap = JSON.parse(document.getElementById("alias-map").textContent);
 const help = document.getElementById("help");
 const main = document.getElementById("main");
 const confirmHelp = document.getElementById("confirm-help");
@@ -43,6 +45,8 @@ let softwareType = document.getElementById("software-type");
 let timerText = document.getElementById("timerText");
 
 startBtn.addEventListener("click",function(e) {
+  console.log(prefixMap);
+  console.log(aliasMap);
   e.preventDefault();
   selected = software.value;
   scriptureSearchBoxes.forEach(input=>{

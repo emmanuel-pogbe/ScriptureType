@@ -160,6 +160,12 @@
     <script id="bible-books" type="application/json">
         {{ bible_books | tojson }}
     </script>
+    <script id="prefix-map" type="application/json">
+        {{ prefix_map| tojson }}
+    </script>
+    <script id="alias-map" type="application/json">
+        {{ alias_map| tojson }}
+    </script>
     <script src="{{url_for('static',filename='script.js')}}"></script>
 </body>
 

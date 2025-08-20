@@ -1,9 +1,11 @@
+import sys
+import os
+sys.path.insert(0, 'modules')
 from flask import Flask
 from flask import render_template
 import modules.bible as bible
 import modules.alias_map as aliasmap
 import modules.prefix_map as prefixmap
-import os
 scripture_data = bible.__bibleverses
 bible_books = bible.__biblebooks
 prefix_map = prefixmap.__bible_prefix_map
