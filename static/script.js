@@ -146,6 +146,7 @@ restartButtons.forEach(button=>{
     mainApp.classList.add("pop-in");
     //reset variables
     resetVariables();
+    bibleShowInput.style.backgroundColor = "white";
   });
 });
 
@@ -156,6 +157,7 @@ homeButtons.forEach(button=> {
     resultPage.classList.add("hidden");
     selection.classList.remove("hidden");
     resetVariables();
+    bibleShowInput.style.backgroundColor = "white";
   });
 });
 scriptureButton.forEach(button=>{ 
