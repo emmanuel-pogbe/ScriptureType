@@ -832,8 +832,31 @@ function isValidVerse(bk,chap,str,chap_index) {
   }
   return parseInt(foundNum,10); //actual verse
 }
-bibleShowInput.addEventListener("keydown",function(e){
-  //code for bibleshow
+//colors for bibleshow input box
+const COLOR_NORMAL = "white";
+const COLOR_LIGHT_RED = "#f29f9f";
+const COLOR_DARK_RED  = "#CD5C5C";
+
+bibleShowInput.addEventListener("input",function(e){
+  let actualInput = bibleShowInput.value;
+  if (actualInput.length === 0) {
+    bibleShowInput.style.backgroundColor = COLOR_NORMAL;
+  }
+  else {
+    let bk_info = isValidBibleBook(actualInput);
+    if (bk_info[0]) { //if the book is valid then check the chapter
+      let chap_info = isValidChapter(actualInput,bk_info[0],bk_info[1]);
+      if (chap_info[0]) { //If the chapter is valid then color should be white
+        bibleShowInput.style.backgroundColor = COLOR_NORMAL;
+      }
+      else { //If the chapter is not valid:
+        bibleShowInput.style.backgroundColor = COLOR_LIGHT_RED;
+      }
+    }
+    else { // If the book is not valid:
+      bibleShowInput.style.backgroundColor = COLOR_DARK_RED;
+    }
+  }
 });
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
