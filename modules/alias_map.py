@@ -1,4 +1,4 @@
-__alias_map = {
+__bible_alias_map = {
     "Ge":"Genesis",
     "Ex":"Exodus",
     "Le":"Leviticus",

@@ -1,3 +1,6 @@
+from alias_map import __bible_alias_map
+from prefix_map import __bible_prefix_map
+
 __bibleverses = {
     'Genesis':[31,25,24,26,32,22,24,22,29,32,32,20,18,24,21,16,27,33,38,18,34,24,20,67,34,35,46,22,35,43,54,33,20,31,29,43,36,30,23, 23,57,38,34,34,28,34,31,22,33,26],
     'Exodus':[22,25,22,31,23,30,29,28,35,29,10,51,22,31,27,36,16,27,25,26,37,30,33,18,40,37,21,43,46,38,18,35,23,35,35,38,29,31,43,38],
@@ -66,33 +69,145 @@ __bibleverses = {
     'Jude':[25],
     'Revelation':[20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21],
 }
+
 __biblebooks = list(__bibleverses.keys())
 #BibleShow Test
 
-
-
-
-
-
-
-
-# import random
-# def get_bible_list():
-#     bibleverses=[]
-#     for i in __bibleverses.keys():
-#         bibleverses.append(i)
-#     return bibleverses
-# def getBook():
-#     return random.choice(list(__bibleverses.keys()))
-# def getChapter(book):
-#     no_of_chapters = __bibleverses[book]
-#     return random.randint(1,len(no_of_chapters))
-# def getVerse(book,chapter):
-#     no_of_chapters = __bibleverses[book]
-#     verse_size = no_of_chapters[chapter-1]
-#     return random.randint(1,verse_size)
-# def getScripture():
-#     book = getBook()
-#     chapter = getChapter(book)
-#     verse = getVerse(book,chapter)
-#     return book+" "+str(chapter)+":"+str(verse)
+def capitalize_first_letter(str):
+    first_alpha = False
+    text = ""
+    for i in str:
+        if i.isalpha() and first_alpha == False:
+            text += i.upper()
+            first_alpha = True
+        else:
+            text += i
+    return text
+def is_valid_biblebook(str):
+    text = ""
+    found_book = False
+    book_gotten = None
+    first_alpha = False
+    end_book_index = None
+    len_text = 0
+    for i in range(len(str)):
+        if str[i]in "123" or str[i].isalpha():
+            if str[i].isalpha() and first_alpha == False:
+                first_alpha = True
+            if str[i].isdigit() and first_alpha == True:
+                pass
+            else:
+                text+=str[i]
+                end_book_index = i
+                
+        if not str[i].isalpha():
+            if found_book:
+                break
+        if len(text)>0 and len(text)>len_text:
+            len_text = len(text)
+            text = text.lower()
+            bk = __bible_alias_map.get(capitalize_first_letter(text))
+            if bk == None:
+                book_gotten = __bible_prefix_map.get(text)
+            else:
+                book_gotten = bk
+        if book_gotten:
+            found_book = True
+    return [book_gotten,end_book_index]
+def is_valid_chapter(str,book,end_book_index):
+    found_num = ""
+    first_chap_num = False
+    valid = False
+    end_chap_index = None
+    for i in range(end_book_index+1,len(str)):            
+        if str[i].isdigit():
+            if first_chap_num == False:
+                found_num+=str[i]
+                first_chap_num = True
+                end_chap_index = i
+            else:
+                if not str[i-1].isalnum():
+                    break
+                else:
+                    found_num += str[i]
+                    end_chap_index = i
+        elif not str[i].isalnum() and first_chap_num:
+            break
+    max_chap = len(__bibleverses[book])
+    if len(found_num)>0:
+        if 0<int(found_num)<=max_chap:
+            valid = True
+    if len(found_num)==0:
+        return [valid,None,end_chap_index]
+    return [valid,int(found_num),end_chap_index]
+def get_verse(str,chap_index):
+    found_num = ""
+    first_verse_num = False
+    for i in range(chap_index+1,len(str)):
+        if str[i].isdigit():
+            if first_verse_num == False:
+                first_verse_num = True
+                found_num+=str[i]
+            else:
+                if not str[i-1].isalnum():
+                    break
+                else:
+                    found_num+= str[i]
+        elif not str[i].isalnum() and first_verse_num:
+            break
+    if len(found_num) == 0:
+        return None
+    return int(found_num)
+# if __name__ == "__main__": #BibleShow test
+    # import random
+    # def getBook():
+    #     return random.choice(list(__bibleverses.keys()))
+    # def getChapter(book):
+    #     no_of_chapters = __bibleverses[book]
+    #     return random.randint(1,len(no_of_chapters))
+    # def getVerse(book,chapter):
+    #     no_of_chapters = __bibleverses[book]
+    #     verse_size = no_of_chapters[chapter-1]
+    #     return random.randint(1,verse_size)
+    # def getScripture():
+    #     book = getBook()
+    #     chapter = getChapter(book)
+    #     verse = getVerse(book,chapter)
+    #     return book+" "+str(chapter)+":"+str(verse)
+    # scripture=getScripture()
+    # print(scripture)
+    # state = "normal"
+    # book = ""
+    # chapter = ""
+    # verse = ""
+    # text=""
+    # while True:
+    #     data = input("Enter char: ")
+    #     if data == "\\":
+    #         break
+    #     if len(data) == 1:
+    #         text += data
+    #         book_info = is_valid_biblebook(text)
+    #         book = book_info[0]
+    #         if book == None:
+    #             state = "dark red"
+    #         else:
+    #             chapter_info = is_valid_chapter(text,book,book_info[1])
+    #             if chapter_info[0]:
+    #                 state = "normal"
+    #                 chapter = chapter_info[1]
+    #             else:
+    #                 state = "light red"
+    #     else:
+    #         print("not a char")
+    #     print("State: "+state)
+    # bk_info = is_valid_biblebook(text)
+    # bk = bk_info[0]
+    # chap_info = is_valid_chapter(text,bk,bk_info[1])
+    # chap = chap_info[1]
+    # verse = get_verse(text,chap_info[2])
+    # final_output = f"{bk} {chap}:{verse}"
+    # if final_output == scripture:
+    #     print("Correct!")
+    # else:
+    #     print("Wrong")

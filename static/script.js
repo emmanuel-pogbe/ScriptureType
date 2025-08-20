@@ -698,6 +698,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
     }
   }
 });
+//bibleshow functions
 bibleShowInput.addEventListener("keydown",function(e){
   //code for bibleshow
 });
