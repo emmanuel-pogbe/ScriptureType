@@ -1,9 +1,6 @@
-# Easy Worship Trainer
+# 📖 ScriptureType
 
-A scripture-typing trainer built with Flask, inspired by EasyWorship’s scripture navigation.
+A fun and interactive **scripture-typing game** built with **Flask**.  
+ScriptureType helps you improve your typing speed and accuracy while engaging with Bible verses.
 
-## Setup
 
-```bash
-pip install -r requirements.txt
-python app.py
