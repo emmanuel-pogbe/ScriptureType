@@ -344,6 +344,7 @@ input[type=number]::-webkit-outer-spin-button {
 .help-content h2 {
     text-align: center;
     font-size: 1.75rem;
+    margin: 10px 0;
 }
 .help-content ol {
     counter-reset: item;
