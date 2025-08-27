@@ -30,6 +30,7 @@ let vPText = ""; // VideoPsalmText
 let vPSuggestion = ""; //VideoPsalmSuggestion
 let vPFinalBook = null; //VideoPsalmFinalBook
 let resultText = document.getElementById("average-result-text");
+let bestTime = document.getElementById("best-time");
 let started = 0;
 let times = [];
 let previousTime = null
@@ -43,6 +44,8 @@ let averageResult = document.getElementById("average");
 let testType = document.getElementById("custom-test-type");
 let softwareType = document.getElementById("software-type");
 let timerText = document.getElementById("timerText");
+let currentOption = "";
+let currentSetting = "";
 
 startBtn.addEventListener("click",function(e) {
   e.preventDefault();
@@ -94,6 +97,7 @@ function resetVariables() {
   stopCountdown();
   resetVideoPsalmInput();
   bibleShowInput.value = "";
+  hideCrown();
 }
 function fetchBook() {
   const books = Object.keys(scriptureData);
@@ -218,6 +222,14 @@ okBtn.addEventListener("click",()=>{
     console.log("Can't be less than "+min);
   }
 });
+function hideCrown() {
+  let crown = document.getElementById("best-crown");
+  crown.classList.add("hidden");
+}
+function showCrown() {
+  crown = document.getElementById("best-crown");
+  crown.classList.remove("hidden");
+}
 custInput.addEventListener("keydown",(e)=>{ //Only allows positive integers 
   let customInput = custInput;
   let currentSelected = document.querySelector(".active2").textContent;
@@ -860,6 +872,59 @@ bibleShowInput.addEventListener("input",function(e){
     }
   }
 });
+function setBestScore(score_gotten) {
+  gameKey = (currentSetting==="Custom"?"cus_":"")+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s"));
+  let currentBest = null;
+  let isChanged = false;
+  const score = score_gotten;
+  try {
+    currentBest = localStorage.getItem(gameKey);
+  } catch (error) {
+    console.error('Error reading from localStorage:', error);
+    // Fallback: Treat as no best score
+    currentBest = null;
+  }
+  const parsedBest = currentBest ? Number(currentBest) : null;
+  if (isNaN(parsedBest)) {
+    console.warn('Invalid best score in storage; resetting:', currentBest);
+    parsedBest = null; // Treat corrupted data as no best
+  }
+  // Update logic based on option
+  if (currentOption === "Scripture count") {
+    // Assuming lower score (time) is better
+    if (parsedBest === null || parsedBest > score) {
+      try {
+        localStorage.setItem(gameKey, score.toString());
+        isChanged = true;
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+        // Don't crash; proceed without saving
+      }
+    }
+  } else {
+    // Assuming higher score (count) is better
+    if (parsedBest === null || parsedBest < score) {
+      try {
+        localStorage.setItem(gameKey, score.toString());
+        isChanged = true;
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+        // Don't crash; proceed without saving
+      }
+    }
+  }
+  let new_score = score.toString(); // Default to current score if storage failed;
+  try {
+    new_score = localStorage.getItem(gameKey) || score.toString();
+  } catch (error) {
+    console.error('Error re-reading from localStorage:', error);
+  }
+  const parsedNewScore = parseFloat(new_score);
+  if (!isNaN(parsedNewScore) && parsedNewScore !== 0 && isChanged) {
+    showCrown();
+  }
+  return new_score+(currentOption=="Scripture count"?" seconds":" scriptures");
+}
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
   let average = sum / times.length;
@@ -895,10 +960,13 @@ function countdown() {
   timeLeft = Math.ceil(msLeft/1000);
   if (timeLeft <= 0) {
     started = 0;
+    let bestScore = setBestScore(scriptureCount);
+    bestTime.textContent = bestScore;
     resultText.textContent = "Number of Scriptures typed";
     averageResult.textContent = scriptureCount + " scriptures";
     testType.textContent = "Time " + totalTime;
     document.getElementById("software-type").textContent = selected;
+    // console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
     stopCountdown();
@@ -1038,12 +1106,15 @@ function applyInputFeatures(input) {
           }
           if (scriptureCount==totalScriptures) {
             averageTime = calculateAverageTime();
+            let bestScore = setBestScore(averageTime);
+            bestTime.textContent = bestScore;
             resultText.textContent = "Average Time";
             averageResult.textContent = averageTime + " seconds";
             testType.textContent = "Scriptures " + totalScriptures; 
             document.getElementById("software-type").textContent = selected+"";
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
+            console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
           }
         }
         else {

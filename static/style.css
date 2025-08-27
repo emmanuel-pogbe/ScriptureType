@@ -233,6 +233,14 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: larger;
     padding: 30px;
 }
+.fa-crown {
+    color: #84A0C6;
+    overflow: hidden;
+    font-size: larger;
+}
+.fa-crown::before { 
+    /*looking for a fix*/ 
+}
 .popup {
     position: fixed;
     border: none;
@@ -370,7 +378,7 @@ input[type=number]::-webkit-outer-spin-button {
     background: #555; 
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 #average-result-text {
     color:#595E76;
@@ -384,6 +392,9 @@ input[type=number]::-webkit-outer-spin-button {
 #test-type-text {
     color: #595E76;
 }
-#custom-test-type, #software-type {
+#custom-test-type, #software-type, #best-time {
     color: #84A0C6;
+}
+.result-display {
+    display: flex;
 }
