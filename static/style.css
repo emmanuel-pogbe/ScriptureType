@@ -315,7 +315,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .result {
     display: flex;
-    height: 80%;
+    height: 100%;
     margin: 0 auto;
     flex-direction: column;
     align-items: center;
