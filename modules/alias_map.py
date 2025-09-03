@@ -63,6 +63,6 @@ __bible_alias_map = {
     "1Jn":"1 John",
     "2Jn":"2 John",
     "3Jn":"3 John",
-    "Jud":"Jude",
+    "Jude":"Jude",
     "Re":"Revelation"
 }
