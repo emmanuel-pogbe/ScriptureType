@@ -21,6 +21,7 @@ __bible_prefix_map = {
    'leviticu':'Leviticus',
    'leviticus':'Leviticus',
    'nm':'Numbers',
+   'nb':'Numbers',
    'nu':'Numbers',
    'num':'Numbers',
    'numb':'Numbers',
