@@ -47,6 +47,8 @@ let timerText = document.getElementById("timerText");
 let currentOption = "";
 let currentSetting = "";
 
+displayHelp();
+
 startBtn.addEventListener("click",function(e) {
   e.preventDefault();
   selected = software.value;
