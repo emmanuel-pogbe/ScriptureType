@@ -22,15 +22,23 @@
 <body>
     <div id="app">
         <header>
-            <a href="#" id="logo">
-                <div class="icon">
-                    <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
-                        width="55px" height="100%">
-                </div>
-                <h1>ScriptureType</h1>
-            </a>
-            <button id="help-button" onclick="displayHelp()" class="help-button"><i
-                    class="fa-solid fa-circle-question"></i></button>
+            <div class="header-left">
+                <a href="#" id="logo">
+                    <div class="icon">
+                        <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
+                            width="55px" height="100%">
+                    </div>
+                    <h1>ScriptureType</h1>
+                </a>
+                <a href="/leaderboards">
+                    <button id="leaderboard-button" class="leaderboard-button" title="Show leaderboard">
+                        <i class="fa-solid fa-crown"></i>
+                    </button>
+                </a>
+            </div>
+            <button id="help-button" onclick="displayHelp()" class="help-button" title="Show help">
+                <i class="fa-solid fa-circle-question"></i>
+            </button>
         </header>
         <div id="selection" class="result pop-in">
             <form>
