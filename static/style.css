@@ -16,6 +16,18 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+.header-left {
+    display: flex;   
+    gap: 10px; 
+}
+.leaderboard-button {
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 30px;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+}
 #logo {
     cursor: pointer;
     display: grid;

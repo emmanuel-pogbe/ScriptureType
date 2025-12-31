@@ -888,7 +888,6 @@ function setBestScore(score_gotten) {
     currentBest = null;
   }
   let parsedBest = currentBest ? Number(currentBest) : null;
-  
   if (isNaN(parsedBest)) {
     console.warn('Invalid best score in storage; resetting:', currentBest);
     parsedBest = null; // Treat corrupted data as no best
@@ -1109,8 +1108,11 @@ function applyInputFeatures(input) {
             previousTime = Date.now();
           }
           if (scriptureCount==totalScriptures) {
-            averageTime = calculateAverageTime();
+            averageTime = calculateAverageTime(); // Number to work with for leaderboard
             let bestScore = setBestScore(averageTime);
+            if (bestScore == averageTime) {
+              // then send averageTime to the backend to check if it is worth entering the global leaderboard
+            }
             bestTime.textContent = bestScore;
             resultText.textContent = "Average Time";
             averageResult.textContent = averageTime + " seconds";
@@ -1119,6 +1121,11 @@ function applyInputFeatures(input) {
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
             console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
+          
+          // data needed
+          // score (if score is the best time)
+          // selected test (e.g Scriptures 10)
+          // software (e.g EasyWorship)
           }
         }
         else {
