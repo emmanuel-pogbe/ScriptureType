@@ -47,7 +47,7 @@ let timerText = document.getElementById("timerText");
 let currentOption = "";
 let currentSetting = "";
 
-displayHelp();
+// displayHelp();
 
 startBtn.addEventListener("click",function(e) {
   e.preventDefault();
@@ -1110,22 +1110,58 @@ function applyInputFeatures(input) {
           if (scriptureCount==totalScriptures) {
             averageTime = calculateAverageTime(); // Number to work with for leaderboard
             let bestScore = setBestScore(averageTime);
-            if (bestScore == averageTime) {
-              // then send averageTime to the backend to check if it is worth entering the global leaderboard
-            }
             bestTime.textContent = bestScore;
             resultText.textContent = "Average Time";
             averageResult.textContent = averageTime + " seconds";
-            testType.textContent = "Scriptures " + totalScriptures; 
+            testTypeString = "Scriptures " + totalScriptures;
+            testType.textContent = testTypeString;
             document.getElementById("software-type").textContent = selected+"";
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
+            if (bestScore == averageTime) {
+              userForm = document.getElementById("get-user-details");
+              userForm.classList.remove("hidden");
+              userForm.addEventListener("submit",function(event) {
+                event.preventDefault(); //Prevent default form submission
+                //Get form values
+                const userName = document.getElementById("userName").value;
+                const userCountry = document.getElementById("userCountry").value;
+
+              });
+
+              //Preparing and Sending necessary data
+              // data needed
+              // score (if score is the best time)
+              // selected test (e.g Scriptures 10)
+              // software (e.g EasyWorship)
+              
+              const scoreData = {
+                name: userName,
+                country: userCountry,
+                score: averageTime,
+                selectedTest: testTypeString,
+                software: selected
+              };
+              fetch("/register", {
+                method: "POST",
+                headers: {
+                  "Content-type": "application/json"
+                },
+                body: JSON.stringify(scoreData)
+              })
+              .then(response =>{
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+              })
+              .then(data=>{
+                console.log("Success: ", data);
+              })
+              .catch(error=> {
+                console.error("Error "+error);
+              });
+            }
             console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
           
-          // data needed
-          // score (if score is the best time)
-          // selected test (e.g Scriptures 10)
-          // software (e.g EasyWorship)
           }
         }
         else {

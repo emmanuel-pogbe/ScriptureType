@@ -81,3 +81,4 @@ cython_debug/
 .ruff_cache/
 .pypirc
 *.db
+*.db-journal
