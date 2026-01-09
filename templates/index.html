@@ -32,7 +32,40 @@
                 </a>
                 <a href="/leaderboards">
                     <button id="leaderboard-button" class="leaderboard-button" title="Show leaderboard">
-                        <i class="fa-solid fa-crown"></i>
+                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 246.58 176.82">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #53a0c6;
+                                    }
+
+                                    .cls-2 {
+                                        fill: #ef472e;
+                                    }
+
+                                    .cls-3 {
+                                        font-size: 34.57px;
+                                        fill: #231f20;
+                                        font-family: Arial-Black, Arial;
+                                        font-weight: 800;
+                                    }
+                                </style>
+                            </defs>
+                            <rect class="cls-1" y="124.72" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="122.43" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="72.62" width="45.91" height="26.05" />
+                            <rect class="cls-2" x="244.36" y="301.45" width="133.92" height="50.61"
+                                transform="translate(171.99 -365.4) rotate(45)" /><text class="cls-3"
+                                transform="translate(117.12 57.93) rotate(45)">NEW!</text>
+                            <polyline class="cls-2" points="75.29 35.79 95.84 56.33 113.73 38.44" />
+                            <polyline class="cls-2" points="111.08 0 131.62 20.54 113.73 38.44" />
+                            <polyline class="cls-2" points="210.79 171.29 190.25 150.74 208.14 132.85" />
+                            <polyline class="cls-2" points="246.58 135.5 226.04 114.96 208.14 132.85" />
+                        </svg>
                     </button>
                 </a>
             </div>
@@ -78,7 +111,8 @@
                     <button style="display: none;" onclick="checkReference()"></button>
                 </div>
                 <div class="scripture-search videopsalm hidden" id="videopsalm-box">
-                    <input type="text" id="videopsalm-input" class="videopsalm-input" placeholder="Reference to select, e.g.: Romans 3:23" >
+                    <input type="text" id="videopsalm-input" class="videopsalm-input"
+                        placeholder="Reference to select, e.g.: Romans 3:23">
                 </div>
                 <div class="scripture-search bibleshow" id="bibleshow-box">
                     <input type="text" id="bibleshow-input" class="bibleshow-input" placeholder="Reference">
@@ -117,8 +151,8 @@
                             <option value="Canada">Canada</option>
                         </select>
                         <button type="submit">Submit</button>
-                        <button 
-                            type="button" onclick="document.getElementById(get-user-details).classList.add('hidden')">Cancel
+                        <button type="button"
+                            onclick="document.getElementById(get-user-details).classList.add('hidden')">Cancel
                         </button>
                     </form>
                 </div>
@@ -127,7 +161,9 @@
         <div id="result" class="result hidden pop-in">
             <div>
                 <div id="average-result-text">Average Time</div>
-                <div class="result-display"><div id="average">0.000</div> <i class="fa-solid fa-crown hidden" id="best-crown"></i></div>
+                <div class="result-display">
+                    <div id="average">0.000</div> <i class="fa-solid fa-crown hidden" id="best-crown"></i>
+                </div>
             </div>
             <div class="extra-information">
                 <div style="padding-bottom: 5px;">
@@ -145,7 +181,8 @@
             </div>
             <div id="restart2" class="restart-button">
                 <button id="restartButton2" class="restart-btn"><i class="fa-solid fa-arrow-rotate-right"></i></button>
-                <button id="homeButton2" class="restart-btn"><i class="fa-solid fa-house" style="color: #84A0C6;"></i></button>
+                <button id="homeButton2" class="restart-btn"><i class="fa-solid fa-house"
+                        style="color: #84A0C6;"></i></button>
             </div>
         </div>
         <div id="help" class="help hidden fast-pop-in">
@@ -155,7 +192,8 @@
                 <ol>
                     <li>
                         <strong>Choose software</strong><br />
-                        Use the "select church presentation software" dropdown to between pick EasyWorship, VideoPsalm, or BibleShow. The input rules change depending on your choice.
+                        Use the "select church presentation software" dropdown to between pick EasyWorship, VideoPsalm,
+                        or BibleShow. The input rules change depending on your choice.
                     </li>
                     <li>
                         <strong>Choose a drill</strong><br />
@@ -171,7 +209,8 @@
                     </li>
                     <li>
                         <strong>Submit each verse:</strong><br />
-                        Press <code>Enter</code> after typing the verse reference in the format required by the selected software. A new scripture will then
+                        Press <code>Enter</code> after typing the verse reference in the format required by the selected
+                        software. A new scripture will then
                         appear.
                     </li>
                     <li>
@@ -180,7 +219,8 @@
                     </li>
                     <li>
                         <strong>Home/Restart</strong><br />
-                        Click the ScriptureType logo (top-left) or press the Home button to return to the start screen or press the restart button to reset the current test.
+                        Click the ScriptureType logo (top-left) or press the Home button to return to the start screen
+                        or press the restart button to reset the current test.
                     </li>
                 </ol>
                 <button id="confirm-help" class="okBtn">Ok</button>
