@@ -1126,38 +1126,39 @@ function applyInputFeatures(input) {
                 //Get form values
                 const userName = document.getElementById("userName").value;
                 const userCountry = document.getElementById("userCountry").value;
+                const timestamp = Date.now();
+                //Preparing and Sending necessary data
+                // data needed
+                // score (if score is the best time)
+                // selected test (e.g Scriptures 10)
+                // software (e.g EasyWorship)
+                // timestamp
+                const scoreData = {
+                  name: userName,
+                  country: userCountry,
+                  score: averageTime,
+                  selectedTest: testTypeString,
+                  software: selected,
+                  timestamp: timestamp
+                };
+                fetch("/register", {
+                  method: "POST",
+                  headers: {
+                    "Content-type": "application/json"
+                  },
+                  body: JSON.stringify(scoreData)
+                })
+                .then(response =>{
+                  if (!response.ok) throw new Error("Network response was not ok");
+                  return response.json();
+                })
+                .then(data=>{
+                  console.log("Success: ", data);
+                })
+                .catch(error=> {
+                  console.error("Error "+error);
+                });
 
-              });
-
-              //Preparing and Sending necessary data
-              // data needed
-              // score (if score is the best time)
-              // selected test (e.g Scriptures 10)
-              // software (e.g EasyWorship)
-              
-              const scoreData = {
-                name: userName,
-                country: userCountry,
-                score: averageTime,
-                selectedTest: testTypeString,
-                software: selected
-              };
-              fetch("/register", {
-                method: "POST",
-                headers: {
-                  "Content-type": "application/json"
-                },
-                body: JSON.stringify(scoreData)
-              })
-              .then(response =>{
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-              })
-              .then(data=>{
-                console.log("Success: ", data);
-              })
-              .catch(error=> {
-                console.error("Error "+error);
               });
             }
             console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
