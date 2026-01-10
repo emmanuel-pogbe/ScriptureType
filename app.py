@@ -31,8 +31,9 @@ def register_player():
     name = data.get("name")
     country = data.get("country")
     score = data.get("score")
+    software = data.get("software")   
     selected_test = data.get("selectedTest")
-    software = data.get("software")    
+    timestamp = data.get("timestamp") 
 
     #We could save the data to the DB now
 
