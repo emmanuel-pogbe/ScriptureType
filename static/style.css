@@ -410,3 +410,13 @@ input[type=number]::-webkit-outer-spin-button {
 .result-display {
     display: flex;
 }
+
+
+/*Leaderboard.html*/
+
+.flag-emoji {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+    vertical-align: middle;
+}

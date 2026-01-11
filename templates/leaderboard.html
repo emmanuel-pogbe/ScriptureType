@@ -6,8 +6,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboards | ScriptureType</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 </head>
 <body>
-    <h1>Hi</h1>
+    <div id="app">
+        <header>
+            <div class="header-left">
+                <a href="#" id="logo">
+                    <div class="icon">
+                        <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
+                            width="55px" height="100%">
+                    </div>
+                    <h1>ScriptureType</h1>
+                </a>
+                <a href="/leaderboards">
+                    <button id="leaderboard-button" class="leaderboard-button" title="Show leaderboard">
+                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 246.58 176.82">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #53a0c6;
+                                    }
+
+                                    .cls-2 {
+                                        fill: #ef472e;
+                                    }
+
+                                    .cls-3 {
+                                        font-size: 34.57px;
+                                        fill: #231f20;
+                                        font-family: Arial-Black, Arial;
+                                        font-weight: 800;
+                                    }
+                                </style>
+                            </defs>
+                            <rect class="cls-1" y="124.72" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="122.43" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="72.62" width="45.91" height="26.05" />
+                            <rect class="cls-2" x="244.36" y="301.45" width="133.92" height="50.61"
+                                transform="translate(171.99 -365.4) rotate(45)" /><text class="cls-3"
+                                transform="translate(117.12 57.93) rotate(45)">NEW!</text>
+                            <polyline class="cls-2" points="75.29 35.79 95.84 56.33 113.73 38.44" />
+                            <polyline class="cls-2" points="111.08 0 131.62 20.54 113.73 38.44" />
+                            <polyline class="cls-2" points="210.79 171.29 190.25 150.74 208.14 132.85" />
+                            <polyline class="cls-2" points="246.58 135.5 226.04 114.96 208.14 132.85" />
+                        </svg>
+                    </button>
+                </a>
+            </div>
+            <button id="help-button" onclick="displayHelp()" class="help-button" title="Show help">
+                <i class="fa-solid fa-circle-question"></i>
+            </button>
+        </header>
+        <div>
+            <div class="side-bar">
+                🇳🇬
+            </div>
+            <div class="leaderboard-table">
+                <table>
+                    <th>
+            
+                    </th>
+                    {%for data in top_10%}
+                    <tr>
+                        {%for elem in data%}
+                            <td>{{elem}}</td>
+                        {%endfor%}
+                    </tr>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

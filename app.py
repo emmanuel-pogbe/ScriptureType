@@ -18,9 +18,16 @@ app = Flask(__name__,template_folder="templates",static_folder="static")
 def index():
     return render_template("index.html",scripture_data=scripture_data,bible_books=bible_books,prefix_map=prefix_map,alias_map=alias_map)
 
-@app.route("/leaderboards",methods=["GET"])
+@app.route("/leaderboards",methods=["GET","POST"])
 def get_leaderboard():
-    return render_template("leaderboard.html")
+
+    top_10 = db.get_top_10("10")
+    if request.method == "POST":
+        data = request.get_json()
+        player_id = data.get("id")
+        player_position_info = db.get_player_position_info("10", player_id)
+        return render_template("leaderboard.html",top_10 = top_10,player_position_info = player_position_info)
+    return render_template("leaderboard.html",top_10 = top_10)
 
 @app.route("/register",methods=["POST"])
 def register_player():
