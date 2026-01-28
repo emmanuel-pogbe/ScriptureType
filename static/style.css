@@ -413,10 +413,144 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 /*Leaderboard.html*/
+.leaderboard-main {
+    display: flex;
+}
 
-.flag-emoji {
-    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
-    font-size: 2rem;
-    line-height: 1;
-    vertical-align: middle;
+.leaderboard-flag-column {
+    font-size: 20px;
+}
+
+.leaderboard-profile-flag {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 15%;       
+  overflow: hidden;         
+  /* border: 2px solid #ccc;      */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-size: cover;     
+  background-position: center;
+}
+
+.leaderboard-side-bar-inner {
+    min-width: 250px;
+    background-color: #232531;
+    height: 50%;    
+    border-radius: 5%;
+    flex-shrink: 0;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.side-bar-button {
+    width: 90%;
+    padding: 12px 18px;
+    margin: 5px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: #d4d4d4;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    gap: 12px;
+    transition: all 0.2s;
+}
+.side-bar-button:hover {
+    background: #C6C8D1;
+    color: black;
+}
+
+.leaderboard-score-separator {
+    /* border: 1px solid #595E76; */
+    border-radius: 2%;
+    width: 80%;
+    /* margin: auto;
+    margin-bottom: 10px; */
+    height: 2px;
+    background-color: #595E76;
+}
+.leaderboard-active {
+    background-color: #84A0C6;
+    color: black;
+}
+
+.leaderboard-table {
+    height: 100%;
+    width: 70%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    position: sticky;
+    top: 0;
+    /* z-index: 10; */
+}
+
+th {
+    /* padding: 16px 20px; */
+    text-align: left;
+    font-weight: 400;
+    font-size: 17px;
+    color: #666;
+    text-transform: lowercase;
+    border-bottom: 1px solid #3a3a4a;
+}
+th:first-child {
+    /* width: 20px; */
+    padding: 16px 10px;
+    text-align: center;
+    width: 15%;
+}
+
+th:last-child {
+    text-align: right;
+}
+
+th:nth-child(2) {
+    width: 30%;
+}
+
+tbody tr {
+    background-color: #232531;
+    height: 20px;
+}
+tbody tr:nth-child(odd) {
+    background-color: #161821;
+}
+
+td {
+    padding: 10px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #3a3a4a;
+}
+
+td:first-child {
+    padding: 10px 10px;
+    text-align: center;
+    color: #888;
+    font-weight: 700;
+}
+
+td:last-child {
+    text-align: right;
+}
+
+td:nth-child(2) {
+    width: 30%;
+}
+
+.leaderboard-profile-flag {
+    cursor: pointer;
+}
+.leaderboard-profile-flag:focus::after {
+  opacity: 1;
+  visibility: visible;
 }

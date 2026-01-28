@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboards | ScriptureType</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
 </head>
 <body>
     <div id="app">
@@ -62,25 +63,60 @@
                 <i class="fa-solid fa-circle-question"></i>
             </button>
         </header>
-        <div>
-            <div class="side-bar">
-                🇳🇬
+        <div class="leaderboard-main">
+            <div class="leaderboard-side-bar-inner">
+                <button class="side-bar-button leaderboard-active"> 
+                    10 scriptures
+                </button>
+                <button class="side-bar-button">
+                    20 scriptures
+                </button>
+                <div class="leaderboard-score-separator"></div>
+                <button class="side-bar-button">
+                    30 seconds
+                </button>
+                <button class="side-bar-button">
+                    60 seconds
+                </button>
             </div>
             <div class="leaderboard-table">
                 <table>
-                    <th>
-            
-                    </th>
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Country</th>
+                            <th>Score</th>
+                            <th>Software used</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
                     {%for data in top_10%}
-                    <tr>
-                        {%for elem in data%}
-                            <td>{{elem}}</td>
-                        {%endfor%}
-                    </tr>
+                        <tr>
+                            {%if loop.index0+1 == 1%}
+                                <td><span>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 640 640" style="fill: #595E76" class="rank-icon">
+                                        <path
+                                            d="M345 151.2C354.2 143.9 360 132.6 360 120C360 97.9 342.1 80 320 80C297.9 80 280 97.9 280 120C280 132.6 285.9 143.9 295 151.2L226.6 258.8C216.6 274.5 195.3 278.4 180.4 267.2L120.9 222.7C125.4 216.3 128 208.4 128 200C128 177.9 110.1 160 88 160C65.9 160 48 177.9 48 200C48 221.8 65.5 239.6 87.2 240L119.8 457.5C124.5 488.8 151.4 512 183.1 512L456.9 512C488.6 512 515.5 488.8 520.2 457.5L552.8 240C574.5 239.6 592 221.8 592 200C592 177.9 574.1 160 552 160C529.9 160 512 177.9 512 200C512 208.4 514.6 216.3 519.1 222.7L459.7 267.3C444.8 278.5 423.5 274.6 413.5 258.9L345 151.2z" />
+                                    </svg>
+                                </span></td>
+                            {%else%}
+                                <td><span>{{loop.index0+1}}</span></td>
+                            {%endif%}
+                           <td><span class="player-name">{{data[0]}}</span></td>
+                            <td class="leaderboard-flag-column"><span class="fi fi-xx fi-{{data[1].lower()}} leaderboard-profile-flag" data-country="Default" aria-label="Default" tabindex="0"></span></td>
+                            <td><span>{{data[2]}}</span></td>
+                            <td><span>{{data[3]}}</span></td>
+                        </tr>
                     {%endfor%}
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <script src="{{url_for('static',filename='leaderboard.js')}}">
+
+    </script>
 </body>
 </html>
