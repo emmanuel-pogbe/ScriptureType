@@ -1,5 +1,4 @@
 import sqlite3 
-import helpers
 
 def insert_into_db(user_score_data: tuple):
     try:
@@ -8,11 +7,33 @@ def insert_into_db(user_score_data: tuple):
         c.execute("""
             INSERT INTO scores(name,country,score,software,text_selected) VALUES (?,?,?,?,?)
         """,user_score_data)
+        db.commit()
+        db.close()
         return 1
     except Exception as e:
-        return e
+        try:
+            db.close()
+        except Exception as e:
+            print(e)
+        finally:    
+            return e
     finally:
         db.close()
+def update_user_score(user_id,test_type,new_score):
+    try:
+        db = sqlite3.connect("score_info.db")
+        c = db.cursor()
+        c.execute("UPDATE scores SET score = ? WHERE user_id = ? AND test_type=?",(new_score,user_id,test_type))
+        db.commit()
+        db.close()
+        return 1
+    except Exception as e:
+        try:
+            db.close()
+        except Exception as e:
+            print(e)
+        finally:    
+            return e
 
 def get_top_10(test_type: str):
     ascending_mode = ["Scripture 10", "Scripture 20","10","20"]
@@ -24,11 +45,11 @@ def get_top_10(test_type: str):
         else:
             c.execute("SELECT name,country,score,software FROM scores WHERE test_selected = ? ORDER BY score DESC, timestamp ASC LIMIT 10",(test_type,))
         top10 = c.fetchall()
-        top10_with_flags = [
-            (name,helpers.country_code_to_flag(country),score,software)
-            for name,country,score,software in top10
-        ]
-        return top10_with_flags
+        # top10_with_flags = [
+        #     (name,helpers.country_code_to_flag(country.lower()),score,software)
+        #     for name,country,score,software in top10
+        # ]
+        return top10
     except Exception as e: 
         return "Failed to Fetch" + str(e)
 def get_player_position_info(test_type: str, player_id: str):
@@ -57,11 +78,11 @@ def get_player_position_info(test_type: str, player_id: str):
                     ) WHERE id = ?
                 """, (test_type, player_id))
         player_rank = c.fetchone()
-        #Get the flag representation of the country user is in
+        #Get the country representation of the country ISO code
         rank,name,country,score,software = player_rank
-        country_flag = helpers.country_code_to_flag(country)
+        country_name = helpers.country_code_to_name(country)
         player_rank_with_flag = (rank,name,country_flag,score,software)
-        return player_rank_with_flag
+        return player_rank
     except Exception as e:
         return "Failed to Fetch" + str(e)
 

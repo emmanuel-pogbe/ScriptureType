@@ -31,7 +31,7 @@ def get_leaderboard():
 
 @app.route("/register",methods=["POST"])
 def register_player():
-    #Register a player in the Database when the player gets a highscore
+    #Register a player in the Database when the player gets a highscore - first checks if player is registered
     player_id = str(uuid.uuid4())
     secret_token = secrets.token_hex(32)
     data = request.get_json()

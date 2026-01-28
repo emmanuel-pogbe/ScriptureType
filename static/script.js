@@ -956,6 +956,8 @@ function updateTimerDisplay() {
     timerText.textContent = `${minutes}:${seconds}`;
   }
 }
+
+
 function countdown() {
   updateTimerDisplay();
   let msLeft = endTime - Date.now();
@@ -966,12 +968,15 @@ function countdown() {
     bestTime.textContent = bestScore;
     resultText.textContent = "Number of Scriptures typed";
     averageResult.textContent = scriptureCount + " scriptures";
-    testType.textContent = "Time " + totalTime;
+    testTypeString = "Time " + totalTime;
+    testType.textContent = testTypeString;
     document.getElementById("software-type").textContent = selected;
     // console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
     stopCountdown();
+
+    displayUserFormCollection(bestScore,averageResult,testTypeString,selected);
     return;
   }
   timeoutId = setTimeout(countdown,200);
@@ -1051,6 +1056,56 @@ function applyInputFeatures(input) {
     selectAllOnFocus(input);
   }
 
+function isRegistered() { // Checks if user is registered correctly - soon to be implemented
+  return True
+}
+
+function displayUserFormCollection(bestScore,currentScore,testTypeString,selected) {
+  if (bestScore == currentScore && isRegistered()) {
+    //Write code for updating best score as well
+  userForm = document.getElementById("get-user-details");
+  userForm.classList.remove("hidden");
+  userForm.addEventListener("submit",function(event) {
+    event.preventDefault(); //Prevent default form submission
+    //Get form values
+    const userName = document.getElementById("userName").value;
+    const userCountry = document.getElementById("userCountry").value;
+    const timestamp = Date.now();
+    //Preparing and Sending necessary data
+    // data needed
+    // score (if score is the best time)
+    // selected test (e.g Scriptures 10)
+    // software (e.g EasyWorship)
+    // timestamp
+    const scoreData = {
+      name: userName,
+      country: userCountry,
+      score: currentScore,
+      selectedTest: testTypeString,
+      software: selected,
+      timestamp: timestamp
+    };
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(scoreData)
+    })
+    .then(response =>{
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.json();
+    })
+    .then(data=>{
+      console.log("Success: ", data);
+    })
+    .catch(error=> {
+      console.error("Error "+error);
+    });
+
+  });
+}
+}
   // Prevent backspace if the entire text is selected or deletion would result in an empty input.
   input.addEventListener("keydown", function(e) {
     if (started==0) { // Starting the test
@@ -1117,49 +1172,7 @@ function applyInputFeatures(input) {
             document.getElementById("software-type").textContent = selected+"";
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
-            if (bestScore == averageTime) {
-              userForm = document.getElementById("get-user-details");
-              userForm.classList.remove("hidden");
-              userForm.addEventListener("submit",function(event) {
-                event.preventDefault(); //Prevent default form submission
-                //Get form values
-                const userName = document.getElementById("userName").value;
-                const userCountry = document.getElementById("userCountry").value;
-                const timestamp = Date.now();
-                //Preparing and Sending necessary data
-                // data needed
-                // score (if score is the best time)
-                // selected test (e.g Scriptures 10)
-                // software (e.g EasyWorship)
-                // timestamp
-                const scoreData = {
-                  name: userName,
-                  country: userCountry,
-                  score: averageTime,
-                  selectedTest: testTypeString,
-                  software: selected,
-                  timestamp: timestamp
-                };
-                fetch("/register", {
-                  method: "POST",
-                  headers: {
-                    "Content-type": "application/json"
-                  },
-                  body: JSON.stringify(scoreData)
-                })
-                .then(response =>{
-                  if (!response.ok) throw new Error("Network response was not ok");
-                  return response.json();
-                })
-                .then(data=>{
-                  console.log("Success: ", data);
-                })
-                .catch(error=> {
-                  console.error("Error "+error);
-                });
-
-              });
-            }
+            displayUserFormCollection(bestScore,averageTime,testTypeString,selected);
             console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
           
           }
