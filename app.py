@@ -21,13 +21,14 @@ def index():
 @app.route("/leaderboards",methods=["GET","POST"])
 def get_leaderboard():
 
-    top_10 = db.get_top_10("10")
+    top_10 = db.get_top_10("10") #[(name,country_code,score,software used, country name),...]
     if request.method == "POST":
         data = request.get_json()
         player_id = data.get("id")
         player_position_info = db.get_player_position_info("10", player_id)
-        return render_template("leaderboard.html",top_10 = top_10,player_position_info = player_position_info)
-    return render_template("leaderboard.html",top_10 = top_10)
+        if player_position_info:
+            return render_template("leaderboard.html",top_10 = top_10,player_position_info = player_position_info)
+    return render_template("leaderboard.html",top_10 = top_10)  
 
 @app.route("/register",methods=["POST"])
 def register_player():
