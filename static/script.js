@@ -1062,7 +1062,7 @@ function isRegistered() { // Checks if user is registered correctly - soon to be
 }
 
 function displayUserFormCollection(bestScore,currentScore,testTypeString,selected) {
-  if (bestScore == currentScore && isRegistered()) {
+  if (bestScore == currentScore && !isRegistered()) {
     //Write code for updating best score as well
   userForm = document.getElementById("get-user-details");
   userForm.classList.remove("hidden");
