@@ -1,4 +1,5 @@
 import sqlite3 
+import helpers
 
 def insert_into_db(user_score_data: tuple):
     try:
@@ -45,11 +46,11 @@ def get_top_10(test_type: str):
         else:
             c.execute("SELECT name,country,score,software FROM scores WHERE test_selected = ? ORDER BY score DESC, timestamp ASC LIMIT 10",(test_type,))
         top10 = c.fetchall()
-        # top10_with_flags = [
-        #     (name,helpers.country_code_to_flag(country.lower()),score,software)
-        #     for name,country,score,software in top10
-        # ]
-        return top10
+        top10_with_flags = [
+            (name,country,score,software,helpers.get_country_name(country))
+            for name,country,score,software in top10
+        ]
+        return top10_with_flags
     except Exception as e: 
         return "Failed to Fetch" + str(e)
 def get_player_position_info(test_type: str, player_id: str):
@@ -80,11 +81,11 @@ def get_player_position_info(test_type: str, player_id: str):
         player_rank = c.fetchone()
         #Get the country representation of the country ISO code
         rank,name,country,score,software = player_rank
-        country_name = helpers.country_code_to_name(country)
-        player_rank_with_flag = (rank,name,country_flag,score,software)
-        return player_rank
-    except Exception as e:
-        return "Failed to Fetch" + str(e)
+        country_name = helpers.get_country_name(country)
+        player_rank_with_name = (rank,name,country,score,software,country_name)
+        return player_rank_with_name
+    except Exception:
+        return None
 
 if __name__ == "__main__":
     db = sqlite3.connect("score_info.db")
@@ -127,11 +128,10 @@ if __name__ == "__main__":
     # c.execute("DROP TABLE scores")
     db.commit()
     db.close()
-
     # top_10 = get_top_10("30s")
     # for user in top_10:
     #     for entry in user:
     #         print(entry,end=" ")
     #     print()
-    # player1 = get_player_position_info("30s", "562789")
-    # print(player1)
+    player1 = get_player_position_info("30s", "562789")
+    print(player1)
