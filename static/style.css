@@ -499,6 +499,25 @@ body::-webkit-scrollbar-thumb:hover {
     display: flex;
 }
 
+.user-form-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-form {
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 17px;
+}
+
+.form-label-text {
+    padding-bottom: 10px;
+}
 
 /*Leaderboard.html*/
 .leaderboard-main {

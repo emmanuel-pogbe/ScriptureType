@@ -1078,6 +1078,9 @@ function displayUserFormCollection(bestScore,currentScore,testTypeString,selecte
     // selected test (e.g Scriptures 10)
     // software (e.g EasyWorship)
     // timestamp
+    if (!(userName && userCountry)) {
+      return;
+    }
     const scoreData = {
       name: userName,
       country: userCountry,

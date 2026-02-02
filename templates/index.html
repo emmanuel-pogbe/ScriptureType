@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ScriptureType</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='country.css')}}">
     <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='assets/EWT.png')}}">
     <script src="https://kit.fontawesome.com/288289805d.js" crossorigin="anonymous"></script>
 </head>
@@ -136,24 +137,32 @@
             </div>
             <div class="popup" id="get-user-details">
                 <div class="popup-cover"></div>
-                <div class="popup-content">
+                <div class="popup-content" style="margin: 0 20px;">
                     <form id="form-details">
                         <h1>New High Score</h1>
-                        <h4>See where you're at on the leaderboard</h4>
-                        <label for="name">Name</label>
-                        <input type="text" id="userName" name="name" placeholder="Enter your name">
-
-                        <label for="country">Country</label>
-                        <select name="country" id="userCountry">
-                            <option value="">Select a country</option>
-                            <option value="USA">USA</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Canada">Canada</option>
-                        </select>
-                        <button type="submit">Submit</button>
-                        <button type="button"
-                            onclick="document.getElementById(get-user-details).classList.add('hidden')">Cancel
-                        </button>
+                        <h3>See where you're at on the leaderboard!</h3>
+                        <div class="user-form-area">
+                            <div class="section-form">
+                                <label for="name" class="form-label-text">Name</label>
+                                <input type="text" id="userName" name="name" placeholder="Enter your name" required
+                                    maxlength="15" class="modern-input">
+                            </div>
+                            <div class="section-form">
+                                <label for="country" class="form-label-text">Country</label>
+                                <div class="custom-select-container">
+                                    <input type="text" id="userCountry" name="country" placeholder="Select a country"
+                                        autocomplete="off" required class="modern-input">
+                                    <i class="fa-solid fa-chevron-down country-chevron"></i>
+                                    <div id="country-list" class="country-list hidden"></div>
+                                </div>
+                            </div>
+                            <div class="button-section-form">
+                                <button type="submit" class="form-buttons" id="user-submit-button">Submit</button>
+                                <button type="button" class="form-buttons"
+                                    onclick="document.getElementById('get-user-details').classList.add('hidden')">Cancel
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -227,6 +236,16 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textBox = document.getElementById('userName');
+            textBox.addEventListener('input', () => {
+                if (textBox.value.length > 15) {
+                    textBox.value = textBox.value.slice(0, 15);
+                }
+            });
+        });
+    </script>
     <script id="scripture-data" type="application/json">
         {{ scripture_data | tojson }}
     </script>
@@ -240,6 +259,7 @@
         {{ alias_map| tojson }}
     </script>
     <script src="{{url_for('static',filename='script.js')}}"></script>
+    <script src="{{url_for('static',filename='country-select.js')}}"></script>
 </body>
 
 </html>
