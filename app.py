@@ -57,6 +57,7 @@ def register_player():
         samesite='Lax',
         max_age=31536000 #Valid for 1 year (in seconds)
     )
+    print(response)
     return response
 @app.route('/sync-identity')
 def sync_identity():

@@ -1,0 +1,105 @@
+/* Modern Country Select styles */
+.custom-select-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.modern-input {
+    width: 90%;
+    margin: 0;
+    padding: 10px;
+    background-color: #161821;
+    border: 2px solid #595E76;
+    border-radius: 8px;
+    color: #C6C8D1;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.modern-input:focus {
+    border-color: #84A0C6;
+    box-shadow: 0 0 5px rgba(132, 160, 198, 0.3);
+}
+
+.country-chevron {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #595E76;
+    cursor: pointer;
+    transition: transform 0.3s;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.country-chevron:hover {
+    color: #84A0C6;
+}
+
+.modern-input:focus~.country-chevron {
+    transform: translateY(-50%) rotate(180deg);
+    color: #84A0C6;
+}
+
+/* Ensure the list stays above other elements */
+.country-list {
+    position: absolute;
+    top: 110%;
+    /* Slight gap */
+    left: 0;
+    right: 0;
+    background-color: #232531;
+    border: 1px solid #595E76;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    scrollbar-width: thin;
+    scrollbar-color: #595E76 #161821;
+    opacity: 1;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(0);
+}
+
+.country-list.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.country-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.country-list::-webkit-scrollbar-track {
+    background: #161821;
+    border-radius: 4px;
+}
+
+.country-list::-webkit-scrollbar-thumb {
+    background-color: #595E76;
+    border-radius: 4px;
+}
+
+.country-option {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, padding-left 0.2s;
+    color: #C6C8D1;
+    border-bottom: 1px solid rgba(89, 94, 118, 0.3);
+}
+
+.country-option:last-child {
+    border-bottom: none;
+}
+
+.country-option:hover {
+    background-color: #595E76;
+    color: white;
+    padding-left: 20px;
+    /* Slight movement on hover */
+}
