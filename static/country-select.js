@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showList(filter = "") {
         countryList.innerHTML = '';
-        const filtered = countries.filter(c => c.toLowerCase().includes(filter.toLowerCase()));
+        const filtered = countries.filter(c => c.toLowerCase().startsWith(filter.toLowerCase()));
 
         if (filtered.length === 0) {
             countryList.classList.add('hidden');
