@@ -334,7 +334,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .popup-content {
-    overflow-x: hidden;
+    overflow: visible;
+    /* Allow content like dropdowns to extend outside */
     display: flex;
     flex-direction: column;
     background-color: #161821;
@@ -347,6 +348,12 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center;
     align-items: center;
     z-index: 10000;
+}
+
+#form-details {
+    overflow: visible;
+    /* Prevent scrollbars on the form itself */
+    width: 100%;
 }
 
 .popup-title {
@@ -504,6 +511,8 @@ body::-webkit-scrollbar-thumb:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: visible;
+    /* Prevent clipping of children like dropdowns */
 }
 
 .section-form {
@@ -513,6 +522,31 @@ body::-webkit-scrollbar-thumb:hover {
     flex-direction: column;
     text-align: left;
     font-size: 17px;
+    overflow: visible;
+    /* Allow dropdown to overflow without scrollbars */
+}
+
+.button-section-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5%;
+}
+
+.form-buttons {
+    color: white;
+    border: none;
+    background-color: #595E76;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.form-buttons:hover {
+    color: black;
+    background-color: #C6C8D1;
 }
 
 .form-label-text {
