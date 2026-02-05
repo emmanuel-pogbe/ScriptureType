@@ -2,7 +2,8 @@
 .custom-select-container {
     position: relative;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
+    /* Ensure dropdown displays outside the container */
 }
 
 .modern-input {
@@ -54,15 +55,19 @@
     background-color: #232531;
     border: 1px solid #595E76;
     border-radius: 8px;
-    max-height: 250px;
+    max-height: 150px;
     overflow-y: auto;
-    z-index: 9999;
+    z-index: 9999999999;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     scrollbar-width: thin;
     scrollbar-color: #595E76 #161821;
     opacity: 1;
     transition: opacity 0.2s, transform 0.2s;
     transform: translateY(0);
+}
+
+.country-list:empty {
+    display: none;
 }
 
 .country-list.hidden {
