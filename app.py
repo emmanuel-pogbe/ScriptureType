@@ -9,6 +9,7 @@ import modules.bible as bible
 import modules.alias_map as aliasmap
 import modules.prefix_map as prefixmap
 import db
+import helpers
 scripture_data = bible.__bibleverses
 bible_books = bible.__biblebooks
 prefix_map = prefixmap.__bible_prefix_map
@@ -16,7 +17,8 @@ alias_map = aliasmap.__bible_alias_map
 app = Flask(__name__,template_folder="templates",static_folder="static")
 @app.route("/")
 def index():
-    return render_template("index.html",scripture_data=scripture_data,bible_books=bible_books,prefix_map=prefix_map,alias_map=alias_map)
+    country_list = helpers.get_country_list()
+    return render_template("index.html",scripture_data=scripture_data,bible_books=bible_books,prefix_map=prefix_map,alias_map=alias_map,country_list=country_list)
 
 @app.route("/leaderboards",methods=["GET","POST"])
 def get_leaderboard():
