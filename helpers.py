@@ -246,9 +246,10 @@ _COUNTRIES = {
   "ZM": "Zambia",
   "ZW": "Zimbabwe"
 }
-
+def get_country_list():
+  return list(_COUNTRIES.values())
 def get_country_name(iso_code):
     return _COUNTRIES.get(iso_code.upper(), "Default")
 
 if __name__ == "__main__":
-    print(get_country_name("ddd"))
+    print(type(get_country_list()))

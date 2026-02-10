@@ -6,14 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!countryInput || !countryList) return;
 
     // Expanded list of countries for better "modern" feel
-    const countries = [
-        "Argentina", "Australia", "Brazil", "Canada", "China", "Egypt",
-        "France", "Germany", "Ghana", "India", "Indonesia", "Italy",
-        "Japan", "Kenya", "Mexico", "Netherlands", "Nigeria", "Philippines",
-        "Russia", "Saudi Arabia", "Singapore", "South Africa", "South Korea",
-        "Spain", "Sweden", "Switzerland", "Turkey", "United Arab Emirates",
-        "United Kingdom", "USA", "Vietnam"
-    ];
+    const countries = JSON.parse(document.getElementById('countries-data').textContent);
 
     function showList(filter = "") {
         countryList.innerHTML = '';

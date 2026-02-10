@@ -150,7 +150,7 @@
                             <div class="section-form">
                                 <label for="userCountry" class="form-label-text">Country</label>
                                 <div class="custom-select-container">
-                                    <input type="text" id="userCountry" name="country" placeholder="Select a country"
+                                    <input type="text" id="userCountry" name="country" placeholder="Select your country"
                                         autocomplete="off" required class="modern-input">
                                     <i class="fa-solid fa-chevron-down country-chevron"></i>
                                     <div id="country-list" class="country-list hidden"></div>
@@ -257,6 +257,9 @@
     </script>
     <script id="alias-map" type="application/json">
         {{ alias_map| tojson }}
+    </script>
+    <script id="countries-data" type="application/json">
+        {{ country_list | tojson }}
     </script>
     <script src="{{url_for('static',filename='script.js')}}"></script>
     <script src="{{url_for('static',filename='country-select.js')}}"></script>
