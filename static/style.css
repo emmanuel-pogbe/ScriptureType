@@ -306,10 +306,6 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: larger;
 }
 
-.fa-crown::before {
-    /*looking for a fix*/
-}
-
 .popup {
     position: fixed;
     border: none;
@@ -496,6 +492,19 @@ body::-webkit-scrollbar-thumb:hover {
     color: #595E76;
 }
 
+
+#confetti-canvas {
+    position: fixed !important;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: transparent !important;
+}
+
+
 #custom-test-type,
 #software-type,
 #best-time {
@@ -580,7 +589,7 @@ body::-webkit-scrollbar-thumb:hover {
     border-radius: 6px;
     padding: 8px;
     position: absolute;
-    z-index: 100000;
+    z-index: 1000;
     top: 50%;
     left: 125%;
     transform: translateY(-50%);
@@ -669,7 +678,6 @@ table {
 thead {
     position: sticky;
     top: 0;
-    /* z-index: 10; */
 }
 
 th {

@@ -49,10 +49,10 @@ let currentSetting = "";
 
 // displayHelp();
 
-startBtn.addEventListener("click",function(e) {
+startBtn.addEventListener("click", function (e) {
   e.preventDefault();
   selected = software.value;
-  scriptureSearchBoxes.forEach(input=>{
+  scriptureSearchBoxes.forEach(input => {
     input.classList.add("hidden")
   });
   if (selected == "EasyWorship") {
@@ -114,15 +114,15 @@ function fetchVerse(book, chapter) {
   return Math.floor(Math.random() * verseCount) + 1;
 }
 function fetchScripture() {
-  const book_f    = fetchBook();
+  const book_f = fetchBook();
   const chapter_f = fetchChapter(book_f);
-  const verse_f   = fetchVerse(book_f, chapter_f);
+  const verse_f = fetchVerse(book_f, chapter_f);
   finalscripture = `${book_f} ${chapter_f}:${verse_f}`;
   document.getElementById("scripture").innerText = finalscripture;
 }
 fetchScripture(); //On page load, get random scripture
-function startTimer() { 
-  if (previousTime===null) {
+function startTimer() {
+  if (previousTime === null) {
     previousTime = Date.now()
   }
 }
@@ -135,11 +135,11 @@ function displayHelp() {
   stopCountdown();
   document.querySelector("#help .help-content").scrollTop = 0;
 }
-const restartButtons = [document.getElementById("restartButton"),document.getElementById("restartButton2")];
-const homeButtons = [document.getElementById("homeButton"),document.getElementById("homeButton2"),document.getElementById("logo")];
+const restartButtons = [document.getElementById("restartButton"), document.getElementById("restartButton2")];
+const homeButtons = [document.getElementById("homeButton"), document.getElementById("homeButton2"), document.getElementById("logo")];
 
-restartButtons.forEach(button=>{
-  button.addEventListener("click",function(event){
+restartButtons.forEach(button => {
+  button.addEventListener("click", function (event) {
     event.preventDefault();
     fetchScripture(); //Get a new scripture when page logo is clicked
     const mainApp = document.getElementById("main-app");
@@ -156,8 +156,8 @@ restartButtons.forEach(button=>{
   });
 });
 
-homeButtons.forEach(button=> {
-  button.addEventListener("click",function(event) {
+homeButtons.forEach(button => {
+  button.addEventListener("click", function (event) {
     event.preventDefault();
     main.classList.add("hidden");
     resultPage.classList.add("hidden");
@@ -166,16 +166,16 @@ homeButtons.forEach(button=> {
     bibleShowInput.style.backgroundColor = "white";
   });
 });
-scriptureButton.forEach(button=>{ 
-  button.addEventListener("click",function(){ //At any given time, only one button settings should be active
-    scriptureButton.forEach(btn=>btn.classList.remove("active"));
+scriptureButton.forEach(button => {
+  button.addEventListener("click", function () { //At any given time, only one button settings should be active
+    scriptureButton.forEach(btn => btn.classList.remove("active"));
     this.classList.add("active");
   });
 });
-scriptureOption.forEach(button=>{ 
-  button.addEventListener("click",function(){ //At any given time, only one button settings should be active
-    scriptureOption.forEach(btn=>btn.classList.remove("active2"));
-    scriptureButton.forEach(btn=>btn.classList.remove("active"));
+scriptureOption.forEach(button => {
+  button.addEventListener("click", function () { //At any given time, only one button settings should be active
+    scriptureOption.forEach(btn => btn.classList.remove("active2"));
+    scriptureButton.forEach(btn => btn.classList.remove("active"));
     document.querySelector(".scriptureButton").classList.add("active");
     let selected = this.textContent;
     const option1 = document.getElementById("opt1");
@@ -196,11 +196,11 @@ scriptureOption.forEach(button=>{
     this.classList.add("active2");
   });
 });
-customBtn.addEventListener("click",()=>{ //Custom scripture pane popup
+customBtn.addEventListener("click", () => { //Custom scripture pane popup
   popup.classList.remove("hidden");
   custInput.focus();
 });
-confirmHelp.addEventListener("click",()=>{
+confirmHelp.addEventListener("click", () => {
   if (selection.classList.contains("hidden")) {
     main.classList.remove("hidden");
   }
@@ -208,20 +208,20 @@ confirmHelp.addEventListener("click",()=>{
   fetchScripture();
   resetVariables();
 });
-okBtn.addEventListener("click",()=>{
+okBtn.addEventListener("click", () => {
   const popup = document.getElementById("popup");
   let customInput = custInput.value;
   let currentSelected = document.querySelector(".active2").textContent;
-  let min = (currentSelected == "Scripture count")?5:10;
-  let max = (currentSelected == "Scripture count")?99:999;
-  if (customInput>=min && customInput<=max) { //valid custom input, proceed to main app
+  let min = (currentSelected == "Scripture count") ? 5 : 10;
+  let max = (currentSelected == "Scripture count") ? 99 : 999;
+  if (customInput >= min && customInput <= max) { //valid custom input, proceed to main app
     popup.classList.add("hidden");
   }
-  else if (customInput>max){
-    console.log("Can't be greater than "+max);
+  else if (customInput > max) {
+    console.log("Can't be greater than " + max);
   }
   else {
-    console.log("Can't be less than "+min);
+    console.log("Can't be less than " + min);
   }
 });
 function hideCrown() {
@@ -232,32 +232,32 @@ function showCrown() {
   crown = document.getElementById("best-crown");
   crown.classList.remove("hidden");
 }
-custInput.addEventListener("keydown",(e)=>{ //Only allows positive integers 
+custInput.addEventListener("keydown", (e) => { //Only allows positive integers 
   let customInput = custInput;
   let currentSelected = document.querySelector(".active2").textContent;
-  maxLength = (currentSelected=="Scripture count")?1:2;
-  if (customInput.value.length > maxLength && e.key!="Backspace" && e.key!="Tab") {
+  maxLength = (currentSelected == "Scripture count") ? 1 : 2;
+  if (customInput.value.length > maxLength && e.key != "Backspace" && e.key != "Tab") {
     e.preventDefault();
   }
-  if (e.key==="." || e.key==="-"||e.key==="e"||e.key==="E"){
+  if (e.key === "." || e.key === "-" || e.key === "e" || e.key === "E") {
     e.preventDefault()
   }
-  if (e.key==="Enter" || e.key === "Escape") { //press enter to close pane
+  if (e.key === "Enter" || e.key === "Escape") { //press enter to close pane
     e.preventDefault()
     okBtn.click();
   }
 })
-custInput.addEventListener("focus", function() { 
+custInput.addEventListener("focus", function () {
   setTimeout(() => {   //when pane opens, highlight the input box
-   custInput.select();
+    custInput.select();
   }, 0);
 });
 //Helper functions for changing focus to another input field
 function focusNext(currentId, nextId) {
-    document.getElementById(nextId).focus();
+  document.getElementById(nextId).focus();
 }
 function focusPrev(currentId, prevId) {
-    document.getElementById(prevId).focus();
+  document.getElementById(prevId).focus();
 }
 //Helper function to check if a string starts with a number for Scriptures like 1 Samuel, to allow space key to temporarily work
 function startsWithNumber(str) {
@@ -268,23 +268,23 @@ function findMaxChapter() {
   return chapters.length;
 }
 //EasyWorship
-function makeStrictAutocomplete(input,list) { 
+function makeStrictAutocomplete(input, list) {
   let defaultValue = list[0]; //Genesis
   let typed = "";
-  input.addEventListener("focus",()=>{
-    typed="";
+  input.addEventListener("focus", () => {
+    typed = "";
   }) //reset typed variable when input is clicked
   input.addEventListener("keydown", e => {
     const key = e.key;
     if (/^[a-zA-Z0-9 ]$/.test(key) && !e.ctrlKey) {
       if (e.key === " ") { //space bar switches to chapter field
-        if (typed.length>1 || !startsWithNumber(typed[0])) {
+        if (typed.length > 1 || !startsWithNumber(typed[0])) {
           e.preventDefault();
-          focusNext("book","chapter");
+          focusNext("book", "chapter");
         }
         else {
           e.preventDefault();
-          typed+=key;
+          typed += key;
           const match = list.find(item =>
             item.toLowerCase().startsWith(typed.toLowerCase())
           ); //check list of bible verses for input
@@ -300,16 +300,16 @@ function makeStrictAutocomplete(input,list) {
         }
       }
       else {
-        if (/^[0-9]$/.test(e.key) && typed.length>=1) {
+        if (/^[0-9]$/.test(e.key) && typed.length >= 1) {
           const maxChap = findMaxChapter();
           e.preventDefault();
           const inputtedNumber = Number(e.key);
-          if (inputtedNumber<=maxChap && inputtedNumber != 0) {
-            focusNext("book","chapter");
+          if (inputtedNumber <= maxChap && inputtedNumber != 0) {
+            focusNext("book", "chapter");
             chapter.value = Number(e.key);
-            setTimeout(()=>{
-              chapter.setSelectionRange(chapter.value.length,chapter.value.length);
-            },0); 
+            setTimeout(() => {
+              chapter.setSelectionRange(chapter.value.length, chapter.value.length);
+            }, 0);
           }
 
         }
@@ -329,7 +329,7 @@ function makeStrictAutocomplete(input,list) {
           }
         }
       }
-      if (typed.length==1 && /^[a-zA-Z]$/.test(e.key) && startsWithNumber(typed[0])) {
+      if (typed.length == 1 && /^[a-zA-Z]$/.test(e.key) && startsWithNumber(typed[0])) {
         //This area accounts for books starting with numbers e.g 1 Samuel
         e.preventDefault();
         typed += " ";
@@ -356,29 +356,29 @@ function makeStrictAutocomplete(input,list) {
           input.value = defaultValue;
           input.select();
         } else {
-            input.setSelectionRange(typed.length, defaultValue.length);
+          input.setSelectionRange(typed.length, defaultValue.length);
         }
       }
       else if (input.selectionStart == input.selectionEnd) {
-        if (input.selectionStart==input.value.length && typed.length == 0) {
-          typed = input.value.slice(0,-1);
-          input.setSelectionRange(typed.length,defaultValue.length);
+        if (input.selectionStart == input.value.length && typed.length == 0) {
+          typed = input.value.slice(0, -1);
+          input.setSelectionRange(typed.length, defaultValue.length);
         }
 
       }
     }
-    else if (["'",";","ArrowRight",".",",","=","-"," "].includes(e.key)) { // Move focus to chapter input
+    else if (["'", ";", "ArrowRight", ".", ",", "=", "-", " "].includes(e.key)) { // Move focus to chapter input
       e.preventDefault();
       focusNext("book", "chapter");
     }
     else if (e.key === "ArrowLeft") { //Move focus to verse input
       e.preventDefault();
-      focusPrev("book","verse");
+      focusPrev("book", "verse");
     }
     else if (e.ctrlKey && e.key === "a") {
       typed = ""; // reset typed variable if user selects all
     }
-    else if (e.key != "Tab" && !e.ctrlKey){
+    else if (e.key != "Tab" && !e.ctrlKey) {
       e.preventDefault();
     }
   });
@@ -391,8 +391,8 @@ function makeStrictAutocomplete(input,list) {
     input.setSelectionRange(0, defaultValue.length);
   });
 }
-makeStrictAutocomplete(book,bibleBooks);
-chapter.addEventListener("keydown", function(e) {
+makeStrictAutocomplete(book, bibleBooks);
+chapter.addEventListener("keydown", function (e) {
   if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) { //Only allow numbers
     e.preventDefault();
   }
@@ -408,13 +408,13 @@ chapter.addEventListener("keydown", function(e) {
   // const books = book.value;
   // const chapters = scriptureData[books]
   const max = findMaxChapter(); //get the maximum number of chapters for the corresponding book
-  if (num > max || num == 0) { 
+  if (num > max || num == 0) {
     //don't allow input if it's greater than the max number of chapters in the book
     e.preventDefault();
   }
   if (!/^[0-9]$/.test(e.key)) {
-      // Right arrow or space (without shift) moves to "verse"
-    if (["'",";","ArrowRight",".",",","=","-"," "].includes(e.key)) {
+    // Right arrow or space (without shift) moves to "verse"
+    if (["'", ";", "ArrowRight", ".", ",", "=", "-", " "].includes(e.key)) {
       e.preventDefault();
       focusNext("chapter", "verse");
     }
@@ -425,27 +425,27 @@ chapter.addEventListener("keydown", function(e) {
     }
     else if (e.key === "Backspace") {
       e.preventDefault();
-      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) { 
-        focusPrev("chapter","book");
-        setTimeout(()=>{
-          book.setSelectionRange(book.value.length,book.value.length);
-        },0);
+      if (chapter.selectionStart === 0 && chapter.selectionEnd === chapter.value.length) {
+        focusPrev("chapter", "book");
+        setTimeout(() => {
+          book.setSelectionRange(book.value.length, book.value.length);
+        }, 0);
         return;
       }
       if (chapter.selectionStart === chapter.selectionEnd) {
-          chapter.setSelectionRange(chapter.value.length - 1, chapter.value.length);
-      } 
+        chapter.setSelectionRange(chapter.value.length - 1, chapter.value.length);
+      }
       // If something is already selected, expand the selection by one digit
       else {
-          chapter.setSelectionRange(chapter.selectionStart - 1, chapter.selectionEnd);
+        chapter.setSelectionRange(chapter.selectionStart - 1, chapter.selectionEnd);
       }
     }
-    else if (e.key != "Tab" && !e.ctrlKey)  {
+    else if (e.key != "Tab" && !e.ctrlKey) {
       e.preventDefault();
     }
   }
 });
-verse.addEventListener("keydown", function(e) {
+verse.addEventListener("keydown", function (e) {
   if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey) {
     e.preventDefault();
   }
@@ -471,30 +471,30 @@ verse.addEventListener("keydown", function(e) {
     }
     else if (e.key === "ArrowRight") {
       e.preventDefault();
-      focusNext("verse","book");
+      focusNext("verse", "book");
     }
-    else if (e.key ===" "){
+    else if (e.key === " ") {
       e.preventDefault();
     }
     else if (e.key === "Backspace") {
       e.preventDefault();
-      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) { 
-        focusPrev("verse","chapter");
-        setTimeout(()=>{
-          chapter.setSelectionRange(chapter.value.length,chapter.value.length);
-        },0);
+      if (verse.selectionStart === 0 && verse.selectionEnd === verse.value.length) {
+        focusPrev("verse", "chapter");
+        setTimeout(() => {
+          chapter.setSelectionRange(chapter.value.length, chapter.value.length);
+        }, 0);
         return;
       }
       if (verse.selectionStart === verse.selectionEnd) {
-          verse.setSelectionRange(verse.value.length - 1, verse.value.length);
+        verse.setSelectionRange(verse.value.length - 1, verse.value.length);
       }
       else {
-          verse.setSelectionRange(verse.selectionStart - 1, verse.selectionEnd);
+        verse.setSelectionRange(verse.selectionStart - 1, verse.selectionEnd);
       }
-   }
-   else if (e.key != "Tab" && !e.ctrlKey) {
-    e.preventDefault();
-   }
+    }
+    else if (e.key != "Tab" && !e.ctrlKey) {
+      e.preventDefault();
+    }
   }
 });
 
@@ -506,15 +506,15 @@ function ensureVp(el) {
   return el._vp;
 }
 //VideoPsalm
-videoPsalmInput.addEventListener("keydown", function(e){
+videoPsalmInput.addEventListener("keydown", function (e) {
   const input = e.target;
   // --- persistent state attached to the input element ---
   function resetInputs() {
-      S.text = "";
-      S.suggestion = "";
-      S.bookDisplay = "";
-      S.chapVerse = "";
-      S.separator = null;
+    S.text = "";
+    S.suggestion = "";
+    S.bookDisplay = "";
+    S.chapVerse = "";
+    S.separator = null;
   }
   const S = ensureVp(input);
   function render() {
@@ -536,18 +536,18 @@ videoPsalmInput.addEventListener("keydown", function(e){
     const opts = optionsFor(S.text);
     if (opts.length === 1) {
       S.bookDisplay = opts[0] + " ";
-      S.suggestion  = opts[0].slice(S.text.length)+" "; //remaining characters
+      S.suggestion = opts[0].slice(S.text.length) + " "; //remaining characters
     }
   }
   function acceptBookIfSingle() { //Ended up not using this function
     const opts = optionsFor(S.text);
     if (opts.length === 1) {
-      S.mode        = "chapter";
-      S.text        = opts[0];         // lock in canonical casing
+      S.mode = "chapter";
+      S.text = opts[0];         // lock in canonical casing
       S.bookDisplay = opts[0] + " ";
-      S.suggestion  = "";
-      S.chapVerse   = "";
-      S.separator   = null;
+      S.suggestion = "";
+      S.chapVerse = "";
+      S.separator = null;
       render();
       return true;
     }
@@ -560,13 +560,13 @@ videoPsalmInput.addEventListener("keydown", function(e){
   }
   function checkBibleBook(letter) {
     letter = letter.toUpperCase();
-    return bibleBooks.some(bk=>bk.startsWith(letter));
+    return bibleBooks.some(bk => bk.startsWith(letter));
   }
   if ("Aa".includes(e.key) && e.ctrlKey) {
-    input.setSelectionRange(0,input.value.length);
-    setTimeout(()=> {
+    input.setSelectionRange(0, input.value.length);
+    setTimeout(() => {
       S.mode = "book";
-    },0);
+    }, 0);
     return;
   }
   // BOOK MODE
@@ -579,12 +579,12 @@ videoPsalmInput.addEventListener("keydown", function(e){
         input.value = "";
         S.mode = "book";
       }
-      else if (S.text.length>0) {
+      else if (S.text.length > 0) {
         if (S.text.length === 2 && "123".includes(S.text[0])) {
-          S.text = S.text.slice(0,-2);
+          S.text = S.text.slice(0, -2);
         }
         else {
-          S.text = S.text.slice(0,-1);
+          S.text = S.text.slice(0, -1);
           computeSuggestion();
           render();
         }
@@ -593,10 +593,10 @@ videoPsalmInput.addEventListener("keydown", function(e){
     if (e.key === "Enter") {
       return;
     }
-    if (input.selectionStart ===0 && input.selectionEnd === input.value.length && checkBibleBook(e.key)) {
+    if (input.selectionStart === 0 && input.selectionEnd === input.value.length && checkBibleBook(e.key)) {
       resetInputs();
     }
-    if (S.bookDisplay.length>2 && validNum(data) && !(input.selectionStart === 0 && input.selectionEnd === input.value.length)) {
+    if (S.bookDisplay.length > 2 && validNum(data) && !(input.selectionStart === 0 && input.selectionEnd === input.value.length)) {
       S.mode = "chapter";
       S.chapVerse = data;
       render();
@@ -606,7 +606,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
     }
     if ((S.text.startsWith("P") || S.text.startsWith("p")) && "Hh".includes(data)) {
       data += "il"; // "ph" -> "phil"
-    } 
+    }
     else if ((S.text.startsWith("J") || S.text.startsWith("j")) && "Uu".includes(data)) {
       data += "d";  // "ju" -> "jud"
     }
@@ -622,11 +622,11 @@ videoPsalmInput.addEventListener("keydown", function(e){
     const opts = optionsFor(S.text);
     if (opts.length === 1) { //still book mode
       S.bookDisplay = opts[0] + " ";
-      S.suggestion  = opts[0].slice(S.text.length)+" ";
+      S.suggestion = opts[0].slice(S.text.length) + " ";
       render();
       S.mode = "chapter"
       return;
-    } 
+    }
     else if (opts.length === 0) {
       // revert this keystroke
       S.text = S.text.slice(0, -data.length);
@@ -636,7 +636,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
     } else {
       // multiple matches gives no suggestion
       S.bookDisplay = "";
-      S.suggestion  = "";
+      S.suggestion = "";
       render();
       return;
     }
@@ -644,7 +644,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
   //CHAPTER/VERSE MODE
   if (S.mode === "chapter") {
     const isDigit = /\d/.test(e.key);
-    const isSep   = (e.key === "." || e.key === ":" || e.key === " ");
+    const isSep = (e.key === "." || e.key === ":" || e.key === " ");
     if (!(isDigit || isSep)) {
       // ignore letters in chapter mode
       e.preventDefault();
@@ -655,23 +655,23 @@ videoPsalmInput.addEventListener("keydown", function(e){
           S.mode = "book";
         }
         else {
-          if (S.chapVerse.length>0) {
+          if (S.chapVerse.length > 0) {
             const last = S.chapVerse.slice(-1);
-            S.chapVerse = S.chapVerse.slice(0,-1);
+            S.chapVerse = S.chapVerse.slice(0, -1);
             if (S.chapVerse.length === 0) {
               S.mode = "book";
             }
             if (last === S.separator) S.separator = null;
             render();
           }
-          else if (S.chapVerse.length === 0 ){
+          else if (S.chapVerse.length === 0) {
             S.mode = "book";
             if (S.text.length > 0) {
-              if (S.text[0]==="3") {
-                S.text = S.text.slice(0,-2);
+              if (S.text[0] === "3") {
+                S.text = S.text.slice(0, -2);
               }
               else {
-                S.text = S.text.slice(0,-1);
+                S.text = S.text.slice(0, -1);
               }
               computeSuggestion();
               render();
@@ -695,7 +695,7 @@ videoPsalmInput.addEventListener("keydown", function(e){
         // building verse
         const parts = S.chapVerse.split(S.separator);
         const vChapter = parts[0] || "";
-        const verse   = (parts[1] || "") + e.key;
+        const verse = (parts[1] || "") + e.key;
         if (validNum(verse)) {
           S.chapVerse = vChapter + S.separator + verse;
           render();
@@ -727,11 +727,11 @@ function isAlnum(ch) {
   return /^[A-Za-z0-9]$/.test(ch);
 }
 function capitalizeFirstLetter(str) {
-    if (str == null) {
-        return '';
-    }
-    str = String(str);
-    return str.replace(/[a-zA-Z]/, char => char.toUpperCase());
+  if (str == null) {
+    return '';
+  }
+  str = String(str);
+  return str.replace(/[a-zA-Z]/, char => char.toUpperCase());
 }
 function getMaxChapter(bk) { //get's the maximum chapter of the book passed as argument
   if (bk in scriptureData) {
@@ -744,8 +744,8 @@ function isValidBibleBook(str) { //check if string contains a valid book
   let bookGotten = null;
   let firstAlpha = false; //checker for when we encounter first alphabet
   let endBookIndex = null;
-  let lenText = 0; 
-  for (let i = 0;i<str.length;i++) {
+  let lenText = 0;
+  for (let i = 0; i < str.length; i++) {
     const ch = str[i];
     if (isAlnum(ch)) {
       if (isAlpha(ch) && firstAlpha == false) {
@@ -764,8 +764,8 @@ function isValidBibleBook(str) { //check if string contains a valid book
         break;
       }
     }
-    if (text.length>0 && text.length>lenText) {
-      lenText = text.length; 
+    if (text.length > 0 && text.length > lenText) {
+      lenText = text.length;
       text = text.toLowerCase();
       const capital_form = capitalizeFirstLetter(text);
       if (capital_form in aliasMap) { //check the alias map
@@ -779,23 +779,23 @@ function isValidBibleBook(str) { //check if string contains a valid book
       foundBook = true; //yay we've found the book
     }
   }
-  return [bookGotten,endBookIndex];
+  return [bookGotten, endBookIndex];
 }
-function isValidChapter(str,bk,endBookIndex) {
+function isValidChapter(str, bk, endBookIndex) {
   let foundNum = "";
   let firstChapNum = false;
   let valid = false;
   let endChapIndex = null;
-  for (let i = endBookIndex+1;i<str.length;i++) { //start at where we stopped on isValidBook
+  for (let i = endBookIndex + 1; i < str.length; i++) { //start at where we stopped on isValidBook
     const ch = str[i];
-    if (isDigit(ch)) { 
+    if (isDigit(ch)) {
       if (firstChapNum === false) { //if this is our first number:
         foundNum += ch;
-        firstChapNum = true; 
+        firstChapNum = true;
         endChapIndex = i;
       }
       else { //if it's not our first number:
-        if (!isAlnum(str[i-1])) { //and previous char is not alphanumeric:
+        if (!isAlnum(str[i - 1])) { //and previous char is not alphanumeric:
           break;
         }
         else { //if previous char is alphanumeric:
@@ -809,33 +809,33 @@ function isValidChapter(str,bk,endBookIndex) {
     }
   }
   let maxChap = getMaxChapter(bk); //get the maximum chapter of the passed book
-  if (foundNum.length>0) {
-    const parsed = parseInt(foundNum,10);
-    if (parsed>0 && parsed<=maxChap) { //if parsed number is positive and less than max Chapter:
+  if (foundNum.length > 0) {
+    const parsed = parseInt(foundNum, 10);
+    if (parsed > 0 && parsed <= maxChap) { //if parsed number is positive and less than max Chapter:
       valid = true; //then chapter is valid
     }
   }
-  if (foundNum.length===0) {
-    return [valid,null,endChapIndex];
+  if (foundNum.length === 0) {
+    return [valid, null, endChapIndex];
   }
-  return [valid,parseInt(foundNum,10),endChapIndex];
+  return [valid, parseInt(foundNum, 10), endChapIndex];
 }
-function isValidVerse(bk,chap,str,chap_index) {
+function isValidVerse(bk, chap, str, chap_index) {
   foundNum = "";
   firstVerseNum = false;
-  for (let i = chap_index+1;i<str.length;i++) {// start from where we stopped at isValidChapter
+  for (let i = chap_index + 1; i < str.length; i++) {// start from where we stopped at isValidChapter
     const ch = str[i];
     if (isDigit(ch)) {
-      if (firstVerseNum===false) { //if this is our first number
+      if (firstVerseNum === false) { //if this is our first number
         firstVerseNum = true;
-        foundNum+=ch;
+        foundNum += ch;
       }
       else { //if it's not our first number
-        if (!isAlnum(str[i-1])) { //and previous isn't alphanumeric
+        if (!isAlnum(str[i - 1])) { //and previous isn't alphanumeric
           break;
         }
         else {
-          foundNum+=ch;
+          foundNum += ch;
         }
       }
     }
@@ -846,14 +846,14 @@ function isValidVerse(bk,chap,str,chap_index) {
   if (foundNum.length === 0) {
     return null;
   }
-  return parseInt(foundNum,10); //actual verse
+  return parseInt(foundNum, 10); //actual verse
 }
 //colors for bibleshow input box
 const COLOR_NORMAL = "white";
 const COLOR_LIGHT_RED = "#f29f9f";
-const COLOR_DARK_RED  = "#CD5C5C";
+const COLOR_DARK_RED = "#CD5C5C";
 
-bibleShowInput.addEventListener("input",function(e){
+bibleShowInput.addEventListener("input", function (e) {
   let actualInput = bibleShowInput.value;
   if (actualInput.length === 0) {
     bibleShowInput.style.backgroundColor = COLOR_NORMAL;
@@ -861,7 +861,7 @@ bibleShowInput.addEventListener("input",function(e){
   else {
     let bk_info = isValidBibleBook(actualInput);
     if (bk_info[0]) { //if the book is valid then check the chapter
-      let chap_info = isValidChapter(actualInput,bk_info[0],bk_info[1]);
+      let chap_info = isValidChapter(actualInput, bk_info[0], bk_info[1]);
       if (chap_info[0]) { //If the chapter is valid then color should be white
         bibleShowInput.style.backgroundColor = COLOR_NORMAL;
       }
@@ -875,7 +875,7 @@ bibleShowInput.addEventListener("input",function(e){
   }
 });
 function setBestScore(score_gotten) {
-  gameKey = (currentSetting==="Custom"?"cus_":"")+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s"));
+  gameKey = (currentSetting === "Custom" ? "cus_" : "") + (currentOption === "Scripture count" ? totalScriptures : (totalTime + "s"));
   let currentBest = null;
   let isChanged = false;
   const score = score_gotten;
@@ -925,7 +925,7 @@ function setBestScore(score_gotten) {
   if (!isNaN(parsedNewScore) && parsedNewScore !== 0 && isChanged) {
     showCrown();
   }
-  return new_score+(currentOption=="Scripture count"?" seconds":" scriptures");
+  return new_score + (currentOption == "Scripture count" ? " seconds" : " scriptures");
 }
 function calculateAverageTime() {
   let sum = times.reduce((a, b) => a + b, 0);
@@ -948,20 +948,87 @@ function stopCountdown() {
 function updateTimerDisplay() {
   const minutes = Math.floor(timeLeft / 60);
   let seconds = timeLeft % 60;
-  seconds = seconds < 10 && minutes!=0 ? '0' + seconds : seconds;
-  if (minutes==0) {
+  seconds = seconds < 10 && minutes != 0 ? '0' + seconds : seconds;
+  if (minutes == 0) {
     timerText.textContent = `${seconds}`;
   }
   else {
     timerText.textContent = `${minutes}:${seconds}`;
   }
 }
+function isRegistered() { // Checks if user is registered correctly - soon to be implemented
+  return false;
+}
+function displayUserFormCollection(bestScore, currentScore, testTypeString, selected) {
+  const parsedBestScore = parseFloat(bestScore);
+  const parsedCurrentScore = parseFloat(currentScore);
+  const leaderboard_types = ["Scriptures 10", "Scriptures 20", "Time 30", "Time 60"]
+  if (parsedBestScore == parsedCurrentScore && !isRegistered() && leaderboard_types.includes(testTypeString)) { //  Also implement a check to make sure that the test type is part of the leaderboard
+    //Write code for updating best score as well
+    userForm = document.getElementById("get-user-details");
+    userForm.classList.remove("hidden");
+    celebrate();
+    userForm.addEventListener("submit", function (event) {
+      event.preventDefault(); //Prevent default form submission
+      //Get form values
+      const userName = document.getElementById("userName").value;
+      const userCountryElement = document.getElementById("userCountry");
+      const userCountry = userCountryElement.value;
 
+      const countries = JSON.parse(document.getElementById('countries-data').textContent);
+      if (!countries.includes(userCountry)) {
+        userCountryElement.setCustomValidity("Please select a valid country");
+        userCountryElement.reportValidity();
+        userCountryElement.addEventListener("input", () => {
+          userCountryElement.setCustomValidity("");
+        }, { once: true });
+        return;
+      }
+
+      const timestamp = Date.now();
+      //Preparing and Sending necessary data
+      // data needed
+      // score (if score is the best time)
+      // selected test (e.g Scriptures 10)
+      // software (e.g EasyWorship)
+      // timestamp
+      if (!(userName && userCountry)) {
+        return;
+      }
+      const scoreData = {
+        name: userName,
+        country: userCountry,
+        score: currentScore,
+        selectedTest: testTypeString,
+        software: selected,
+        timestamp: timestamp
+      };
+      fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(scoreData)
+      })
+        .then(response => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then(data => {
+          console.log("Success: ", data);
+        })
+        .catch(error => {
+          console.error("Error " + error);
+        });
+
+    });
+  }
+}
 
 function countdown() {
   updateTimerDisplay();
   let msLeft = endTime - Date.now();
-  timeLeft = Math.ceil(msLeft/1000);
+  timeLeft = Math.ceil(msLeft / 1000);
   if (timeLeft <= 0) {
     started = 0;
     let bestScore = setBestScore(scriptureCount);
@@ -975,22 +1042,21 @@ function countdown() {
     document.getElementById("main").classList.add("hidden");
     document.getElementById("result").classList.remove("hidden");
     stopCountdown();
-
-    displayUserFormCollection(bestScore,averageResult,testTypeString,selected);
+    displayUserFormCollection(bestScore, averageResult.textContent, testTypeString, selected);
     return;
   }
-  timeoutId = setTimeout(countdown,200);
+  timeoutId = setTimeout(countdown, 200);
 }
 function preventMouseDown(input) {   // Prevent mousedown from altering selection.
-    input.addEventListener("mousedown", function(e) {
-      e.preventDefault();
-      input.focus();
-    });
+  input.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+    input.focus();
+  });
 }
 function selectAllOnFocus(input) {
-  input.addEventListener("focus", function() { //on focus, select all
+  input.addEventListener("focus", function () { //on focus, select all
     setTimeout(() => {
-     input.select();
+      input.select();
     }, 0);
   });
 }
@@ -1022,13 +1088,13 @@ function replaceSecondSeparator(str) {
 }
 function modifyFinalInput() {
   if (selected == "EasyWorship") {
-      book.focus(); //Goes back to book input
-      //get input values
-      bookInput = book.value 
-      chapterInput = chapter.value
-      verseInput = verse.value
-      finalInput = bookInput+" "+chapterInput+":"+verseInput;
-      return finalInput;
+    book.focus(); //Goes back to book input
+    //get input values
+    bookInput = book.value
+    chapterInput = chapter.value
+    verseInput = verse.value
+    finalInput = bookInput + " " + chapterInput + ":" + verseInput;
+    return finalInput;
   }
   else if (selected == "VideoPsalm") {
     return replaceSecondSeparator(videoPsalmInput.value);
@@ -1040,13 +1106,13 @@ function modifyFinalInput() {
     let chap = null;
     let ver = null
     if (bk) {
-      chap_info = isValidChapter(input_text,bk,bk_info[1]); //return format [Boolean: valid, int: chapter, int: endChapIndex]
+      chap_info = isValidChapter(input_text, bk, bk_info[1]); //return format [Boolean: valid, int: chapter, int: endChapIndex]
       chap = chap_info[1]; //actual chapter stored in chap
       if (chap) {
-        ver = isValidVerse(bk,chap,input_text,chap_info[2]); //gotten verse number
+        ver = isValidVerse(bk, chap, input_text, chap_info[2]); //gotten verse number
       }
     }
-    let finalEntry = bk+" "+chap+":"+ver; 
+    let finalEntry = bk + " " + chap + ":" + ver;
     return finalEntry;
   }
 }
@@ -1056,81 +1122,31 @@ function applyInputFeatures(input) {
     selectAllOnFocus(input);
   }
 
-function isRegistered() { // Checks if user is registered correctly - soon to be implemented
-  return True
-}
 
-function displayUserFormCollection(bestScore,currentScore,testTypeString,selected) {
-  if (bestScore == currentScore && !isRegistered()) {
-    //Write code for updating best score as well
-  userForm = document.getElementById("get-user-details");
-  userForm.classList.remove("hidden");
-  userForm.addEventListener("submit",function(event) {
-    event.preventDefault(); //Prevent default form submission
-    //Get form values
-    const userName = document.getElementById("userName").value;
-    const userCountry = document.getElementById("userCountry").value;
-    const timestamp = Date.now();
-    //Preparing and Sending necessary data
-    // data needed
-    // score (if score is the best time)
-    // selected test (e.g Scriptures 10)
-    // software (e.g EasyWorship)
-    // timestamp
-    if (!(userName && userCountry)) {
-      return;
-    }
-    const scoreData = {
-      name: userName,
-      country: userCountry,
-      score: currentScore,
-      selectedTest: testTypeString,
-      software: selected,
-      timestamp: timestamp
-    };
-    fetch("/register", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(scoreData)
-    })
-    .then(response =>{
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.json();
-    })
-    .then(data=>{
-      console.log("Success: ", data);
-    })
-    .catch(error=> {
-      console.error("Error "+error);
-    });
 
-  });
-}
-}
+
   // Prevent backspace if the entire text is selected or deletion would result in an empty input.
-  input.addEventListener("keydown", function(e) {
-    if (started==0) { // Starting the test
+  input.addEventListener("keydown", function (e) {
+    if (started == 0) { // Starting the test
       document.getElementById("options").style.visibility = "hidden"; //Hide the options pane
       started = 1;
       previousTime = Date.now();
       currentOption = document.querySelector(".active2").textContent;
       currentSetting = document.querySelector(".active").textContent; //Get the total number of scriptures to type
-      if (currentSetting=="10 Scriptures"){
+      if (currentSetting == "10 Scriptures") {
         totalScriptures = 10;
       }
-      else if (currentSetting=="20 Scriptures") {
+      else if (currentSetting == "20 Scriptures") {
         totalScriptures = 20;
       }
-      else if (currentSetting == "Custom" && currentOption == "Scripture count"){
+      else if (currentSetting == "Custom" && currentOption == "Scripture count") {
         totalScriptures = custInput.value;
       }
       //These are for time
-      else if (currentSetting == "30 Seconds"){
+      else if (currentSetting == "30 Seconds") {
         totalTime = 30;
       }
-      else if (currentSetting == "60 Seconds"){
+      else if (currentSetting == "60 Seconds") {
         totalTime = 60;
       }
       else if (currentSetting == "Custom" && currentOption == "Time") {
@@ -1146,7 +1162,7 @@ function displayUserFormCollection(bestScore,currentScore,testTypeString,selecte
     if (e.key === "Enter") {
       e.preventDefault();
       finalInput = modifyFinalInput(); // function to work on input based on software selected
-      if (finalInput==scripture.textContent) {
+      if (finalInput == scripture.textContent) {
         scriptureCount++;
         if (selected == "VideoPsalm") {
           resetVideoPsalmInput();
@@ -1155,16 +1171,16 @@ function displayUserFormCollection(bestScore,currentScore,testTypeString,selecte
           bibleShowInput.value = "";
         }
         if (currentOption == "Scripture count") {
-          if ((scriptureCount!=totalScriptures)) {
+          if ((scriptureCount != totalScriptures)) {
             fetchScripture();
           }
-          if (scriptureCount<=totalScriptures) {
+          if (scriptureCount <= totalScriptures) {
             let finalTime = Date.now();
-            let timeTaken = (finalTime-previousTime)/1000;
+            let timeTaken = (finalTime - previousTime) / 1000;
             times.push(timeTaken);
             previousTime = Date.now();
           }
-          if (scriptureCount==totalScriptures) {
+          if (scriptureCount == totalScriptures) {
             averageTime = calculateAverageTime(); // Number to work with for leaderboard
             let bestScore = setBestScore(averageTime);
             bestTime.textContent = bestScore;
@@ -1172,12 +1188,11 @@ function displayUserFormCollection(bestScore,currentScore,testTypeString,selecte
             averageResult.textContent = averageTime + " seconds";
             testTypeString = "Scriptures " + totalScriptures;
             testType.textContent = testTypeString;
-            document.getElementById("software-type").textContent = selected+"";
+            document.getElementById("software-type").textContent = selected + "";
             document.getElementById("main").classList.add("hidden");
             document.getElementById("result").classList.remove("hidden");
-            displayUserFormCollection(bestScore,averageTime,testTypeString,selected);
-            console.log((currentSetting==="Custom"?"cus_":"")+selected+(currentOption==="Scripture count"?totalScriptures:(totalTime+"s")));
-          
+            displayUserFormCollection(bestScore, averageTime, testTypeString, selected);
+            // console.log((currentSetting === "Custom" ? "cus_" : "") + selected + (currentOption === "Scripture count" ? totalScriptures : (totalTime + "s")));
           }
         }
         else {
@@ -1187,26 +1202,46 @@ function displayUserFormCollection(bestScore,currentScore,testTypeString,selecte
       else {
         if (selected == "EasyWorship") {
           const inputFields = document.querySelectorAll(".input-class");
-          inputFields.forEach(inputField=>inputField.style.borderColor = "red");
+          inputFields.forEach(inputField => inputField.style.borderColor = "red");
           setTimeout(() => {
-            inputFields.forEach(inputField=>inputField.style.borderColor = "#013FBF");
+            inputFields.forEach(inputField => inputField.style.borderColor = "#013FBF");
           }, 500);
         }
         else {
-          const inputBox = document.getElementById(selected.toLowerCase()+"-input");
+          const inputBox = document.getElementById(selected.toLowerCase() + "-input");
           if (selected === "BibleShow") {
             inputBox.style.border = "2px solid red"
           }
           else {
             inputBox.style.borderColor = "red";
           }
-          setTimeout(()=> {
+          setTimeout(() => {
             inputBox.style.border = "1px solid grey";
           }, 500);
         }
       }
     }
- });
-} 
-const inputBoxes = [...scriptureInputsEasyWorship,videoPsalmInput,bibleShowInput];
-inputBoxes.forEach(scriptureInput=>applyInputFeatures(scriptureInput)); //Add input features to all of EasyWorship's input boxes
+  });
+}
+const inputBoxes = [...scriptureInputsEasyWorship, videoPsalmInput, bibleShowInput];
+inputBoxes.forEach(scriptureInput => applyInputFeatures(scriptureInput)); //Add input features to all of EasyWorship's input boxes
+
+function celebrate() {
+  const myCanvas = document.createElement('canvas');
+  myCanvas.id = 'confetti-canvas';
+  document.body.appendChild(myCanvas);
+
+  confetti.create(myCanvas, {
+    resize: true,     // auto-resize with viewport
+    useWorker: true   // smoother performance
+  })({
+    particleCount: 400,
+    spread: 1000,
+    origin: { y: 1 }
+  });
+
+  // remove canvas after animation
+  setTimeout(() => {
+    myCanvas.remove();
+  }, 3000);
+}
