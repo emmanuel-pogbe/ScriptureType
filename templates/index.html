@@ -135,38 +135,38 @@
                     <button id="okBtn" class="okBtn">Ok</button>
                 </div>
             </div>
-            <div class="popup" id="get-user-details">
-                <div class="popup-cover"></div>
-                <div class="popup-content" style="margin: 0 20px;">
-                    <form id="form-details">
-                        <h1>New High Score</h1>
-                        <h3>See where you're at on the leaderboard!</h3>
-                        <div class="user-form-area">
-                            <div class="section-form">
-                                <label for="userName" class="form-label-text">Name</label>
-                                <input type="text" id="userName" name="name" placeholder="Enter your name" required
-                                    maxlength="15" class="modern-input">
-                            </div>
-                            <div class="section-form">
-                                <label for="userCountry" class="form-label-text">Country</label>
-                                <div class="custom-select-container">
-                                    <input type="text" id="userCountry" name="country" placeholder="Select your country"
-                                        autocomplete="off" required class="modern-input">
-                                    <i class="fa-solid fa-chevron-down country-chevron"></i>
-                                    <div id="country-list" class="country-list hidden"></div>
-                                </div>
-                            </div>
-                            <div class="button-section-form">
-                                <button type="submit" class="form-buttons" id="user-submit-button">Submit</button>
-                                <button type="button" class="form-buttons"
-                                    onclick="document.getElementById('get-user-details').classList.add('hidden')">Cancel
-                                </button>
+        </main>
+        <div class="popup hidden fast-pop-in" id="get-user-details">
+            <div class="popup-cover"></div>
+            <div class="popup-content" style="margin: 0 20px;">
+                <form id="form-details">
+                    <h1>New High Score</h1>
+                    <h3>See where you're at on the leaderboard!</h3>
+                    <div class="user-form-area">
+                        <div class="section-form">
+                            <label for="userName" class="form-label-text">Name</label>
+                            <input type="text" id="userName" name="name" placeholder="Enter your name" required
+                                maxlength="15" class="modern-input">
+                        </div>
+                        <div class="section-form">
+                            <label for="userCountry" class="form-label-text">Country</label>
+                            <div class="custom-select-container">
+                                <input type="text" id="userCountry" name="country" placeholder="Select your country"
+                                    autocomplete="off" required class="modern-input">
+                                <i class="fa-solid fa-chevron-down country-chevron"></i>
+                                <div id="country-list" class="country-list hidden"></div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="button-section-form">
+                            <button type="submit" class="form-buttons" id="user-submit-button">Submit</button>
+                            <button type="button" class="form-buttons"
+                                onclick="document.getElementById('get-user-details').classList.add('hidden')">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </main>
+        </div>
         <div id="result" class="result hidden pop-in">
             <div>
                 <div id="average-result-text">Average Time</div>
@@ -261,6 +261,7 @@
     <script id="countries-data" type="application/json">
         {{ country_list | tojson }}
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="{{url_for('static',filename='script.js')}}"></script>
     <script src="{{url_for('static',filename='country-select.js')}}"></script>
 </body>
