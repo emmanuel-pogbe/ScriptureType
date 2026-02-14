@@ -957,13 +957,17 @@ function updateTimerDisplay() {
   }
 }
 function isRegistered() { // Checks if user is registered correctly - soon to be implemented
+  if (localStorage.getItem("user-id")) {
+    return true;  
+  }
   return false;
 }
 function displayUserFormCollection(bestScore, currentScore, testTypeString, selected) {
   const parsedBestScore = parseFloat(bestScore);
   const parsedCurrentScore = parseFloat(currentScore);
   const leaderboard_types = ["Scriptures 10", "Scriptures 20", "Time 30", "Time 60"]
-  if (parsedBestScore == parsedCurrentScore && !isRegistered() && leaderboard_types.includes(testTypeString)) { //  Also implement a check to make sure that the test type is part of the leaderboard
+
+  if (parsedBestScore == parsedCurrentScore && !isRegistered() && leaderboard_types.includes(testTypeString)) { 
     //Write code for updating best score as well
     userForm = document.getElementById("get-user-details");
     userForm.classList.remove("hidden");
