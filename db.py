@@ -1,6 +1,44 @@
 import sqlite3 
 import helpers
 
+def register_player(player_id,secret_token,name,country,score,software,selected_test,timestamp):
+    try:
+        country = country.lower() #Convert country into its 2 letter ISO form
+        db = sqlite3.connect("score_info.db")
+        c = db.cursor()
+        #Check if player id already in database
+        c.execute("SELECT id from scores WHERE id = ?",(player_id,))
+        if c.fetchone():
+            return "Player already registered"
+        c.execute("""
+            INSERT INTO scores(id,secret,name,country,score,software,test_selected,timestamp) VALUES (?,?,?,?,?,?,?,?)
+        """,(player_id,secret_token,name,country,score,software,selected_test,timestamp))
+        db.commit()
+        db.close()
+        return 1
+    except Exception as e:
+        try:
+            db.close()
+        except Exception as e:
+            print(e)
+        finally:    
+            return e
+    finally:
+        db.close()
+
+def get_player_info(secret_key):
+    try:
+        db = sqlite3.connect("score_info.db")
+        c = db.cursor()
+        c.execute("SELECT id FROM scores WHERE secret = ?",(secret_key,))
+        player_id = c.fetchone()
+        db.close()
+        return player_id
+    except Exception as e:
+        return None
+    finally:
+        db.close()
+        
 def insert_into_db(user_score_data: tuple):
     try:
         db = sqlite3.connect("score_info.db")
@@ -37,7 +75,7 @@ def update_user_score(user_id,test_type,new_score):
             return e
 
 def get_top_10(test_type: str):
-    ascending_mode = ["Scripture 10", "Scripture 20","10","20"]
+    ascending_mode = ["Scriptures 10", "Scriptures 20","10","20"]
     try:
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
@@ -53,6 +91,8 @@ def get_top_10(test_type: str):
         return top10_with_flags
     except Exception as e: 
         return "Failed to Fetch" + str(e)
+    finally:
+        db.close()
 def get_player_position_info(test_type: str, player_id: str):
     try:
         db = sqlite3.connect("score_info.db")
@@ -85,7 +125,10 @@ def get_player_position_info(test_type: str, player_id: str):
         player_rank_with_name = (rank,name,country,score,software,country_name)
         return player_rank_with_name
     except Exception:
+        pass
+    finally:
         return None
+        db.close()
 
 if __name__ == "__main__":
     db = sqlite3.connect("score_info.db")
