@@ -962,6 +962,25 @@ function isRegistered() { // Checks if user is registered correctly - soon to be
   }
   return false;
 }
+function celebrate() {
+  const myCanvas = document.createElement('canvas');
+  myCanvas.id = 'confetti-canvas';
+  document.body.appendChild(myCanvas);
+
+confetti.create(myCanvas, {
+  resize: true,     // auto-resize with viewport
+  useWorker: true   // smoother performance
+})({
+  particleCount: 400,
+  spread: 1000,
+  origin: { y: 1 }
+});
+
+// remove canvas after animation
+setTimeout(() => {
+  myCanvas.remove();
+}, 3000);
+}
 function displayUserFormCollection(bestScore, currentScore, testTypeString, selected) {
   const parsedBestScore = parseFloat(bestScore);
   const parsedCurrentScore = parseFloat(currentScore);
@@ -974,6 +993,8 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
     celebrate();
     userForm.addEventListener("submit", function (event) {
       event.preventDefault(); //Prevent default form submission
+      document.getElementById("user-submit-button").disabled = true;
+      userForm.classList.add("hidden");
       //Get form values
       const userName = document.getElementById("userName").value;
       const userCountryElement = document.getElementById("userCountry");
@@ -1002,10 +1023,18 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
       const scoreData = {
         name: userName,
         country: userCountry,
-        score: currentScore,
+        score: parsedBestScore,
         selectedTest: testTypeString,
         software: selected,
         timestamp: timestamp
+        // e.g
+        // country:"Nigeria"
+        // name:"pvp"
+        // score:2.474
+        // selectedTest:"Scriptures 10"
+        // software:"EasyWorship"
+        // timestamp:1771109260653
+
       };
       fetch("/register", {
         method: "POST",
@@ -1019,12 +1048,16 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
           return response.json();
         })
         .then(data => {
-          console.log("Success: ", data);
+          if (data.player_id) {
+            localStorage.setItem("user-id",data.player_id);
+          }
+          else {
+            console.log("Registration failed");
+          }
         })
         .catch(error => {
           console.error("Error " + error);
         });
-
     });
   }
 }
@@ -1230,22 +1263,4 @@ function applyInputFeatures(input) {
 const inputBoxes = [...scriptureInputsEasyWorship, videoPsalmInput, bibleShowInput];
 inputBoxes.forEach(scriptureInput => applyInputFeatures(scriptureInput)); //Add input features to all of EasyWorship's input boxes
 
-function celebrate() {
-  const myCanvas = document.createElement('canvas');
-  myCanvas.id = 'confetti-canvas';
-  document.body.appendChild(myCanvas);
 
-  confetti.create(myCanvas, {
-    resize: true,     // auto-resize with viewport
-    useWorker: true   // smoother performance
-  })({
-    particleCount: 400,
-    spread: 1000,
-    origin: { y: 1 }
-  });
-
-  // remove canvas after animation
-  setTimeout(() => {
-    myCanvas.remove();
-  }, 3000);
-}
