@@ -883,10 +883,12 @@ function setBestScore(score_gotten) {
     currentBest = localStorage.getItem(gameKey);
   } catch (error) {
     console.error('Error reading from localStorage:', error);
+    
     // Fallback: Treat as no best score
     currentBest = null;
   }
-  const parsedBest = currentBest ? Number(currentBest) : null;
+  let parsedBest = currentBest ? Number(currentBest) : null;
+  
   if (isNaN(parsedBest)) {
     console.warn('Invalid best score in storage; resetting:', currentBest);
     parsedBest = null; // Treat corrupted data as no best
