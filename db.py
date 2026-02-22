@@ -57,21 +57,29 @@ def insert_into_db(user_score_data: tuple):
             return e
     finally:
         db.close()
-def update_user_score(user_id,test_type,new_score):
+def update_user_score(user_id, test_type, software, timestamp, new_score):
     try:
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
-        c.execute("UPDATE scores SET score = ? WHERE user_id = ? AND test_type=?",(new_score,user_id,test_type))
+        # c.execute("SELECT name FROM scores WHERE id = ?",(user_id,))
+        # data = c.fetchone()
+        # if data[0] != user_name:
+        #     print(data[0])
+        #     print(user_name)
+        #     raise ValueError("Name mismatch")
+        print("Trying to update.... in update_user_score() function")
+        c.execute("UPDATE scores SET score = ?, timestamp = ?, software = ? WHERE id = ? AND test_selected=?",(new_score,timestamp,software,user_id,test_type))
         db.commit()
         db.close()
         return 1
+    except ValueError as e:
+        print(e)
+        return [e,"user ID and userName do not match"]
     except Exception as e:
-        try:
-            db.close()
-        except Exception as e:
-            print(e)
-        finally:    
-            return e
+        print(e)
+        return [e,"Score update failed"]
+    finally:
+        db.close()
 
 def get_top_10(test_type: str):
     ascending_mode = ["Scriptures 10", "Scriptures 20","10","20"]

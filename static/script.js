@@ -987,57 +987,100 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
   const parsedCurrentScore = parseFloat(currentScore);
   const leaderboard_types = ["Scriptures 10", "Scriptures 20", "Time 30", "Time 60"]
 
-  if (parsedBestScore == parsedCurrentScore && !isRegistered() && leaderboard_types.includes(testTypeString)) { 
+  if (parsedBestScore == parsedCurrentScore && leaderboard_types.includes(testTypeString)) { 
     //Write code for updating best score as well
-    userForm = document.getElementById("get-user-details");
-    userForm.classList.remove("hidden");
-    celebrate();
-    userForm.addEventListener("submit", function (event) {
-      event.preventDefault(); //Prevent default form submission
-      document.getElementById("user-submit-button").disabled = true;
-      userForm.classList.add("hidden");
-      //Get form values
-      const userName = document.getElementById("userName").value;
-      const userCountryElement = document.getElementById("userCountry");
-      const userCountry = userCountryElement.value;
+    if (!isRegistered()){
+      userForm = document.getElementById("get-user-details");
+      userForm.classList.remove("hidden");
+      celebrate();
+      userForm.addEventListener("submit", function (event) {
+        event.preventDefault(); //Prevent default form submission
+        document.getElementById("user-submit-button").disabled = true;
+        userForm.classList.add("hidden");
+        //Get form values
+        const userName = document.getElementById("userName").value;
+        const userCountryElement = document.getElementById("userCountry");
+        const userCountry = userCountryElement.value;
+  
+        const countries = JSON.parse(document.getElementById('countries-data').textContent);
+        if (!countries.includes(userCountry)) {
+          userCountryElement.setCustomValidity("Please select a valid country");
+          userCountryElement.reportValidity();
+          userCountryElement.addEventListener("input", () => {
+            userCountryElement.setCustomValidity("");
+          }, { once: true });
+          return;
+        }
+  
+        const timestamp = Date.now();
+        //Preparing and Sending necessary data
+        // data needed
+        // score (if score is the best time)
+        // selected test (e.g Scriptures 10)
+        // software (e.g EasyWorship)
+        // timestamp
+  
+        //Check if user input empty
+        if (!(userName && userCountry)) {
+          return;
+        }
+        const scoreData = {
+          name: userName,
+          country: userCountry,
+          score: parsedBestScore,
+          selectedTest: testTypeString,
+          software: selected,
+          timestamp: timestamp
+          // e.g
+          // country:"Nigeria"
+          // name:"pvp"
+          // score:2.474
+          // selectedTest:"Scriptures 10"
+          // software:"EasyWorship"
+          // timestamp:1771109260653
+  
+        };
+        fetch("/register", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(scoreData)
+        })
+          .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+          })
+          .then(data => {
+            if (data.player_id) {
+              localStorage.setItem("user-id",data.player_id);
+            }
+            else {
+              console.log("Registration failed");
+            }
+          })
+          .catch(error => {
+            console.error("Error " + error);
+          });
+      });
+    }
 
-      const countries = JSON.parse(document.getElementById('countries-data').textContent);
-      if (!countries.includes(userCountry)) {
-        userCountryElement.setCustomValidity("Please select a valid country");
-        userCountryElement.reportValidity();
-        userCountryElement.addEventListener("input", () => {
-          userCountryElement.setCustomValidity("");
-        }, { once: true });
-        return;
-      }
-
+    else { //Else block to handle registered players - update scores on Database
+      const user_id = localStorage.getItem("user-id");
       const timestamp = Date.now();
-      //Preparing and Sending necessary data
-      // data needed
-      // score (if score is the best time)
-      // selected test (e.g Scriptures 10)
-      // software (e.g EasyWorship)
-      // timestamp
-      if (!(userName && userCountry)) {
-        return;
-      }
-      const scoreData = {
-        name: userName,
-        country: userCountry,
-        score: parsedBestScore,
-        selectedTest: testTypeString,
-        software: selected,
-        timestamp: timestamp
-        // e.g
-        // country:"Nigeria"
-        // name:"pvp"
-        // score:2.474
-        // selectedTest:"Scriptures 10"
-        // software:"EasyWorship"
-        // timestamp:1771109260653
+      const userScore = parsedBestScore;
+      const userSelectedTest = testTypeString;
+      const userSoftware = selected;
 
-      };
-      fetch("/register", {
+      const scoreData = {
+        new_score: parsedBestScore,
+        user_id: user_id,
+        score: userScore,
+        selectedTest: userSelectedTest,
+        software: userSoftware,
+        timestamp: timestamp
+      }
+      fetch("/update-score", {
         method: "POST",
         headers: {
           "Content-type": "application/json"
@@ -1049,17 +1092,17 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
           return response.json();
         })
         .then(data => {
-          if (data.player_id) {
-            localStorage.setItem("user-id",data.player_id);
+          if (data.message === "Score updated successfully") {
+            console.log("Updated score successfully!");
           }
           else {
-            console.log("Registration failed");
+            console.log("Score update failed!: ",data.message);
           }
         })
         .catch(error => {
           console.error("Error " + error);
         });
-    });
+    }
   }
 }
 

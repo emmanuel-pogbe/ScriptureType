@@ -38,7 +38,7 @@ def register_player():
     secret_token = secrets.token_hex(32)
     data = request.get_json()
     name = data.get("name")
-    country = data.get("country").capitalize()
+    country = data.get("country")
     score = data.get("score")
     software = data.get("software")   
     selected_test = data.get("selectedTest")
@@ -68,6 +68,22 @@ def register_player():
         "player_id":None,
         "message":"Player registration failed"
     })
+
+@app.route("/update-score", methods=["POST"])
+def update_score():
+    data = request.get_json()
+    new_score = data.get("new_score")
+    user_id = data.get("user_id")
+    test_type = data.get("selectedTest")
+    software = data.get("software")
+    timestamp = data.get("timestamp")
+    try:
+        db.update_user_score(user_id, test_type, software, timestamp, new_score)
+        return jsonify({"message": "Score updated successfully"})
+    except Exception as e:
+        print("Something went wrong " + str(e))
+        return jsonify({"message": f"{str(e)} ----> Score update failed"})
+
 @app.route('/sync-identity')
 def sync_identity():
     # 1. Get the hidden secret_token from the HttpOnly cookie
