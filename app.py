@@ -38,16 +38,14 @@ def register_player():
     secret_token = secrets.token_hex(32)
     data = request.get_json()
     name = data.get("name")
-    country = data.get("country")
+    country = data.get("country").capitalize()
     score = data.get("score")
     software = data.get("software")   
     selected_test = data.get("selectedTest")
     timestamp = data.get("timestamp") 
     #We could save the data to the DB now
     #Country example: Nigeria
-    print("Before registration call")
     registration_status = db.register_player(player_id,secret_token,name,country,score,software,selected_test,timestamp)
-    print("Registration status:",registration_status)
     if registration_status == "Player already registered":
         return jsonify({
             "player_id":None,

@@ -3,7 +3,6 @@ import helpers
 
 def register_player(player_id,secret_token,name,country,score,software,selected_test,timestamp):
     try:
-        country = country.lower() #Convert country into its 2 letter ISO form
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
         #Check if player id already in database
@@ -85,7 +84,7 @@ def get_top_10(test_type: str):
             c.execute("SELECT name,country,score,software FROM scores WHERE test_selected = ? ORDER BY score DESC, timestamp ASC LIMIT 10",(test_type,))
         top10 = c.fetchall()
         top10_with_flags = [
-            (name,country,score,software,helpers.get_country_name(country))
+            (name,helpers.get_country_code(country),score,software,country)
             for name,country,score,software in top10
         ]
         return top10_with_flags
@@ -119,10 +118,10 @@ def get_player_position_info(test_type: str, player_id: str):
                     ) WHERE id = ?
                 """, (test_type, player_id))
         player_rank = c.fetchone()
-        #Get the country representation of the country ISO code
+
         rank,name,country,score,software = player_rank
-        country_name = helpers.get_country_name(country)
-        player_rank_with_name = (rank,name,country,score,software,country_name)
+        country_code = helpers.get_country_code(country)
+        player_rank_with_name = (rank,name,country_code,score,software,country)
         return player_rank_with_name
     except Exception:
         pass
