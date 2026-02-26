@@ -22,15 +22,46 @@ def index():
 
 @app.route("/leaderboards",methods=["GET","POST"])
 def get_leaderboard():
-    test_type = "Scriptures 10"
-    top_10 = db.get_top_10(test_type) #[(name,country_code,score,software used, country name),...]
+    test_type = request.args.get("type",default="Scriptures 10",type=str)
+    valid = ["Scriptures 10","Scriptures 20","Time 30","Time 60"]
+    if test_type not in valid:
+        test_type = "Scriptures 10"
+    
+    top_10 = db.get_top_10(test_type)
+    
+    auth_token = request.cookies.get('auth_token')
+    player_id = None
+    player_position_info = None
+
+    if auth_token:
+        player_data = db.get_player_info(auth_token)
+        if player_data:
+            player_id = player_data[0]
+            player_position_info = db.get_player_position_info(test_type, player_id)
+
     if request.method == "POST":
-        data = request.get_json()
-        player_id = data.get("id")
-        player_position_info = db.get_player_position_info(test_type, player_id)
-        if player_position_info:
-            return render_template("leaderboard.html",top_10 = top_10,player_position_info = player_position_info)
-    return render_template("leaderboard.html",top_10 = top_10)  
+        data = request.get_json() or {}
+        player_id = data.get("id") or player_id
+        if player_id:
+            player_position_info = db.get_player_position_info(test_type, player_id)
+        return render_template("leaderboard_partial.html",top_10 = top_10,player_position_info = player_position_info)
+
+    if request.headers.get("Accept") == "application/json":
+        return jsonify({
+            "top_10":top_10
+        })
+    
+    if request.args.get("partial"):
+        return render_template("leaderboard_partial.html",top_10 = top_10,player_position_info = player_position_info)
+
+    return render_template("leaderboard.html",top_10 = top_10, player_position_info = player_position_info)
+
+@app.route("/get_specific_leaderboard",methods=["POST"])
+def get_specific_leaderboard():
+    data = request.get_json()
+    test_type = data.get("test_type")
+    top_10 = db.get_top_10(test_type)
+    return jsonify(top_10)
 
 @app.route("/register",methods=["POST"])
 def register_player():

@@ -104,7 +104,7 @@ def get_player_position_info(test_type: str, player_id: str):
     try:
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
-        ascending_mode = ["Scripture 10", "Scripture 20","10","20"]
+        ascending_mode = ["Scriptures 10", "Scriptures 20","10","20","Scripture 10","Scripture 20"]
         if test_type in ascending_mode:
             c.execute("""
                     SELECT rank,name,country,score,software FROM (
@@ -126,15 +126,16 @@ def get_player_position_info(test_type: str, player_id: str):
                     ) WHERE id = ?
                 """, (test_type, player_id))
         player_rank = c.fetchone()
-
+        if not player_rank:
+            return None
         rank,name,country,score,software = player_rank
         country_code = helpers.get_country_code(country)
         player_rank_with_name = (rank,name,country_code,score,software,country)
         return player_rank_with_name
-    except Exception:
-        pass
-    finally:
+    except Exception as e:
+        print(f"Error in get_player_position_info: {e}")
         return None
+    finally:
         db.close()
 
 if __name__ == "__main__":

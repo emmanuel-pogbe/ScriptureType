@@ -1,0 +1,34 @@
+<table id="main-leaderboard-table">
+    <thead>
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Score</th>
+            <th>Software used</th>
+        </tr>
+    </thead>
+    <tbody class="table-body" id="table-body">
+        {% include 'leaderboard_rows.html' %}
+    </tbody>
+</table>
+
+{%if player_position_info%}
+<h1>Your position</h1>
+<table>
+    <tbody class="table-body">
+        <tr>
+            <td><span>{{player_position_info[0]}}</span></td>
+            <td><span class="player-name">{{player_position_info[1]}}</span></td>
+            <td class="leaderboard-flag-column">
+                <div class="leaderboard-flag-area"><span
+                        class="fi fi-xx fi-{{player_position_info[2].lower()}} leaderboard-profile-flag"
+                        data-country="{{player_position_info[5]}}" aria-label="{{player_position_info[5]}}"
+                        tabindex="0"></span><span class="country-tip-text">{{player_position_info[5]}}</span></div>
+            </td>
+            <td><span>{{player_position_info[3]}}</span></td>
+            <td><span>{{player_position_info[4]}}</span></td>
+        </tr>
+    </tbody>
+</table>
+{%endif%}
