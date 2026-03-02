@@ -74,8 +74,7 @@ def register_player():
     software = data.get("software")   
     selected_test = data.get("selectedTest")
     timestamp = data.get("timestamp") 
-    #We could save the data to the DB now
-    #Country example: Nigeria
+
     registration_status = db.register_player(player_id,secret_token,name,country,score,software,selected_test,timestamp)
     if registration_status == "Player already registered":
         return jsonify({

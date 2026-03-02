@@ -982,6 +982,34 @@ setTimeout(() => {
   myCanvas.remove();
 }, 3000);
 }
+function register_existing_user() {
+  // provide warning to the user before clearing stored scores for leaderboard compatibility
+  let user_response = confirm(
+    "Joining the leaderboard now will only make use of your current score and not past scores\n" +
+    "Your past scores will be cleared after joining the leaderboard\n" +
+    "Do you still want to join?"
+  );
+  if (!user_response) return;
+
+  // clear only score-related keys instead of wiping entire storage
+  try {
+    localStorage.removeItem("10");
+    localStorage.removeItem("20");
+    localStorage.removeItem("30s");
+    localStorage.removeItem("60s");
+  } catch (err) {
+    console.error('Error clearing old scores', err);
+    // as a last resort, clear everything except user-id
+    const userId = localStorage.getItem('user-id');
+    localStorage.clear();
+    if (userId) localStorage.setItem('user-id', userId);
+  }
+
+  gameKey = (currentSetting === "Custom" ? "cus_" : "") +
+            (currentOption === "Scripture count" ? totalScriptures : (totalTime + "s"));
+  localStorage.setItem(gameKey, parsedCurrentScore);
+  displayUserFormCollection(parsedCurrentScore, parsedCurrentScore, testTypeString, selected);
+}
 function displayUserFormCollection(bestScore, currentScore, testTypeString, selected) {
   const parsedBestScore = parseFloat(bestScore);
   const parsedCurrentScore = parseFloat(currentScore);
@@ -994,6 +1022,7 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
       userForm.addEventListener("submit", function (event) {
         event.preventDefault(); //Prevent default form submission
         document.getElementById("user-submit-button").disabled = true;
+        resultPageDisplay.querySelector(".join-leaderboard").remove();
         userForm.classList.add("hidden");
         //Get form values
         const userName = document.getElementById("userName").value;
@@ -1100,6 +1129,47 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
         .catch(error => {
           console.error("Error " + error);
         });
+    }
+  }
+  else if (leaderboard_types.includes(testTypeString)) {
+    // show a help/join button for unregistered players who have any previous score
+    if (!isRegistered() && !isNaN(parsedBestScore)) {
+      const resultPageDisplay = document.getElementById("result");
+      // avoid creating the button more than once
+      if (!resultPageDisplay.querySelector(".join-leaderboard")) {
+        const joinLeaderboardBtn = document.createElement("button");
+        joinLeaderboardBtn.textContent = "Join the global leaderboard!";
+        joinLeaderboardBtn.classList.add("join-leaderboard");
+        joinLeaderboardBtn.addEventListener("click", ()=>{
+           // provide warning to the user before clearing stored scores for leaderboard compatibility
+          let user_response = confirm(
+            "Joining the leaderboard now will only make use of your current score and not past best scores\n" +
+            "Your past scores will be cleared after joining the leaderboard\n" +
+            "Do you still want to join?"
+          );
+          if (!user_response) return;
+
+          // clear only score-related keys instead of wiping entire storage
+          try {
+            localStorage.removeItem("10");
+            localStorage.removeItem("20");
+            localStorage.removeItem("30s");
+            localStorage.removeItem("60s");
+          } catch (err) {
+            console.error('Error clearing old scores', err);
+            // as a last resort, clear everything except user-id
+            const userId = localStorage.getItem('user-id');
+            localStorage.clear();
+            if (userId) localStorage.setItem('user-id', userId);
+          }
+
+          gameKey = (currentSetting === "Custom" ? "cus_" : "") +
+                    (currentOption === "Scripture count" ? totalScriptures : (totalTime + "s"));
+          localStorage.setItem(gameKey, parsedCurrentScore);
+          displayUserFormCollection(parsedCurrentScore, parsedCurrentScore, testTypeString, selected);
+        });
+        resultPageDisplay.appendChild(joinLeaderboardBtn);
+      }
     }
   }
 }

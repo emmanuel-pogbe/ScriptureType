@@ -523,6 +523,20 @@ body::-webkit-scrollbar-thumb:hover {
     overflow: visible;
     /* Prevent clipping of children like dropdowns */
 }
+.join-leaderboard {
+    color: white;
+    border: none;
+    background-color: #595E76;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+.join-leaderboard:hover {
+    color: black;
+    background-color: #C6C8D1;
+}
 
 .section-form {
     padding: 10px 0;
