@@ -1022,7 +1022,10 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
       userForm.addEventListener("submit", function (event) {
         event.preventDefault(); //Prevent default form submission
         document.getElementById("user-submit-button").disabled = true;
-        resultPageDisplay.querySelector(".join-leaderboard").remove();
+        const joinBtn = document.querySelector(".join-leaderboard");
+        if (joinBtn) {
+          joinBtn.remove();
+        }
         userForm.classList.add("hidden");
         //Get form values
         const userName = document.getElementById("userName").value;

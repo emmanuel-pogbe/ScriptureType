@@ -129,5 +129,5 @@ def sync_identity():
         return jsonify({"player_id": player['id']})
     return jsonify({"error": "Invalid token"}), 403
 if __name__=="__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run("0.0.0.0",port=port,debug=True)
+    flask_port = int(os.environ.get("FLASK_PORT", 5000))
+    app.run("0.0.0.0",port=flask_port,debug=True)
