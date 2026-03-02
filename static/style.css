@@ -678,20 +678,20 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .leaderboard-table {
-    height: 100%;
+    /* allow the leaderboard to scroll internally without stretching rows */
+    max-height: 100%;
     width: 70%;
     border-radius: 12px;
     overflow-y: auto;
     overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    flex: 1;
+    height: auto; /* don't force table to fill container height */
 }
+
 
 thead {
     position: sticky;
@@ -727,7 +727,7 @@ th:nth-child(2) {
 
 tbody tr {
     background-color: #232531;
-    height: 20px;
+    vertical-align: middle;
 }
 
 tbody tr:nth-child(odd) {
@@ -739,7 +739,15 @@ tbody tr.player-highlight {
     border: 2px solid #4a9a6a;
 }
 
+tbody tr.player-highlight td {
+    background-color: #2a4a3a !important;
+}
+
 tbody tr.player-highlight:hover {
+    background-color: #3a5a4a !important;
+}
+
+tbody tr.player-highlight:hover td {
     background-color: #3a5a4a !important;
 }
 
