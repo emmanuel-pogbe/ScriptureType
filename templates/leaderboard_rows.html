@@ -3,7 +3,10 @@
         background: none;
     }
 </style>
-{%for data in top_10%}
+{% if not top_10 %}
+    <tr><td colspan="5" style="text-align: center;">No record found</td></tr>
+{% endif %}
+{% for data in top_10 %}
 <tr class="table-rows{% if player_position_info and player_position_info[0] <= 10 and data[0] == player_position_info[1] %} player-highlight{% endif %}">
     {%if loop.index0+1 == 1%}
     <td><span>

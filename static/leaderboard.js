@@ -5,6 +5,7 @@ sideBarButtons.forEach(button => {
     sideBarButtons.forEach(btn => btn.classList.remove("leaderboard-active"));
     this.classList.add("leaderboard-active");
     active_btn = this.textContent;
+    document.getElementById("table-body").classList.add("hidden");
     fetch("/leaderboards?partial=true&type=" + encodeURIComponent(active_btn), {
       method: "GET"
     })
@@ -12,6 +13,7 @@ sideBarButtons.forEach(button => {
       .then(html => {
         const container = document.getElementById("leaderboard-container");
         container.innerHTML = html;
+        document.getElementById("table-body").classList.remove("hidden");
       });
   });
 
