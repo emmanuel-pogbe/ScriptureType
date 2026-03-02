@@ -987,7 +987,6 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
   const parsedCurrentScore = parseFloat(currentScore);
   const leaderboard_types = ["Scriptures 10", "Scriptures 20", "Time 30", "Time 60"]
   if (parsedBestScore == parsedCurrentScore && leaderboard_types.includes(testTypeString)) { 
-    //Write code for updating best score as well
     if (!isRegistered()){
       userForm = document.getElementById("get-user-details");
       userForm.classList.remove("hidden");

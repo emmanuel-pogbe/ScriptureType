@@ -38,12 +38,13 @@ def get_player_info(secret_key):
     finally:
         db.close()
         
-def insert_into_db(user_score_data: tuple):
+def insert_into_db(player_id,secret_token,name,country,score,software,selected_test,timestamp):
     try:
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
+        user_score_data = (player_id,secret_token,name,country,score,software,selected_test,timestamp)
         c.execute("""
-            INSERT INTO scores(name,country,score,software,text_selected) VALUES (?,?,?,?,?)
+            INSERT INTO scores(user_id,secret,name,country,score,software,test_selected,timestamp) VALUES (?,?,?,?,?)
         """,user_score_data)
         db.commit()
         db.close()
@@ -61,14 +62,15 @@ def update_user_score(user_id, test_type, software, timestamp, new_score):
     try:
         db = sqlite3.connect("score_info.db")
         c = db.cursor()
-        # c.execute("SELECT name FROM scores WHERE id = ?",(user_id,))
-        # data = c.fetchone()
-        # if data[0] != user_name:
-        #     print(data[0])
-        #     print(user_name)
-        #     raise ValueError("Name mismatch")
-        print("Trying to update.... in update_user_score() function")
-        c.execute("UPDATE scores SET score = ?, timestamp = ?, software = ? WHERE id = ? AND test_selected=?",(new_score,timestamp,software,user_id,test_type))
+        c.execute("SELECT * FROM scores WHERE id = ?",(user_id,))
+        data = c.fetchone()
+        if data[6] != test_type:
+            c.execute("""
+                INSERT INTO scores(id, secret, name, country, score, software, test_selected, timestamp) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (data[0], data[1], data[2], data[3], new_score, software, test_type, timestamp))
+        else:
+            c.execute("UPDATE scores SET score = ?, timestamp = ?, software = ? WHERE id = ? AND test_selected=?",(new_score,timestamp,software,user_id,test_type))
         db.commit()
         db.close()
         return 1

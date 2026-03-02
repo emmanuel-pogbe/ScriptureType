@@ -667,17 +667,23 @@ body::-webkit-scrollbar-thumb:hover {
     height: 100%;
     width: 70%;
     border-radius: 12px;
-    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    flex: 1;
 }
 
 thead {
     position: sticky;
     top: 0;
+    z-index: 10;
+    background-color: #161821;
 }
 
 th {
@@ -712,6 +718,15 @@ tbody tr {
 
 tbody tr:nth-child(odd) {
     background-color: #161821;
+}
+
+tbody tr.player-highlight {
+    background-color: #2a4a3a !important;
+    border: 2px solid #4a9a6a;
+}
+
+tbody tr.player-highlight:hover {
+    background-color: #3a5a4a !important;
 }
 
 td {
