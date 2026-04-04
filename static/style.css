@@ -773,10 +773,52 @@ td:nth-child(2) {
 }
 
 @media (max-width: 768px) {
+    #app {
+        width: 95%;
+    }
     .leaderboard-main {
         flex-direction: column;
     }
+    .leaderboard-side-bar-inner {
+        min-width: 100%;
+        margin: 10px 0;
+    }
     .leaderboard-table {
         width: 100%;
+        overflow-x: auto;
+    }
+    th {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+    th:first-child {
+        padding: 8px 4px;
+        width: auto;
+    }
+    td {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+    td:first-child {
+        padding: 8px 4px;
+    }
+    .leaderboard-flag-column {
+        font-size: 12px;
+    }
+    .leaderboard-profile-flag {
+        width: 16px;
+        height: 16px;
+    }
+    .rank-icon {
+        width: 20px;
+        height: auto;
+    }
+    .player-name {
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: bottom;
     }
 }
