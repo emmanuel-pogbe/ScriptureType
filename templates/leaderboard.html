@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboards | ScriptureType</title>
+    <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='assets/EWT.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="header-left">
+                <a href="/" id="logo">
+                    <div class="icon">
+                        <img src="{{url_for('static',filename='assets/easy worship.png')}}" alt="Easy Worship logo"
+                            width="55px" height="100%">
+                    </div>
+                    <h1>ScriptureType</h1>
+                </a>
+                <a href="/leaderboards">
+                    <button id="leaderboard-button" class="leaderboard-button" title="Show leaderboard">
+                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 246.58 176.82">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #53a0c6;
+                                    }
+
+                                    .cls-2 {
+                                        fill: #ef472e;
+                                    }
+
+                                    .cls-3 {
+                                        font-size: 34.57px;
+                                        fill: #231f20;
+                                        font-family: Arial-Black, Arial;
+                                        font-weight: 800;
+                                    }
+                                </style>
+                            </defs>
+                            <rect class="cls-1" y="124.72" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="61.22" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="98.67" width="45.91" height="52.1" />
+                            <rect class="cls-1" x="122.43" y="150.77" width="45.91" height="26.05" />
+                            <rect class="cls-1" x="122.43" y="72.62" width="45.91" height="26.05" />
+                            <rect class="cls-2" x="244.36" y="301.45" width="133.92" height="50.61"
+                                transform="translate(171.99 -365.4) rotate(45)" /><text class="cls-3"
+                                transform="translate(117.12 57.93) rotate(45)">NEW!</text>
+                            <polyline class="cls-2" points="75.29 35.79 95.84 56.33 113.73 38.44" />
+                            <polyline class="cls-2" points="111.08 0 131.62 20.54 113.73 38.44" />
+                            <polyline class="cls-2" points="210.79 171.29 190.25 150.74 208.14 132.85" />
+                            <polyline class="cls-2" points="246.58 135.5 226.04 114.96 208.14 132.85" />
+                        </svg>
+                    </button>
+                </a>
+            </div>
+            <button id="help-button" onclick="displayHelp()" class="help-button" title="Show help">
+                <i class="fa-solid fa-circle-question"></i>
+            </button>
+        </header>
+        <div class="leaderboard-main">
+            <div class="leaderboard-side-bar-inner">
+                <button class="side-bar-button{% if selected_test_type == 'Scriptures 10' %} leaderboard-active{% endif %}">Scriptures 10</button>
+                <button class="side-bar-button{% if selected_test_type == 'Scriptures 20' %} leaderboard-active{% endif %}">Scriptures 20</button>
+                <div class="leaderboard-score-separator"></div>
+                <button class="side-bar-button{% if selected_test_type == 'Time 30' %} leaderboard-active{% endif %}">Time 30</button>
+                <button class="side-bar-button{% if selected_test_type == 'Time 60' %} leaderboard-active{% endif %}">Time 60</button>
+            </div>
+            <div class="leaderboard-table" id="leaderboard-container">
+                {% include 'leaderboard_partial.html' %}
+            </div>
+        </div>
+    </div>
+    <script id="leaderboard-cache" type="application/json">
+        {{ leaderboard_cache | tojson }}
+    </script>
+    <script id="selected-test-type" type="application/json">
+        {{ selected_test_type | tojson }}
+    </script>
+    <script src="{{url_for('static',filename='leaderboard.js')}}">
+
+    </script>
+</body>
+
+</html>
