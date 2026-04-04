@@ -75,14 +75,49 @@
             </button>
         </header>
         <div id="selection" class="result pop-in">
-            <form>
+            <form id="software-form">
                 <label for="software" class="start-label">Select church presentation software</label>
                 <br>
-                <select name="software" id="software" required>
-                    <option value="EasyWorship">EasyWorship</option>
-                    <option value="VideoPsalm">VideoPsalm</option>
-                    <option value="BibleShow">BibleShow</option>
-                </select>
+                <div class="custom-select-container" style="width: 50%; margin: 15px auto;">
+                    <input type="text" id="software" name="software" value="EasyWorship" readonly required class="modern-input" style="cursor: pointer; text-align: center;">
+                    <i class="fa-solid fa-chevron-down country-chevron"></i>
+                    <div id="software-list" class="country-list hidden" style="text-align: left;">
+                        <div class="country-option" data-value="EasyWorship">EasyWorship</div>
+                        <div class="country-option" data-value="VideoPsalm">VideoPsalm</div>
+                        <div class="country-option" data-value="BibleShow">BibleShow</div>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const softwareInput = document.getElementById('software');
+                        const softwareList = document.getElementById('software-list');
+                        const softwareChevron = softwareInput.nextElementSibling;
+                        
+                        softwareInput.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            softwareList.classList.toggle('hidden');
+                            softwareInput.focus();
+                        });
+
+                        softwareChevron.addEventListener('click', () => {
+                            softwareList.classList.toggle('hidden');
+                            softwareInput.focus();
+                        });
+
+                        softwareList.querySelectorAll('.country-option').forEach(item => {
+                            item.addEventListener('click', () => {
+                                softwareInput.value = item.getAttribute('data-value');
+                                softwareList.classList.add('hidden');
+                            });
+                        });
+
+                        document.addEventListener('click', (e) => {
+                            if (!softwareInput.contains(e.target) && !softwareChevron.contains(e.target) && !softwareList.contains(e.target)) {
+                                softwareList.classList.add('hidden');
+                            }
+                        });
+                    });
+                </script>
                 <br>
                 <input type="submit" value="Start" id="start">
             </form>
