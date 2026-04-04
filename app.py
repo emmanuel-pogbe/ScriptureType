@@ -26,35 +26,53 @@ def get_leaderboard():
     valid = ["Scriptures 10","Scriptures 20","Time 30","Time 60"]
     if test_type not in valid:
         test_type = "Scriptures 10"
-    
-    top_10 = db.get_top_10(test_type)
-    
+
     auth_token = request.cookies.get('auth_token')
     player_id = None
-    player_position_info = None
 
     if auth_token:
         player_data = db.get_player_info(auth_token)
         if player_data:
             player_id = player_data[0]
-            player_position_info = db.get_player_position_info(test_type, player_id)
+
+    def get_leaderboard_slice(current_test_type, current_player_id):
+        top_10_data = db.get_top_10(current_test_type)
+        player_position = None
+        if current_player_id:
+            player_position = db.get_player_position_info(current_test_type, current_player_id)
+        return {
+            "top_10": top_10_data,
+            "player_position_info": player_position
+        }
 
     if request.method == "POST":
         data = request.get_json() or {}
         player_id = data.get("id") or player_id
-        if player_id:
-            player_position_info = db.get_player_position_info(test_type, player_id)
-        return render_template("leaderboard_partial.html",top_10 = top_10,player_position_info = player_position_info)
+        leaderboard_slice = get_leaderboard_slice(test_type, player_id)
+        return render_template("leaderboard_partial.html",top_10 = leaderboard_slice["top_10"],player_position_info = leaderboard_slice["player_position_info"])
+
+    if request.args.get("partial"):
+        leaderboard_slice = get_leaderboard_slice(test_type, player_id)
+        return render_template("leaderboard_partial.html",top_10 = leaderboard_slice["top_10"],player_position_info = leaderboard_slice["player_position_info"])
+
+    leaderboard_cache = {
+        current_test_type: get_leaderboard_slice(current_test_type, player_id)
+        for current_test_type in valid
+    }
 
     if request.headers.get("Accept") == "application/json":
         return jsonify({
-            "top_10":top_10
+            "selected_test_type": test_type,
+            "leaderboards": leaderboard_cache
         })
-    
-    if request.args.get("partial"):
-        return render_template("leaderboard_partial.html",top_10 = top_10,player_position_info = player_position_info)
-
-    return render_template("leaderboard.html",top_10 = top_10, player_position_info = player_position_info)
+    selected_slice = leaderboard_cache.get(test_type, {"top_10": [], "player_position_info": None})
+    return render_template(
+        "leaderboard.html",
+        top_10=selected_slice.get("top_10"),
+        player_position_info=selected_slice.get("player_position_info"),
+        leaderboard_cache=leaderboard_cache,
+        selected_test_type=test_type
+    )
 
 @app.route("/get_specific_leaderboard",methods=["POST"])
 def get_specific_leaderboard():

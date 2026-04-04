@@ -66,17 +66,23 @@
         </header>
         <div class="leaderboard-main">
             <div class="leaderboard-side-bar-inner">
-                <button class="side-bar-button leaderboard-active">Scriptures 10</button>
-                <button class="side-bar-button">Scriptures 20</button>
+                <button class="side-bar-button{% if selected_test_type == 'Scriptures 10' %} leaderboard-active{% endif %}">Scriptures 10</button>
+                <button class="side-bar-button{% if selected_test_type == 'Scriptures 20' %} leaderboard-active{% endif %}">Scriptures 20</button>
                 <div class="leaderboard-score-separator"></div>
-                <button class="side-bar-button">Time 30</button>
-                <button class="side-bar-button">Time 60</button>
+                <button class="side-bar-button{% if selected_test_type == 'Time 30' %} leaderboard-active{% endif %}">Time 30</button>
+                <button class="side-bar-button{% if selected_test_type == 'Time 60' %} leaderboard-active{% endif %}">Time 60</button>
             </div>
             <div class="leaderboard-table" id="leaderboard-container">
                 {% include 'leaderboard_partial.html' %}
             </div>
         </div>
     </div>
+    <script id="leaderboard-cache" type="application/json">
+        {{ leaderboard_cache | tojson }}
+    </script>
+    <script id="selected-test-type" type="application/json">
+        {{ selected_test_type | tojson }}
+    </script>
     <script src="{{url_for('static',filename='leaderboard.js')}}">
 
     </script>
