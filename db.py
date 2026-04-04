@@ -6,34 +6,35 @@ import helpers
 # Load environment variables from .env
 load_dotenv()
 
-# Parse DATABASE_URL or use individual environment variables
+from psycopg2 import pool
+
+# Parse DATABASE_URL
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+try:
+    db_pool = psycopg2.pool.ThreadedConnectionPool(
+        1, 20,
+        DATABASE_URL,
+        connect_timeout=10
+    )
+except psycopg2.Error as e:
+    print(f"[ERROR] Failed to initialize Database Pool: {e}")
+    db_pool = None
+
 def get_db_connection():
-    """Create and return a PostgreSQL database connection"""
+    """Get a PostgreSQL database connection from the pool"""
     try:
-        # Fall back to individual environment variables
-        USER = os.getenv("user")
-        PASSWORD = os.getenv("password")
-        HOST = os.getenv("host")
-        PORT = os.getenv("port")
-        DBNAME = os.getenv("dbname")
-               
-        conn = psycopg2.connect(
-            user=USER,
-            password=PASSWORD,
-            host=HOST,
-            port=PORT,
-            database=DBNAME,
-            connect_timeout=10
-        )
-        return conn
-    except psycopg2.OperationalError as e:
-        print(f"[ERROR] Database connection error: {e}")
+        if db_pool:
+            return db_pool.getconn()
         return None
     except Exception as e:
-        print(f"[ERROR] Failed to connect: {e}")
+        print(f"[ERROR] Failed to get connection from pool: {e}")
         return None
+
+def release_db_connection(conn):
+    """Return the database connection to the pool"""
+    if db_pool and conn:
+        db_pool.putconn(conn)
 
 def init_db():
     """Initialize the database and create the scores table if it doesn't exist"""
@@ -59,7 +60,7 @@ def init_db():
         """)
         conn.commit()
         cur.close()
-        conn.close()
+        release_db_connection(conn)
         return True
     except Exception as e:
         print(f"Failed to initialize database: {e}")
@@ -96,7 +97,7 @@ def register_player(player_id, secret_token, name, country, score, software, sel
     finally:
         if conn:
             cur.close()
-            conn.close()
+            release_db_connection(conn)
 
 def get_player_info(secret_key):
     """Get player ID from secret key"""
@@ -116,7 +117,7 @@ def get_player_info(secret_key):
     finally:
         if conn:
             cur.close()
-            conn.close()
+            release_db_connection(conn)
         
 # def insert_into_db(player_id, secret_token, name, country, score, software, selected_test, timestamp):
 #     """Insert a new score record into the database"""
@@ -143,7 +144,7 @@ def get_player_info(secret_key):
 #     finally:
 #         if conn:
 #             cur.close()
-#             conn.close()
+#             release_db_connection(conn)
 
 def update_user_score(user_id, test_type, software, timestamp, new_score):
     """Update or insert a score for a user"""
@@ -189,7 +190,7 @@ def update_user_score(user_id, test_type, software, timestamp, new_score):
     finally:
         if conn:
             cur.close()
-            conn.close()
+            release_db_connection(conn)
 
 def get_top_10(test_type: str):
     """Get top 10 players for a specific test type"""
@@ -225,7 +226,7 @@ def get_top_10(test_type: str):
     finally:
         if conn:
             cur.close()
-            conn.close()
+            release_db_connection(conn)
 def get_player_position_info(test_type: str, player_id: str):
     """Get player's rank and info for a specific test"""
     conn = None
@@ -271,4 +272,4 @@ def get_player_position_info(test_type: str, player_id: str):
     finally:
         if conn:
             cur.close()
-            conn.close()
+            release_db_connection(conn)
