@@ -15,6 +15,7 @@ bible_books = bible.__biblebooks
 prefix_map = prefixmap.__bible_prefix_map
 alias_map = aliasmap.__bible_alias_map
 app = Flask(__name__,template_folder="templates",static_folder="static")
+db.init_db()
 @app.route("/")
 def index():
     country_list = helpers.get_country_list()
