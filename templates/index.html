@@ -75,46 +75,59 @@
             </button>
         </header>
         <div id="selection" class="result pop-in">
+            <style>
+                .software-options-container {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    margin: 15px auto;
+                    background-color: #232531;
+                    border-radius: 7px;
+                    height: 45px;
+                    width: fit-content;
+                    padding: 0 10px;
+                }
+                .software-btn {
+                    border: none;
+                    padding: 0 15px;
+                    font-size: 14px;
+                    color: #595E76;
+                    font-weight: 900;
+                    background-color: transparent;
+                    cursor: pointer;
+                    transition: color 0.2s;
+                }
+                .software-btn:hover {
+                    color: #A7A9B3;
+                }
+                .software-btn.s-active {
+                    color: #84A0C6;
+                }
+            </style>
             <form id="software-form">
-                <label for="software" class="start-label">Select church presentation software</label>
-                <br>
-                <div class="custom-select-container" style="width: 50%; margin: 15px auto;">
-                    <input type="text" id="software" name="software" value="EasyWorship" readonly required class="modern-input" style="cursor: pointer; text-align: center;">
-                    <i class="fa-solid fa-chevron-down country-chevron"></i>
-                    <div id="software-list" class="country-list hidden" style="text-align: left;">
-                        <div class="country-option" data-value="EasyWorship">EasyWorship</div>
-                        <div class="country-option" data-value="VideoPsalm">VideoPsalm</div>
-                        <div class="country-option" data-value="BibleShow">BibleShow</div>
-                    </div>
+                <label class="start-label">Select church presentation software</label>
+                <div class="software-options-container">
+                    <button type="button" class="software-btn s-active" data-value="EasyWorship">EasyWorship</button>
+                    <button type="button" class="software-btn" data-value="VideoPsalm">VideoPsalm</button>
+                    <button type="button" class="software-btn" data-value="BibleShow">BibleShow</button>
                 </div>
+                <!-- Hidden input seamlessly acts exactly like the old select for script.js to read -->
+                <input type="hidden" id="software" value="EasyWorship">
+                
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
-                        const softwareInput = document.getElementById('software');
-                        const softwareList = document.getElementById('software-list');
-                        const softwareChevron = softwareInput.nextElementSibling;
+                        const softwareBtns = document.querySelectorAll('.software-btn');
+                        const softwareHidden = document.getElementById('software');
                         
-                        softwareInput.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            softwareList.classList.toggle('hidden');
-                            softwareInput.focus();
-                        });
-
-                        softwareChevron.addEventListener('click', () => {
-                            softwareList.classList.toggle('hidden');
-                            softwareInput.focus();
-                        });
-
-                        softwareList.querySelectorAll('.country-option').forEach(item => {
-                            item.addEventListener('click', () => {
-                                softwareInput.value = item.getAttribute('data-value');
-                                softwareList.classList.add('hidden');
+                        softwareBtns.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                // Remove highlight from all buttons
+                                softwareBtns.forEach(b => b.classList.remove('s-active'));
+                                // Add highlight to the clicked button
+                                btn.classList.add('s-active');
+                                // Update hidden input
+                                softwareHidden.value = btn.getAttribute('data-value');
                             });
-                        });
-
-                        document.addEventListener('click', (e) => {
-                            if (!softwareInput.contains(e.target) && !softwareChevron.contains(e.target) && !softwareList.contains(e.target)) {
-                                softwareList.classList.add('hidden');
-                            }
                         });
                     });
                 </script>
