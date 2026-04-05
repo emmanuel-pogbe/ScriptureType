@@ -120,12 +120,27 @@ def register_player():
 
 @app.route("/update-score", methods=["POST"])
 def update_score():
+    auth_token = request.cookies.get('auth_token')
+    if not auth_token:
+        return jsonify({"message": "Unauthorized"}), 401
+
+    player_data = db.get_player_info(auth_token)
+    if not player_data:
+        return jsonify({"message": "Invalid session"}), 403
+    
+    authenticated_user_id = player_data[0]
+
     data = request.get_json()
     new_score = data.get("new_score")
     user_id = data.get("user_id")
     test_type = data.get("selectedTest")
     software = data.get("software")
     timestamp = data.get("timestamp")
+
+    # Ensure the user can only update their own score
+    if user_id != authenticated_user_id:
+        return jsonify({"message": "Forbidden to modify another user's score"}), 403
+
     try:
         db.update_user_score(user_id, test_type, software, timestamp, new_score)
         return jsonify({"message": "Score updated successfully"})
@@ -145,7 +160,7 @@ def sync_identity():
 
     if player:
         # 3. Send the correct ID back so the frontend can fix its localStorage
-        return jsonify({"player_id": player['id']})
+        return jsonify({"player_id": player[0]})
     return jsonify({"error": "Invalid token"}), 403
 if __name__=="__main__":
     flask_port = int(os.environ.get("FLASK_PORT", 5000))
