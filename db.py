@@ -156,24 +156,27 @@ def update_user_score(user_id, test_type, software, timestamp, new_score):
         
         cur = conn.cursor()
         
-        # Get existing user data
-        cur.execute("SELECT * FROM scores WHERE id = %s", (user_id,))
+        # Get existing user data for this specific test type
+        cur.execute("SELECT * FROM scores WHERE id = %s AND test_selected = %s", (user_id, test_type))
         data = cur.fetchone()
         
-        if not data:
-            return "User not found"
-        
-        # Check if test type is different
-        if data[6] != test_type:  # data[6] is test_selected column
-            cur.execute("""
-                INSERT INTO scores(id, secret, name, country, score, software, test_selected, timestamp) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (data[0], data[1], data[2], data[3], new_score, software, test_type, timestamp))
-        else:
+        if data:
             cur.execute("""
                 UPDATE scores SET score = %s, timestamp = %s, software = %s 
                 WHERE id = %s AND test_selected = %s
             """, (new_score, timestamp, software, user_id, test_type))
+        else:
+            # Reuse the player's identity details from any existing row for the same user.
+            cur.execute("SELECT secret, name, country FROM scores WHERE id = %s LIMIT 1", (user_id,))
+            player_data = cur.fetchone()
+
+            if not player_data:
+                return "User not found"
+
+            cur.execute("""
+                INSERT INTO scores(id, secret, name, country, score, software, test_selected, timestamp) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (user_id, player_data[0], player_data[1], player_data[2], new_score, software, test_type, timestamp))
         
         conn.commit()
         return 1
