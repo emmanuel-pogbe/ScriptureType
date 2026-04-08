@@ -187,8 +187,16 @@ function renderRows(top10, playerPositionInfo) {
 function renderLeaderboardSlice(slice) {
   const top10 = slice && slice.top_10 ? slice.top_10 : [];
   const playerPositionInfo = slice ? slice.player_position_info : null;
+  
+  let scoreHeader = "Score";
+  if (activeBtn === "Scriptures 10" || activeBtn === "Scriptures 20") {
+    scoreHeader = "Score (seconds)";
+  } else if (activeBtn === "Time 30" || activeBtn === "Time 60") {
+    scoreHeader = "Score (scriptures)";
+  }
+
   const tableHtml = '<table id="main-leaderboard-table">'
-    + '<thead><tr><th>Position</th><th>Name</th><th>Country</th><th>Score</th><th>Software used</th></tr></thead>'
+    + '<thead><tr><th>Position</th><th>Name</th><th>Country</th><th>' + scoreHeader + '</th><th>Software used</th></tr></thead>'
     + '<tbody class="table-body" id="table-body">'
     + renderRows(top10, playerPositionInfo)
     + '</tbody>'

@@ -4,7 +4,13 @@
             <th>Position</th>
             <th>Name</th>
             <th>Country</th>
+            {% if selected_test_type in ['Scriptures 10', 'Scriptures 20'] %}
+            <th>Score (seconds)</th>
+            {% elif selected_test_type in ['Time 30', 'Time 60'] %}
+            <th>Score (scriptures)</th>
+            {% else %}
             <th>Score</th>
+            {% endif %}
             <th>Software used</th>
         </tr>
     </thead>
