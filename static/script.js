@@ -1014,6 +1014,9 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
   const parsedBestScore = parseFloat(bestScore);
   const parsedCurrentScore = parseFloat(currentScore);
   const leaderboard_types = ["Scriptures 10", "Scriptures 20", "Time 30", "Time 60"]
+  console.log("Parsed best score: "+parsedBestScore);
+  console.log("Parsed current score: "+parsedCurrentScore);
+  console.log("Test type string: "+testTypeString);
   if (parsedBestScore == parsedCurrentScore && leaderboard_types.includes(testTypeString)) { 
     if (!isRegistered()){
       userForm = document.getElementById("get-user-details");
@@ -1110,6 +1113,7 @@ function displayUserFormCollection(bestScore, currentScore, testTypeString, sele
         software: userSoftware,
         timestamp: timestamp
       }
+      console.log("Updating score...")
       fetch("/update-score", {
         method: "POST",
         headers: {

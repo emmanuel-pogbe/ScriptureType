@@ -84,6 +84,7 @@ def get_specific_leaderboard():
 
 @app.route("/register",methods=["POST"])
 def register_player():
+    print("Register player request")
     player_id = str(uuid.uuid4())
     secret_token = secrets.token_hex(32)
     data = request.get_json()
@@ -120,6 +121,7 @@ def register_player():
 
 @app.route("/update-score", methods=["POST"])
 def update_score():
+    print("Update score request")
     auth_token = request.cookies.get('auth_token')
     if not auth_token:
         return jsonify({"message": "Unauthorized"}), 401
@@ -136,6 +138,8 @@ def update_score():
     test_type = data.get("selectedTest")
     software = data.get("software")
     timestamp = data.get("timestamp")
+
+    print(f"User ID: {user_id}")
 
     # Ensure the user can only update their own score
     if user_id != authenticated_user_id:
