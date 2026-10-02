@@ -99,6 +99,15 @@ function shouldRevalidate() {
   return (Date.now() - lastUpdatedMs) >= CACHE_TTL_MS;
 }
 
+function addUserIdQueryParam(url) {
+  const userId = localStorage.getItem("user-id");
+  if (!userId) {
+    return url;
+  }
+
+  return url + (url.includes("?") ? "&" : "?") + "user_id=" + encodeURIComponent(userId);
+}
+
 function revalidateAllLeaderboards() {
   if (isRevalidating || !shouldRevalidate()) {
     return;
@@ -106,7 +115,7 @@ function revalidateAllLeaderboards() {
 
   isRevalidating = true;
 
-  fetch("/leaderboards?type=" + encodeURIComponent(activeBtn), {
+  fetch(addUserIdQueryParam("/leaderboards?type=" + encodeURIComponent(activeBtn)), {
     method: "GET",
     headers: {
       "Accept": "application/json"
@@ -211,7 +220,7 @@ function setActiveButton(button) {
 }
 
 function fallbackToBackend(type) {
-  return fetch("/leaderboards?partial=true&type=" + encodeURIComponent(type), {
+  return fetch(addUserIdQueryParam("/leaderboards?partial=true&type=" + encodeURIComponent(type)), {
     method: "GET"
   })
     .then(response => response.text())

@@ -100,7 +100,7 @@ def register_player(player_id, secret_token, name, country, score, software, sel
             release_db_connection(conn)
 
 def get_player_info(secret_key):
-    """Get player ID from secret key"""
+    """Get player ID from player ID lol"""
     conn = None
     try:
         conn = get_db_connection()
@@ -108,7 +108,7 @@ def get_player_info(secret_key):
             return None
         
         cur = conn.cursor()
-        cur.execute("SELECT id FROM scores WHERE secret = %s", (secret_key,))
+        cur.execute("SELECT id FROM scores WHERE id = %s", (secret_key,))
         player_id = cur.fetchone()
         return player_id
     except Exception as e:

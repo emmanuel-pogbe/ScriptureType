@@ -28,7 +28,7 @@ def get_leaderboard():
     if test_type not in valid:
         test_type = "Scriptures 10"
 
-    auth_token = request.cookies.get('auth_token')
+    auth_token = request.args.get("user_id")
     player_id = None
 
     if auth_token:
@@ -122,15 +122,6 @@ def register_player():
 @app.route("/update-score", methods=["POST"])
 def update_score():
     print("Update score request")
-    auth_token = request.cookies.get('auth_token')
-    if not auth_token:
-        return jsonify({"message": "Unauthorized"}), 401
-
-    player_data = db.get_player_info(auth_token)
-    if not player_data:
-        return jsonify({"message": "Invalid session"}), 403
-    
-    authenticated_user_id = player_data[0]
 
     data = request.get_json()
     new_score = data.get("new_score")
@@ -140,6 +131,11 @@ def update_score():
     timestamp = data.get("timestamp")
 
     print(f"User ID: {user_id}")
+    player_data = db.get_player_info(user_id)
+    if not player_data:
+        return jsonify({"message": "Invalid session"}), 403
+    
+    authenticated_user_id = player_data[0]
 
     # Ensure the user can only update their own score
     if user_id != authenticated_user_id:
